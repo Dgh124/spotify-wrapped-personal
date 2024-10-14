@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Wrapped</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static "spotify_wrapped/styles/base.css" %}">
+    {% block stylesheet %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar, universal content goes here -->
+
+    {% block content %}{% endblock %}
+</body>
+</html>
