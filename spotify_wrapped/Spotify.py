@@ -20,9 +20,9 @@ class Track:
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
-auth_code = "AQAQOmdOX3N8vIZR_kpvQU9YWwZq6wQMkdnAIWcIa77ZdKtzHsj8a60OACrrmZqXfnyH9nSUW958_0UIbcGyH3HLSyoi0jNBUsvisaACc8dwtHiQPDBijCdRMCFEfm_gUgR1-wfKQ1mB3ljpd5ED69cGhD0gbJ3WwQrlz4zTbqIswKw3zKKzJBaP5RLYzoUMq5sKDAhQS3iobGGDjt5cKj3sISXxFl50dYY7pEA"
-access_token = "BQAg-Klx5ulI4A_wgTELW9sVb00mVZAYiWqqkNn6qj24Y4ALSDPiqewxNm8VKMQF2gsdvSfq8kbxabeeU8n4wA9CWdaZJL3gfTJF6MuJv9NbCNkMXYMr_NfPfKuqd0elgXoXE5idkVewL4MLqnZVlmar3Lhh7p-gjI2OTqxIuCPIZPSyWfXTEniQfG0L-QvrlwIIVzq8lmVlvEiz_XCATHk7RjRjNiE"
-refresh_token = "AQBDD4huil3ju8rKD3x4NnTGdcrM9mfRG8CtQyngreFDeyHH7vh_WiMyY2L_Iw_A2tUXQtXva5DDBliySpI2h5TTEBJo31_Scu4mDchjGvtbte_JMY5naPTCwiSG9geuB7s"
+auth_code = None
+access_token = None
+refresh_token = None
 expires_at = 0
 # data = {
 #     "grant_type" : "authorization_code",
