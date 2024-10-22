@@ -5,5 +5,23 @@
 {% endblock %}
 
 {% block content %}
-    <span>Hello, World, we have made superficial changes.</span>
+    {% if user.id is None %}
+        <a href="{% url 'spotify_wrapped:login' %}">Log In</a>
+    {% else %}
+        <image src="{{ user.pfp }}" alt="{{ user.display_name }} profile picture"></image>
+        <h1>{{ user.display_name }}</h1>
+
+        <ul>
+        {% for track in top_tracks %}
+            <ul>
+                <image src="{{ track.album_image }}" alt="{{ track.album_name }} cover"></image>
+                <li>Track: {{ track.song_name }}</li>
+                <li>Album: {{ track.album_name }}</li>
+            </ul>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+
+
 {% endblock %}
