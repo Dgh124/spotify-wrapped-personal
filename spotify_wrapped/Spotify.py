@@ -9,19 +9,29 @@ client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 
 class Artist:
-    def __init__(self, name, id,  image, genre):
+    def __init__(self, name:str, id:str, image:str, genres:str):
         self.name = name
         self.id = id
         self.image = image
-        self.genre = genre
+        self.genres = genres
 class Track:
-    def __init__(self, album_name, album_image, song_name):
+    def __init__(self, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None):
+        """
+        Initializes Track object
+        :param album_name: Name of the album the track was released in
+        :param album_image: URL of the smallest image corresponding to the album
+        :param song_name: Track name
+        :param artists: List of the names of artists on the track
+        :param preview_url: Link to a 30s preview of the track
+        """
         self.album_name = album_name
         self.album_image = album_image
         self.song_name = song_name
+        self.artists = artists
+        self.preview_url = preview_url
 
 class User:
-    def __init__(self, display_name, _id, pfp, product, uri):
+    def __init__(self, display_name:str, _id:str, pfp:str, product:str, uri:str):
         self.display_name = display_name
         self.id = _id
         self.pfp = pfp
@@ -105,8 +115,11 @@ def refresh_access_token(refresh_token:str):
 def get_requests(url, access_token):
     headers = {"Authorization": f"Bearer {access_token}"}
     response = requests.get(url, headers=headers)
-    json = response.json()
-    return json
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
 
 
 def is_token_expired(expires_at:int) -> bool:
@@ -125,15 +138,24 @@ def has_access(access_token:str, expires_at:int, refresh_token:str):
 
 def get_top_artists(access_token, expires_at, refresh_token,):
     if not has_access(access_token, expires_at, refresh_token):
-        return {"status":"error", "reason":"noToken"}
+        return {"status":"error", "reason":"no token"}
 
     url = f"https://api.spotify.com/v1/me/top/artists?time_range=long_term"
     response = get_requests(url, access_token)
 
+    if response is None:
+        return {"status":"error", "reason":"request failure"}
+
     top_artists = [
-        Artist(item['name'], item['id'], item['images'][0]['url'], item['genres'])
-        for item in response["items"]
+        Artist(
+            name=artist["name"],
+            id=artist["id"],
+            image=artist["images"][-1]["url"] if artist["images"] else "",
+            genres=artist["genres"],
+        )
+        for artist in response["items"]
     ]
+
     return {"status":"success", "value":top_artists}
 
 
@@ -144,11 +166,19 @@ def get_top_tracks(access_token, expires_at, refresh_token,):
     url = f"https://api.spotify.com/v1/me/top/tracks?time_range=long_term"
     response = get_requests(url, access_token)
 
-    top_tracks = []
-    for item in response["items"]:
-        top_tracks.append(
-            Track(item['album']['name'], item['album'][0]['url'], item['name'])
+    if response is None:
+        return {"status":"error", "reason":"request failure"}
+
+    top_tracks = [
+        Track(
+            album_name=track["album"]["name"],
+            album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
+            song_name=track["name"],
+            artists=[artist["name"] for artist in track["artists"]],
+            preview_url=track["preview_url"]
         )
+        for track in response["items"]
+    ]
 
     return {"status":"success", "value":top_tracks}
 
@@ -166,6 +196,9 @@ def get_user(access_token, expires_at, refresh_token):
     url = "https://api.spotify.com/v1/me"
     response = get_requests(url, access_token)
 
+    if response is None:
+        return {"status":"error", "reason":"request failure"}
+
     user = User(
         display_name = response.get("display_name", None),
         _id= response.get("id", None),
@@ -175,3 +208,14 @@ def get_user(access_token, expires_at, refresh_token):
     )
     return {"status":"success", "value":user}
 
+
+def get_top_track_audio_link(track_list: list[Track]):
+    """
+    Returns link of highest-rated song with preview url
+    :param track_list: list of Tracks sorted in order of preference
+    :return: link to highest-rated song preview mp3
+    """
+    for track in track_list:
+        if track.preview_url is not None:
+            return track.preview_url
+    return ""

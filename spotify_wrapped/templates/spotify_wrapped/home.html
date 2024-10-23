@@ -1,7 +1,7 @@
 {% extends "spotify_wrapped/base.html" %}
 {% block stylesheet %}
     {% load static %}
-    <link rel="stylesheet" href="{% static "spotify_wrapped/styles/home.html" %}">
+    <link rel="stylesheet" href="{% static "spotify_wrapped/styles/home.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -20,6 +20,8 @@
             </ul>
         {% endfor %}
         </ul>
+
+        <audio src="{{ top_track_audio }}" hidden=""></audio>
     {% endif %}
 
 
