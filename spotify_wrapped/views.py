@@ -32,10 +32,11 @@ def index(request):
 
     top_tracks = top_tracks_result["value"]
     user = user_result["value"]
-    top_track_audio = get_top_track_audio_link(top_tracks)
+    audio_link = get_top_track_audio_link(top_tracks)
+    print(audio_link)
 
     return render(request, "spotify_wrapped/home.html",
-                  {"top_tracks": top_tracks, "user": user, "audio_link": top_track_audio})
+                  {"top_tracks": top_tracks, "user": user, "audio_link": audio_link})
 
 def login(request):
     return HttpResponseRedirect(get_auth_url())

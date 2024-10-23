@@ -26,7 +26,7 @@ class Track:
         """
         self.album_name = album_name
         self.album_image = album_image
-        self.song_name = song_name
+        self.name = song_name
         self.artists = artists
         self.preview_url = preview_url
 
@@ -121,7 +121,6 @@ def get_requests(url, access_token):
         return None
 
 
-
 def is_token_expired(expires_at:int) -> bool:
     current_time = time.time()
     return current_time >= expires_at
@@ -136,40 +135,35 @@ def has_access(access_token:str, expires_at:int, refresh_token:str):
     return True
 
 
-def get_top_artists(access_token, expires_at, refresh_token,):
-    if not has_access(access_token, expires_at, refresh_token):
-        return {"status":"error", "reason":"no token"}
-
-    url = f"https://api.spotify.com/v1/me/top/artists?time_range=long_term"
-    response = get_requests(url, access_token)
-
-    if response is None:
-        return {"status":"error", "reason":"request failure"}
-
-    top_artists = [
-        Artist(
-            name=artist["name"],
-            id=artist["id"],
-            image=artist["images"][-1]["url"] if artist["images"] else "",
-            genres=artist["genres"],
-        )
-        for artist in response["items"]
-    ]
-
-    return {"status":"success", "value":top_artists}
-
-
-def get_top_tracks(access_token, expires_at, refresh_token,):
+def get_user_attributes(access_token, expires_at, refresh_token, url_slug, output_transform):
     if not has_access(access_token, expires_at, refresh_token):
         return {"status":"error", "reason":"noToken"}
 
-    url = f"https://api.spotify.com/v1/me/top/tracks?time_range=long_term"
+    url = f"https://api.spotify.com/v1/me/{url_slug}"
     response = get_requests(url, access_token)
 
     if response is None:
         return {"status":"error", "reason":"request failure"}
 
-    top_tracks = [
+    value = output_transform(response)
+    return {"status":"success", "value":value}
+
+
+def get_user(access_token, expires_at, refresh_token):
+    user_transform_fn = \
+        lambda response : User(
+        display_name = response.get("display_name", None),
+        _id= response.get("id", None),
+        pfp = response.get('images') and response['images'][0].get('url') if response['images'] else None,
+        product = response.get("product", None),
+        uri = response.get("uri", None),
+    )
+    return get_user_attributes(access_token, expires_at, refresh_token,
+                               "", user_transform_fn)
+
+
+def get_top_tracks(access_token, expires_at, refresh_token):
+    top_track_transform_fn = lambda response : [
         Track(
             album_name=track["album"]["name"],
             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
@@ -179,43 +173,32 @@ def get_top_tracks(access_token, expires_at, refresh_token,):
         )
         for track in response["items"]
     ]
-
-    return {"status":"success", "value":top_tracks}
-
-def get_user(access_token, expires_at, refresh_token):
-    """
-    Gets user details from Spotify API and returns User object with attributes
-    :param access_token:
-    :param expires_at:
-    :param refresh_token:
-    :return: display_name, uid, pfp, product, uri
-    """
-    if not has_access(access_token, expires_at, refresh_token):
-        return {"status":"error", "reason":"noToken"}
-
-    url = "https://api.spotify.com/v1/me"
-    response = get_requests(url, access_token)
-
-    if response is None:
-        return {"status":"error", "reason":"request failure"}
-
-    user = User(
-        display_name = response.get("display_name", None),
-        _id= response.get("id", None),
-        pfp = response.get('images') and response['images'][0].get('url') if response['images'] else None,
-        product = response.get("product", None),
-        uri = response.get("uri", None),
-    )
-    return {"status":"success", "value":user}
+    return get_user_attributes(access_token, expires_at, refresh_token,
+                               "top/tracks", top_track_transform_fn)
 
 
-def get_top_track_audio_link(track_list: list[Track]):
+def get_top_artists(access_token, expires_at, refresh_token):
+    top_artist_transform_fn = lambda response : [
+        Artist(
+            name=artist["name"],
+            id=artist["id"],
+            image=artist["images"][-1]["url"] if artist["images"] else "",
+            genres=artist["genres"],
+        )
+        for artist in response["items"]
+    ]
+    return get_user_attributes(access_token, expires_at, refresh_token,
+                               "top/artists", top_artist_transform_fn)
+
+
+def get_top_track_audio_link(track_list: list[Track]) -> str:
     """
     Returns link of highest-rated song with preview url
     :param track_list: list of Tracks sorted in order of preference
     :return: link to highest-rated song preview mp3
     """
     for track in track_list:
+        print(track.name, track.preview_url)
         if track.preview_url is not None:
             return track.preview_url
     return ""
