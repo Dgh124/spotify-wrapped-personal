@@ -150,8 +150,7 @@ def get_user_attributes(access_token, expires_at, refresh_token, url_slug, outpu
 
 
 def get_user(access_token, expires_at, refresh_token):
-    user_transform_fn = \
-        lambda response : User(
+    user_transform_fn = lambda response : User(
         display_name = response.get("display_name", None),
         _id= response.get("id", None),
         pfp = response.get('images') and response['images'][0].get('url') if response['images'] else None,
