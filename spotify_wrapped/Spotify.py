@@ -51,7 +51,8 @@ def get_auth_url():
         'client_id': client_id,
         'response_type': 'code',
         'redirect_uri': redirect_uri,
-        'scope': scope
+        'scope': scope,
+        'show_dialog': "true"
     }
 
     full_auth_url = f"{auth_url}?{urllib.parse.urlencode(params)}"
@@ -70,7 +71,7 @@ def get_access_token(auth_code:str) -> (str, int, str):
         "client_id": client_id,
         "client_secret": client_secret,
         'code': auth_code,
-        'redirect_uri': redirect_uri
+        'redirect_uri': redirect_uri,
     }
     client_creds = f"{client_id}:{client_secret}"
     client_creds_b64 = base64.b64encode(client_creds.encode()).decode()
@@ -197,7 +198,6 @@ def get_top_track_audio_link(track_list: list[Track]) -> str:
     :return: link to highest-rated song preview mp3
     """
     for track in track_list:
-        print(track.name, track.preview_url)
         if track.preview_url is not None:
             return track.preview_url
     return ""

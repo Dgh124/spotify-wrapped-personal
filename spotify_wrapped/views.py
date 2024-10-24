@@ -9,9 +9,6 @@ def index(request):
     access_token = request.session.get("access_token", None)
     expire_time = request.session.get("expire_time", None)
     refresh_token = request.session.get("refresh_token", None)
-    # print(access_token)
-    # print(expire_time)
-    # print(refresh_token)
 
     # If not logged in yet, show base home page
     if access_token is None or expire_time is None or refresh_token is None:
@@ -33,7 +30,6 @@ def index(request):
     top_tracks = top_tracks_result["value"]
     user = user_result["value"]
     audio_link = get_top_track_audio_link(top_tracks)
-    print(audio_link)
 
     return render(request, "spotify_wrapped/home.html",
                   {"top_tracks": top_tracks, "user": user, "audio_link": audio_link})
