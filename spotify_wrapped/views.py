@@ -26,7 +26,7 @@ def index(request):
 
     # So far, this only means the user is not logged in, so log them in
     if top_tracks_result["status"] == "error":
-        HttpResponseRedirect(reverse('spotify_wrapped:login'))
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
     if user_result["status"] == "error":
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
 

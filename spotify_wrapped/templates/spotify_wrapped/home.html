@@ -15,7 +15,7 @@
         {% for track in top_tracks %}
             <ul>
                 <image src="{{ track.album_image }}" alt="{{ track.album_name }} cover"></image>
-                <li>Track: {{ track.song_name }}</li>
+                <li>Track: {{ track.name }}</li>
                 <li>Album: {{ track.album_name }}</li>
             </ul>
         {% endfor %}
