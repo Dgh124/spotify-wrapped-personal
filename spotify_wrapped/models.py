@@ -2,17 +2,12 @@ import uuid
 
 from django.db import models
 
-# Create your models here.
 class User(models.Model):
-    username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
+    spotify_id = models.CharField(max_length=22, default=0, primary_key=True)
+    display_name = models.CharField(max_length=30, default="")
 
     def __str__(self):
-        return self.username
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    spotify_id = models.CharField(max_length=255, unique=True, blank=True, null=True)
+        return self.display_name
 
 class Wrap(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
