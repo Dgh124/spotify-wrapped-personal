@@ -162,7 +162,7 @@ def get_user(access_token, expires_at, refresh_token):
                                "", user_transform_fn)
 
 
-def get_top_tracks(access_token, expires_at, refresh_token):
+def get_top_tracks(access_token, expires_at, refresh_token, time_range='long_term'):
     top_track_transform_fn = lambda response : [
         Track(
             album_name=track["album"]["name"],
@@ -174,7 +174,7 @@ def get_top_tracks(access_token, expires_at, refresh_token):
         for track in response["items"]
     ]
     return get_user_attributes(access_token, expires_at, refresh_token,
-                               "top/tracks", top_track_transform_fn)
+                               f"top/tracks?time_range={time_range}", top_track_transform_fn)
 
 
 def get_top_artists(access_token, expires_at, refresh_token):
