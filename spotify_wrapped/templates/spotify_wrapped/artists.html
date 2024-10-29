@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 5 Artists</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/artists.css' %}">
+  {% block stylesheet %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Your Top 5 Artists</h1>
+      <p class="subheader">Scroll through your most-listened-to artists!</p>
+    </header>
+
+    <section class="artists-list">
+      <!-- Example artist cards with placeholder data -->
+      <div class="artist-card">
+        <img src="artist1.jpg" alt="Artist 1 Image">
+        <div class="artist-info">
+          <h2>Artist Name 1</h2>
+        </div>
+      </div>
+      <div class="artist-card">
+        <img src="artist2.jpg" alt="Artist 2 Image">
+        <div class="artist-info">
+          <h2>Artist Name 2</h2>
+        </div>
+      </div>
+      <div class="artist-card">
+        <img src="artist3.jpg" alt="Artist 3 Image">
+        <div class="artist-info">
+          <h2>Artist Name 3</h2>
+        </div>
+      </div>
+      <div class="artist-card">
+        <img src="artist4.jpg" alt="Artist 4 Image">
+        <div class="artist-info">
+          <h2>Artist Name 4</h2>
+        </div>
+      </div>
+      <div class="artist-card">
+        <img src="artist5.jpg" alt="Artist 5 Image">
+        <div class="artist-info">
+          <h2>Artist Name 5</h2>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+/* Basic resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  color: #ffffff;
+  overflow-y: auto;
+}
+
+/* Container */
+.container {
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.subheader {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #ffb6c1; /* Changed color for emphasis */
+}
+
+/* Artists List */
+.artists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* Artist Card */
+.artist-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #514a9d;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.artist-card:hover {
+  transform: scale(1.02);
+}
+
+.artist-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.artist-info h2 {
+  font-size: 1.2em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2em;
+  }
+
+  .artist-card img {
+    width: 70px;
+    height: 70px;
+  }
+}

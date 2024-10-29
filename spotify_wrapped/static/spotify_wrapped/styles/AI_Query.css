@@ -1,0 +1,98 @@
+/* Basic resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  color: #ffffff;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Header */
+header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+header p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #ffddc1;
+}
+
+/* Output Section */
+.output-section h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  color: #ffcccb;
+}
+
+.traits-list {
+  font-size: 1.2em;
+  margin-top: 15px;
+  background: #ffffff;
+  padding: 20px;
+  color: #ff5f6d;
+  border-radius: 5px;
+  opacity: 0;
+  animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+.traits-list p {
+  margin: 10px 0;
+  font-size: 1.1em;
+  color: #ff5f6d;
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #ffd1a4;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2em;
+  }
+
+  .output-section h2 {
+    font-size: 1.5em;
+  }
+
+  .traits-list {
+    font-size: 1em;
+  }
+}

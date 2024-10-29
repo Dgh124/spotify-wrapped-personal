@@ -32,6 +32,38 @@ def index(request):
     return render(request, "spotify_wrapped/home.html",
                   {"top_tracks": top_tracks, "user": user})
 
+# start of all pages
+def cover(request):
+    return render(request, "spotify_wrapped/cover.html", {})
+
+def AI_Query(request):
+    return render(request, "spotify_wrapped/AI_Query.html", {})
+
+def albums(request):
+    return render(request, "spotify_wrapped/albums.html", {})
+
+def artists(request):
+    return render(request, "spotify_wrapped/artists.html", {})
+
+def genres(request):
+    return render(request, "spotify_wrapped/genres.html", {})
+
+def meetDevs(request):
+    return render(request, "spotify_wrapped/meetDevs.html", {})
+
+def mood(request):
+    return render(request, "spotify_wrapped/mood.html", {})
+
+def popularityScore(request):
+    return render(request, "spotify_wrapped/popularityScore.html", {})
+
+def recommendations(request):
+    return render(request, "spotify_wrapped/recommendations.html", {})
+
+def tracks(request):
+    return render(request, "spotify_wrapped/tracks/html", {})
+# end of all pages
+
 def login(request):
     return HttpResponseRedirect(get_auth_url())
 

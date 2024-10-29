@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 5 Tracks</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/tracks.css' %}">
+  {% block stylesheet %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Your Top 5 Tracks</h1>
+      <p class="subheader">Scroll through your most-listened-to tracks!</p>
+    </header>
+
+    <section class="tracks-list">
+      <!-- Example track cards with placeholder data -->
+      <div class="track-card">
+        <img src="track1.jpg" alt="Track 1 Cover">
+        <div class="track-info">
+          <h2>Track Title 1</h2>
+          <p>Artist Name 1</p>
+        </div>
+      </div>
+      <div class="track-card">
+        <img src="track2.jpg" alt="Track 2 Cover">
+        <div class="track-info">
+          <h2>Track Title 2</h2>
+          <p>Artist Name 2</p>
+        </div>
+      </div>
+      <div class="track-card">
+        <img src="track3.jpg" alt="Track 3 Cover">
+        <div class="track-info">
+          <h2>Track Title 3</h2>
+          <p>Artist Name 3</p>
+        </div>
+      </div>
+      <div class="track-card">
+        <img src="track4.jpg" alt="Track 4 Cover">
+        <div class="track-info">
+          <h2>Track Title 4</h2>
+          <p>Artist Name 4</p>
+        </div>
+      </div>
+      <div class="track-card">
+        <img src="track5.jpg" alt="Track 5 Cover">
+        <div class="track-info">
+          <h2>Track Title 5</h2>
+          <p>Artist Name 5</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

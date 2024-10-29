@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 5 Albums</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/albums.css' %}">
+  {% block stylesheet %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Your Top 5 Albums</h1>
+      <p>Scroll through your most-listened-to albums!</p>
+    </header>
+
+    <section class="albums-list">
+      <!-- Example album cards with placeholder data -->
+      <div class="album-card">
+        <img src="album1.jpg" alt="Album 1 Cover">
+        <div class="album-info">
+          <h2>Album Title 1</h2>
+          <p>Artist Name 1</p>
+        </div>
+      </div>
+      <div class="album-card">
+        <img src="album2.jpg" alt="Album 2 Cover">
+        <div class="album-info">
+          <h2>Album Title 2</h2>
+          <p>Artist Name 2</p>
+        </div>
+      </div>
+      <div class="album-card">
+        <img src="album3.jpg" alt="Album 3 Cover">
+        <div class="album-info">
+          <h2>Album Title 3</h2>
+          <p>Artist Name 3</p>
+        </div>
+      </div>
+      <div class="album-card">
+        <img src="album4.jpg" alt="Album 4 Cover">
+        <div class="album-info">
+          <h2>Album Title 4</h2>
+          <p>Artist Name 4</p>
+        </div>
+      </div>
+      <div class="album-card">
+        <img src="album5.jpg" alt="Album 5 Cover">
+        <div class="album-info">
+          <h2>Album Title 5</h2>
+          <p>Artist Name 5</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 5 Genres</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/genres.css' %}">
+  {% block stylesheet %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Your Top 5 Genres</h1>
+      <p>Scroll through your most-listened-to genres!</p>
+    </header>
+
+    <section class="genres-list">
+      <!-- Example genre cards with placeholder data -->
+      <div class="genre-card">
+        <div class="genre-icon">🎶</div>
+        <div class="genre-info">
+          <h2>Pop</h2>
+          <p>Lively and catchy beats that uplift your mood</p>
+        </div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon">🎸</div>
+        <div class="genre-info">
+          <h2>Rock</h2>
+          <p>Powerful rhythms and expressive guitar riffs</p>
+        </div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon">🎤</div>
+        <div class="genre-info">
+          <h2>Hip Hop</h2>
+          <p>Rhythmic beats and lyrical flow</p>
+        </div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon">🎷</div>
+        <div class="genre-info">
+          <h2>Jazz</h2>
+          <p>Improvisational and soulful sounds</p>
+        </div>
+      </div>
+      <div class="genre-card">
+        <div class="genre-icon">🎹</div>
+        <div class="genre-info">
+          <h2>Classical</

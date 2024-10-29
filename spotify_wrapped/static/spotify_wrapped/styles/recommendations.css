@@ -1,0 +1,123 @@
+/* Basic resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+  color: #ffffff;
+  overflow-y: auto;
+}
+
+/* Container */
+.container {
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.subheader {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #ffddcc;
+}
+
+/* Recommendations List */
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* Recommendation Card */
+.recommendation-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #ff6f61;
+  transition: transform 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.recommendation-card:hover {
+  transform: scale(1.03);
+}
+
+.cover {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  margin-right: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.song-info h2 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.song-info p {
+  font-size: 1em;
+  color: #333;
+}
+
+/* Play Icon */
+.play-icon {
+  font-size: 1.5em;
+  position: absolute;
+  right: 20px;
+  color: #ff6f61;
+  transition: transform 0.3s ease;
+}
+
+.recommendation-card:hover .play-icon {
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2em;
+  }
+
+  .cover {
+    width: 70px;
+    height: 70px;
+  }
+
+  .play-icon {
+    font-size: 1.3em;
+  }
+}
