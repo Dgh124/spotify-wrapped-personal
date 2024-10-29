@@ -20,10 +20,36 @@
             </ul>
         {% endfor %}
         </ul>
-
+        
+        
         <audio src="{{ audio_link }}" hidden="" autoplay=""></audio>
     {% endif %}
+    
+    </ul>
+    
+    <!-- Display Top Genres -->
+{% if top_genres %}
+    <h2>Top Genres</h2>
+    <ul>
+        {% for genre, count in top_genres %}
+            <li>{{ forloop.counter }}. {{ genre|title }} - Count: {{ count }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No genres available.</p>
+{% endif %}
 
 
+<!-- Display Suggested Genres -->
+        {% if suggested_genres %}
+            <h2>Suggested Genres</h2>
+            <ul>
+                {% for genre in suggested_genres %}
+                    <li>{{ genre|title }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No genres available.</p>
+        {% endif %}
 
 {% endblock %}
