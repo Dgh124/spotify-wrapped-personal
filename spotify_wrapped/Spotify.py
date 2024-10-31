@@ -1,7 +1,7 @@
 import base64
 import os, requests, time
 import urllib.parse
-from typing import TypedDict
+from typing import Callable
 from openai import OpenAI
 
 from dotenv import load_dotenv
@@ -11,13 +11,14 @@ client_secret = os.getenv("CLIENT_SECRET")
 chatgpt = os.getenv("CHATGPT_KEY")
 
 class Artist:
-    def __init__(self, name:str, id:str, image:str, genres:str):
+    def __init__(self, name:str, _id:str, image:str, genres:str):
         self.name = name
-        self.id = id
+        self.id = _id
         self.image = image
         self.genres = genres
+
 class Track:
-    def __init__(self, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None):
+    def __init__(self, _id:str, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None):
         """
         Initializes Track object
         :param album_name: Name of the album the track was released in
@@ -40,7 +41,16 @@ class User:
         self.product = product
         self.uri = uri
 
-redirect_uri = "http://localhost:8000/auth"
+class WrapObject:
+    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track]):
+        self.top_tracks = top_tracks
+        self.top_artists = top_artists
+        self.user = user
+        self.top_genres = get_top_genres(top_artists)
+        self.audio_link = get_top_track_audio_link(top_tracks)
+        self.suggested_tracks = suggested_tracks
+
+redirect_uri = "http://127.0.0.1:8000/auth"
 
 
 def get_auth_url():
@@ -116,11 +126,18 @@ def refresh_access_token(refresh_token:str):
 
 
 def get_requests(url, access_token):
+    """
+    queries Spotify api using access token
+    :param url: url to query
+    :param access_token: access token returned by Spotify api callback at /auth path
+    :return: returns response.json() if successful; returns None otherwise
+    """
     headers = {"Authorization": f"Bearer {access_token}"}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
     else:
+        print("request returned error")
         return None
 
 
@@ -138,7 +155,16 @@ def has_access(access_token:str, expires_at:int, refresh_token:str):
     return True
 
 
-def get_user_attributes(access_token, expires_at, refresh_token, url_slug, output_transform):
+def get_user_attributes[T](access_token: str, expires_at: int, refresh_token: str, url_slug: str, output_transform: Callable[[dict], T]) -> dict[str, str|T]:
+    """
+    Queries the Spotify api for a user's top artists
+    :param access_token: access token returned by spotify API callback at /auth path
+    :param expires_at: expires_at time returned by spotify API callback at /auth path
+    :param refresh_token: refresh token returned by spotify API callback at /auth path
+    :param url_slug: url path to append onto api.spotify.com/v1/me/{url_slug}
+    :param output_transform: function to transform output of get_requests to usable format
+    :return: dict of form {status: success|error} and a value if success, reason if failure
+    """
     if not has_access(access_token, expires_at, refresh_token):
         return {"status":"error", "reason":"noToken"}
 
@@ -153,6 +179,13 @@ def get_user_attributes(access_token, expires_at, refresh_token, url_slug, outpu
 
 
 def get_user(access_token, expires_at, refresh_token):
+    """
+    queries spotify API for user attributes
+    :param access_token:
+    :param expires_at:
+    :param refresh_token:
+    :return:
+    """
     user_transform_fn = lambda response : User(
         display_name = response.get("display_name", None),
         _id= response.get("id", None),
@@ -164,9 +197,19 @@ def get_user(access_token, expires_at, refresh_token):
                                "", user_transform_fn)
 
 
-def get_top_tracks(access_token, expires_at, refresh_token, time_range='long_term'):
+def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=10):
+    """
+    Queries Spotify API for user's top tracks over a time range
+    :param access_token: see get_user_attributes
+    :param expires_at: see get_user_attributes
+    :param refresh_token: see get_user_attributes
+    :param time_range: over what time the top tracks are computed (short_term, medium_term, long_term)
+    :param limit: how many top tracks to return (between 1-50)
+    :return: list of Track items including details about the top tracks
+    """
     top_track_transform_fn = lambda response : [
         Track(
+            _id=track["id"],
             album_name=track["album"]["name"],
             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
             song_name=track["name"],
@@ -175,22 +218,54 @@ def get_top_tracks(access_token, expires_at, refresh_token, time_range='long_ter
         )
         for track in response["items"]
     ]
+    limit = min(max(1, limit), 50)
     return get_user_attributes(access_token, expires_at, refresh_token,
-                               f"top/tracks?time_range={time_range}", top_track_transform_fn)
+                               f"top/tracks?time_range={time_range}&limit={limit}",
+                               top_track_transform_fn)
 
 
-def get_top_artists(access_token, expires_at, refresh_token):
-    top_artist_transform_fn = lambda response : [
+def get_top_artists(access_token, expires_at, refresh_token, time_range="medium_term", limit=10):
+    """
+    Queries the Spotify api for a user's top artists
+    :param access_token: see get_user_attributes
+    :param expires_at: see get_user_attributes
+    :param refresh_token: see get_user_attributes
+    :param time_range: over what time the top artists are computed (short_term, medium_term, long_term)
+    :param limit: how many top artists to return (between 1-50)
+    :return: list of Artist items including details about the top artists
+    """
+    top_artists_transform_fn = lambda response : [
         Artist(
             name=artist["name"],
-            id=artist["id"],
+            _id=artist["id"],
             image=artist["images"][-1]["url"] if artist["images"] else "",
             genres=artist["genres"],
-        )
-        for artist in response["items"]
+        ) for artist in response["items"]
     ]
-    return get_user_attributes(access_token, expires_at, refresh_token,
-                               "top/artists", top_artist_transform_fn)
+    limit = min(max(1, limit), 50)
+    return get_user_attributes(
+        access_token, expires_at, refresh_token,
+        f"top/artists?time_range={time_range}&limit={limit}", top_artists_transform_fn
+    )
+
+
+def get_top_genres(top_artists: list[Artist]) -> list[(str,int)]:
+    """
+    returns top genres given a list of artists
+    :param top_artists: sorted list of user's top artists
+    :return: the top {count} genres that a user enjoys
+    """
+    top_genres = {}
+    for artist in top_artists:
+        for genre in artist.genres:
+            if genre in top_genres:
+                top_genres[genre] += 1
+            else:
+                top_genres[genre] = 1
+    return [
+        (genre[0], genre[1]) for genre in
+        sorted(top_genres.items(), key=lambda item: item[1], reverse=True)
+    ]
 
 
 def get_top_track_audio_link(track_list: list[Track]) -> str:
@@ -203,6 +278,67 @@ def get_top_track_audio_link(track_list: list[Track]) -> str:
         if track.preview_url is not None:
             return track.preview_url
     return ""
+
+
+def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> dict[str,list[Track]|str]:
+    """
+    queries spotify API for suggested tracks based on list of artists
+    :param access_token: see get_user_attributes
+    :param top_artists: sorted list of user's top artists'
+    :return: list of suggested tracks
+    """
+    # gets the top five artists for a user
+    count = 0
+    artist_seeds = ""
+    while count < len(top_artists) and count < 5:
+        artist_seeds += top_artists[count].id + ','
+        count += 1
+
+    url = f'https://api.spotify.com/v1/recommendations?seed_artists={artist_seeds}'
+    response = get_requests(url, access_token)
+    if response is None:
+        return {"status": "error", "reason": "suggested tracks returned error status code"}
+    return {"status": "success", "value": [
+        Track(
+            _id=track["id"],
+            album_name=track["album"]["name"],
+            album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
+            song_name=track["name"],
+            artists=[artist["name"] for artist in track["artists"]],
+            preview_url=track["preview_url"]
+        )
+        for track in response["tracks"]
+    ]}
+
+
+def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | WrapObject]:
+    top_tracks_result = get_top_tracks(
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
+    )
+    user_result = get_user(
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
+    )
+    top_artists_result = get_top_artists(
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
+    )
+    if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
+        return {"status": "error", "reason": "request returned error status code"}
+
+    suggested_tracks = get_suggested_tracks(
+        access_token=access_token,
+        top_artists=top_artists_result["value"],
+    )
+    if suggested_tracks["status"] == "error":
+        return suggested_tracks #includes error message and value
+
+    return {"status": "success", "value": WrapObject(
+        top_tracks=top_tracks_result["value"],
+        top_artists=top_artists_result["value"],
+        user=user_result["value"],
+        suggested_tracks=suggested_tracks["value"]
+    )}
+
+
 
 def get_personality_and_colors(artists: list):
 

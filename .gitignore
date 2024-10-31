@@ -4,3 +4,4 @@
 db.sqlite3
 AI_API.py
 /**/__pycache__/
+/staticfiles/
