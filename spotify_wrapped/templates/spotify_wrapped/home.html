@@ -38,5 +38,13 @@
                 <li>{{ track.name }} - {{ track.artists }}</li>
             {% endfor %}
         </ul>
+
+
+        <h2>What your music says about you!</h2>
+        <ul>
+            {% for personality in user_info.personality %}
+                <li>{{ personality.capitalize }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 {% endblock %}

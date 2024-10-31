@@ -42,13 +42,15 @@ class User:
         self.uri = uri
 
 class WrapObject:
-    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track]):
+    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color:list[str]):
         self.top_tracks = top_tracks
         self.top_artists = top_artists
         self.user = user
         self.top_genres = get_top_genres(top_artists)
         self.audio_link = get_top_track_audio_link(top_tracks)
         self.suggested_tracks = suggested_tracks
+        self.personality = personality
+        self.color = color
 
 redirect_uri = "http://127.0.0.1:8000/auth"
 
@@ -331,11 +333,15 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     if suggested_tracks["status"] == "error":
         return suggested_tracks #includes error message and value
 
+    personality, color = get_personality_and_colors(top_artists_result['value'])
+
     return {"status": "success", "value": WrapObject(
         top_tracks=top_tracks_result["value"],
         top_artists=top_artists_result["value"],
         user=user_result["value"],
-        suggested_tracks=suggested_tracks["value"]
+        suggested_tracks=suggested_tracks["value"],
+        personality=personality,
+        color= color
     )}
 
 
@@ -345,12 +351,17 @@ def get_personality_and_colors(artists: list):
     client = OpenAI(
         api_key=chatgpt,
     )
+
+    artist_list = ""
+    for artist in artists:
+        artist_list += f"{artist}, "
+
     chat_completion = client.chat.completions.create(
         messages=[
             {
                 "role": "user",
                 "content": f""" what insight can you give about my personality if i listen to 
-                                {artists[0]}, {artists[1]}, {artists[2]}, {artists[3]}, and {artists[4]}. 
+                                {artist_list}. 
                                 simplify the answer in bullet points with only the keyword. 
                                 Make sure the keyword are tied to words that typically used to describe personality.
                                 Also generate 5 hex code based on the personalities.
