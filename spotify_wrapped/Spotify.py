@@ -205,6 +205,7 @@ def get_top_track_audio_link(track_list: list[Track]) -> str:
     return ""
 
 def get_personality_and_colors(artists: list):
+
     client = OpenAI(
         api_key=chatgpt,
     )
