@@ -5,51 +5,38 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.id is None %}
+    {% if user_info.user.id is None %}
         <a href="{% url 'spotify_wrapped:login' %}">Log In</a>
     {% else %}
-        <image src="{{ user.pfp }}" alt="{{ user.display_name }} profile picture"></image>
-        <h1>{{ user.display_name }}</h1>
+        <img src="{{ user_info.user.pfp }}" alt="{{ user_info.user.display_name }} profile picture"></img>
+        <h1>{{ user_info.user.display_name }}</h1>
 
         <ul>
-        {% for track in top_tracks %}
-            <ul>
-                <image src="{{ track.album_image }}" alt="{{ track.album_name }} cover"></image>
+        {% for track in user_info.top_tracks %}
+            <li><ul>
+                <li><img src="{{ track.album_image }}" alt="{{ track.album_name }} cover"></img></li>
                 <li>Track: {{ track.name }}</li>
                 <li>Album: {{ track.album_name }}</li>
-            </ul>
+            </ul></li>
         {% endfor %}
         </ul>
-        
-        
-        <audio src="{{ audio_link }}" hidden="" autoplay=""></audio>
+
+        <audio src="{{ user_info.audio_link }}" hidden="" autoplay=""></audio>
+
+        <!-- Display Top Genres -->
+        <h2>Top Genres</h2>
+        <ul>
+            {% for genre, count in user_info.top_genres %}
+                <li>{{ genre }} - Count: {{ count }}</li>
+            {% endfor %}
+        </ul>
+
+       <!-- Display Suggested Tracks -->
+        <h2>Suggested Tracks</h2>
+        <ul>
+            {% for track in user_info.suggested_tracks %}
+                <li>{{ track.name }} - {{ track.artists }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
-    
-    </ul>
-    
-    <!-- Display Top Genres -->
-{% if top_genres %}
-    <h2>Top Genres</h2>
-    <ul>
-        {% for genre, count in top_genres %}
-            <li>{{ forloop.counter }}. {{ genre|title }} - Count: {{ count }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No genres available.</p>
-{% endif %}
-
-
-<!-- Display Suggested Genres -->
-        {% if suggested_genres %}
-            <h2>Suggested Genres</h2>
-            <ul>
-                {% for genre in suggested_genres %}
-                    <li>{{ genre|title }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No genres available.</p>
-        {% endif %}
-
 {% endblock %}
