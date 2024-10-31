@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top 5 Artists</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/artists.css' %}">
-  {% block stylesheet %}{% endblock %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+{% extends "spotify_wrapped/slides/base.html" %}
 
+{% block title %}Top 5 Artists{% endblock %}
+
+{% block stylesheet %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/artists.css' %}">
+{% endblock %}
+
+{% block body %}
   <div class="container">
     <header>
       <h1>Your Top 5 Artists</h1>
@@ -54,5 +49,4 @@
     </section>
   </div>
 
-</body>
-</html>
+{% endblock %}

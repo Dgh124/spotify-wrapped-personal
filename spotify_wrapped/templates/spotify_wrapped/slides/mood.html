@@ -2,21 +2,16 @@
 {#    two colors --> gradient #}
 {#    has two mood descriptors #}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Listening Mood</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/mood.css' %}">
-  {% block stylesheet %}{% endblock %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+{% extends "spotify_wrapped/slides/base.html" %}
 
+{% block title %}Your Listening Mood{% endblock %}
+
+{% block stylesheet %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/mood.css' %}">
+{% endblock %}
+
+{% block body %}
   <div class="container">
     <header>
       <h1>Your Mood Colors</h1>
@@ -36,5 +31,4 @@
     </section>
   </div>
 
-</body>
-</html>
+{% endblock %}

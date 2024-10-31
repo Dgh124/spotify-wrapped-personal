@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Wrapped</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/cover.css' %}">
-    {% block stylesheet %}{% endblock %}
-</head>
-<body>
+{% extends "spotify_wrapped/slides/base.html" %}
+
+{% block title %}Spotify Wrapped{% endblock %}
+
+{% block stylesheet %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/cover.css' %}">
+{% endblock %}
+
+{% block body %}
     <div class="wrapper">
         <div class="content">
             <h1 class="line1">hello <span id="username">[Username]</span></h1>
@@ -23,5 +22,4 @@
             document.getElementById("username").textContent = username;
         });
     </script>
-</body>
-</html>
+{% endblock %}

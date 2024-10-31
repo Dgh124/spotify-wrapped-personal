@@ -34,34 +34,34 @@ def index(request):
 
 # start of all pages
 def cover(request):
-    return render(request, "spotify_wrapped/cover.html", {})
+    return render(request, "spotify_wrapped/slides/cover.html", {})
 
 def AI_Query(request):
-    return render(request, "spotify_wrapped/AI_Query.html", {})
+    return render(request, "spotify_wrapped/slides/AI_Query.html", {})
 
 def albums(request):
-    return render(request, "spotify_wrapped/albums.html", {})
+    return render(request, "spotify_wrapped/slides/albums.html", {})
 
 def artists(request):
-    return render(request, "spotify_wrapped/artists.html", {})
+    return render(request, "spotify_wrapped/slides/artists.html", {})
 
 def genres(request):
-    return render(request, "spotify_wrapped/genres.html", {})
+    return render(request, "spotify_wrapped/slides/genres.html", {})
 
 def meetDevs(request):
     return render(request, "spotify_wrapped/meetDevs.html", {})
 
 def mood(request):
-    return render(request, "spotify_wrapped/mood.html", {})
+    return render(request, "spotify_wrapped/slides/mood.html", {})
 
 def popularityScore(request):
-    return render(request, "spotify_wrapped/popularityScore.html", {})
+    return render(request, "spotify_wrapped/slides/popularityScore.html", {})
 
 def recommendations(request):
-    return render(request, "spotify_wrapped/recommendations.html", {})
+    return render(request, "spotify_wrapped/slides/recommendations.html", {})
 
 def tracks(request):
-    return render(request, "spotify_wrapped/tracks/html", {})
+    return render(request, "spotify_wrapped/slides/tracks.html", {})
 # end of all pages
 
 def login(request):

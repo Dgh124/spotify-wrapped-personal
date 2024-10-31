@@ -1,20 +1,14 @@
 {# top 5 recommended songs based on your listening #}
+{% extends "spotify_wrapped/slides/base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top 5 Recommended Songs</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/recommendations.css' %}">
-  {% block stylesheet %}{% endblock %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+{% block title %}Top 5 Recommended Songs{% endblock %}
 
+{% block stylesheet %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/recommendations.css' %}">
+{% endblock %}
+
+{% block body %}
   <div class="container">
     <header>
       <h1>Recommended for You</h1>
@@ -65,6 +59,4 @@
       </div>
     </section>
   </div>
-
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,29 @@
+{# what chatgpt has to say abt your personality type #}
+{% extends "spotify_wrapped/slides/base.html" %}
+
+{% block title %}Spotify Personality Traits{% endblock %}
+
+{% block stylesheet %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/AI_Query.css' %}">
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <header>
+      <h1>Your Spotify Personality Traits</h1>
+      <p>Based on your top Spotify artists, here are your personality insights!</p>
+    </header>
+
+    <section class="output-section">
+      <h2>Your Top Personality Traits</h2>
+      <div class="traits-list">
+        <p>🎶 Music Lover</p>
+        <p>🎭 Artistic Soul</p>
+        <p>💬 Communicative & Open</p>
+        <p>💫 Dreamer</p>
+        <p>🔥 Passionate & Driven</p>
+      </div>
+    </section>
+  </div>
+{% endblock %}

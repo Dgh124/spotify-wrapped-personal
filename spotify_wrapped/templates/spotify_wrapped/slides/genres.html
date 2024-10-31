@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top 5 Genres</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/genres.css' %}">
-  {% block stylesheet %}{% endblock %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+{% extends "spotify_wrapped/slides/base.html" %}
 
+{% block title %}Top 5 Genres{% endblock %}
+
+{% block stylesheet %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/genres.css' %}">
+{% endblock %}
+
+{% block body %}
   <div class="container">
     <header>
       <h1>Your Top 5 Genres</h1>
@@ -52,4 +47,9 @@
       <div class="genre-card">
         <div class="genre-icon">🎹</div>
         <div class="genre-info">
-          <h2>Classical</
+          <h2>Classical</h2>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
