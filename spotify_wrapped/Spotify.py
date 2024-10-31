@@ -2,11 +2,13 @@ import base64
 import os, requests, time
 import urllib.parse
 from typing import TypedDict
+from openai import OpenAI
 
 from dotenv import load_dotenv
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
+chatgpt = os.getenv("CHATGPT_KEY")
 
 class Artist:
     def __init__(self, name:str, id:str, image:str, genres:str):
@@ -201,3 +203,28 @@ def get_top_track_audio_link(track_list: list[Track]) -> str:
         if track.preview_url is not None:
             return track.preview_url
     return ""
+
+def get_personality_and_colors(artists: list):
+    client = OpenAI(
+        api_key=chatgpt,
+    )
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": f""" what insight can you give about my personality if i listen to 
+                                {artists[0]}, {artists[1]}, {artists[2]}, {artists[3]}, and {artists[4]}. 
+                                simplify the answer in bullet points with only the keyword. 
+                                Make sure the keyword are tied to words that typically used to describe personality.
+                                Also generate 5 hex code based on the personalities.
+                                Return in the format 
+                                "personality1 personality2 personality3 personality4 personality5 Hex1 Hex2 Hex3 Hex4 Hex5" """
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
+    response = chat_completion.choices[0].message.content
+    res_list = response.split()
+    personality = res_list[:5]
+    personality_color = res_list[5:]
+    return personality, personality_color
