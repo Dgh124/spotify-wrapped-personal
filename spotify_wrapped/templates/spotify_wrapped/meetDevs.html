@@ -10,6 +10,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var successMessage = document.getElementById('success-message');
+          if (successMessage) {
+              setTimeout(function() {
+                  successMessage.style.display = 'none';
+              }, 10000);
+          }
+      });
+  </script>
 </head>
 <body>
 
@@ -25,9 +35,16 @@
       <a href="https://team-website-placeholder.com" target="_blank" class="team-link">Visit Our Website</a>
     </section>
 
+    {% if success_message %}
+    <div id="success-message" class="success-message">
+      {{ success_message }}
+    </div>
+    {% endif %}
+
     <section class="feedback-form">
       <h2>Send Us Your Feedback</h2>
       <form action="#" method="POST">
+        {%  csrf_token %}
         <label for="name">Your Name</label>
         <input type="text" id="name" name="name" placeholder="Enter your name" required>
 

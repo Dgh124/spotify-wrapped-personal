@@ -7,6 +7,8 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("auth/", views.auth, name="auth"),
 
+    # path("contact-developers/", views.feedback_view, name="contact_devs"),
+
     # paths for all pages
     path("cover/", views.cover, name="cover"),
     path("AI_Query/", views.AI_Query, name="AI_Query"),

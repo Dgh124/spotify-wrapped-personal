@@ -148,4 +148,18 @@ button:hover {
   button {
     width: 100%;
   }
+
+  /* Success Message Styling */
+  .success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4BB543; /* Green background */
+    color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-size: 1em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
 }

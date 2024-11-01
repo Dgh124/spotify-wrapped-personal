@@ -53,11 +53,14 @@ header h1 {
   background: #ffffff;
   color: #333;
   transition: transform 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .track-card:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
 .track-card img {
@@ -76,6 +79,19 @@ header h1 {
 .track-info p {
   font-size: 1em;
   color: #666;
+}
+
+/* Play Icon */
+.play-icon {
+  font-size: 1.5em;
+  position: absolute;
+  right: 20px;
+  color: #ff6f61;
+  transition: transform 0.3s ease;
+}
+
+.track-card:hover .play-icon {
+  transform: scale(1.2);
 }
 
 /* Animations */
@@ -99,5 +115,9 @@ header h1 {
   .track-card img {
     width: 70px;
     height: 70px;
+  }
+
+  .play-icon {
+    font-size: 1.3em;
   }
 }
