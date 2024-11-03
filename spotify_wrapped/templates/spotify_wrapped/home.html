@@ -1,7 +1,7 @@
 {% extends "spotify_wrapped/base.html" %}
 {% block stylesheet %}
     {% load static %}
-    <link rel="stylesheet" href="{% static "spotify_wrapped/styles/home.css" %}">
+    <link rel="stylesheet" href="{% static 'spotify_wrapped\styles\home.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -46,5 +46,7 @@
                 <li>{{ personality.capitalize }}</li>
             {% endfor %}
         </ul>
+        <h2>What your music taste in colors</h2>
+        <div style="width: 100px; height: 100px; background-color: #3498db;"></div>
     {% endif %}
 {% endblock %}
