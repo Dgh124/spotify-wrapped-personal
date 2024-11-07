@@ -1,17 +1,8 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
+#cover.slide-container {
     background-color: #141414;
-    color: #fff;
-    overflow: hidden;
 }
 
-.wrapper {
+#cover .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,30 +12,30 @@ body {
     padding: 2vw;
 }
 
-.content {
+#cover .content {
     text-align: center;
     z-index: 10;
 }
 
-h1, h2, h3 {
+#cover h1, #cover h2, #cover h3 {
     opacity: 0;
     color: #FFFFFF;
 }
 
 /* Spacing between lines */
-.line1 {
+#cover .line1 {
     font-size: calc(3rem + 2vw);
     margin-bottom: 2rem; /* Increased spacing */
     animation: fadeInUp 1.5s forwards ease-out;
 }
 
-.line2 {
+#cover .line2 {
     font-size: calc(2rem + 1.5vw);
     margin-bottom: 2rem; /* Increased spacing */
     animation: slideInLeft 1.5s forwards ease-out 2s; /* Starts after Line 1 */
 }
 
-.line3 {
+#cover .line3 {
     font-size: calc(1.5rem + 1.2vw);
     animation: zoomInWords 1.5s forwards ease-out 4s; /* Starts after Line 2 */
 }
@@ -93,7 +84,7 @@ h1, h2, h3 {
     }
 }
 
-.bubble {
+#cover .bubble {
     position: absolute;
     bottom: -10%;
     background: rgba(255, 255, 255, 0.2);
@@ -101,28 +92,28 @@ h1, h2, h3 {
     animation: bubbleRise 7s infinite ease-in-out;
 }
 
-.bubble:nth-child(2) {
+#cover .bubble:nth-child(2) {
     left: 20%;
     width: 6vw;
     height: 6vw;
     animation-duration: 6s;
 }
 
-.bubble:nth-child(3) {
+#cover .bubble:nth-child(3) {
     left: 40%;
     width: 5vw;
     height: 5vw;
     animation-duration: 8s;
 }
 
-.bubble:nth-child(4) {
+#cover .bubble:nth-child(4) {
     left: 60%;
     width: 3vw;
     height: 3vw;
     animation-duration: 5s;
 }
 
-.bubble:nth-child(5) {
+#cover .bubble:nth-child(5) {
     left: 80%;
     width: 7vw;
     height: 7vw;
@@ -130,11 +121,11 @@ h1, h2, h3 {
 }
 
 /* Glow and Colorful Effects for Psychedelic Theme */
-h1, h2, h3 {
-    text-shadow: 0px 0px 1vw rgba(255, 255, 255, 0.8), 0px 0px 2vw #00ffff, 0px 0px 3vw #0057b8;
+#cover h1, #cover h2, #cover h3 {
+    text-shadow: 0 0 1vw rgba(255, 255, 255, 0.8), 0 0 2vw #00ffff, 0 0 3vw #0057b8;
 }
 
-body::before {
+#cover.slide-container::before {
     content: '';
     position: absolute;
     top: 0;
@@ -156,7 +147,7 @@ body::before {
 }
 
 /* Add Bubbles */
-.wrapper::after {
+#cover .wrapper::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -164,7 +155,7 @@ body::before {
     z-index: 0;
 }
 
-.wrapper .bubble {
+#cover .wrapper .bubble {
     position: absolute;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
@@ -185,15 +176,15 @@ body::before {
 
 /* Responsive Typography */
 @media (max-width: 600px) {
-    h1 {
+    #cover h1 {
         font-size: calc(2rem + 1.5vw);
     }
 
-    h2 {
+    #cover h2 {
         font-size: calc(1.5rem + 1vw);
     }
 
-    h3 {
+    #cover h3 {
         font-size: calc(1.2rem + 0.8vw);
     }
 }

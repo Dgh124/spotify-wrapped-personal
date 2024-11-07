@@ -1,0 +1,54 @@
+{% extends "spotify_wrapped/base.html" %}
+
+{% block title %}Slideshow{% endblock %}
+{% block stylesheet %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slideshow.css" %}">
+    <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slides/base.css" %}">
+    {% for slide in slides %}
+        {% with slide_style=slide|stringformat:"s"|add:".css" %}
+            <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slides/"|add:slide_style %}">
+        {% endwith %}
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <div class="slideshow-wrapper">
+        <div id="slides" class="slides">
+            {% for slide in slides %}
+                <div id="{{ slide }}" data-slideNum="{{ forloop.counter|add:-1 }}" class="slide-container">
+                {% with slide_name=slide|stringformat:"s"|add:".html" %}
+                    {% include "spotify_wrapped/slides/"|add:slide_name %}
+                {% endwith %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Left and Right Arrows -->
+    <div class="arrow left-arrow"><div class="left-arrow-symbol arrow-symbol"></div></div>
+    <div class="arrow right-arrow"><div class="right-arrow-symbol arrow-symbol"></div></div>
+
+    <script>
+        let counter = 0;
+        const totalSlides = document.getElementsByClassName("slide-container").length;
+        const slidesContainer = document.getElementById("slides");
+
+        const show_slide = (counter) => {
+            slidesContainer.style.transform = `translateX(${-counter * 100}%)`;
+            slidesContainer.style.transition = "transform 0.5s ease";
+        };
+
+        document.querySelector(".left-arrow").addEventListener("click", () => {
+            counter = (counter + totalSlides - 1) % totalSlides;
+            show_slide(counter);
+        });
+        document.querySelector(".right-arrow").addEventListener("click", () => {
+            counter = (counter + 1) % totalSlides;
+            show_slide(counter);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            show_slide(counter);
+        });
+    </script>
+{% endblock %}

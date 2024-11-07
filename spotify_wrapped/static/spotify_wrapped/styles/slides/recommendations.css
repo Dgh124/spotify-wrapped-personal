@@ -1,43 +1,30 @@
 /* Basic resets */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+#recommendations.slide-container {
   background: linear-gradient(135deg, #ffafbd, #ffc3a0);
-  color: #ffffff;
-  overflow-y: auto;
 }
 
 /* Container */
-.container {
+#recommendations .container {
   max-width: 700px;
   width: 90%;
   text-align: center;
   padding: 20px;
 }
 
-header h1 {
+#recommendations header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
   animation: fadeIn 1.2s ease-in-out;
 }
 
-.subheader {
+#recommendations .subheader {
   font-size: 1.2em;
   margin-bottom: 20px;
   color: #ffddcc;
 }
 
 /* Recommendations List */
-.recommendations-list {
+#recommendations .recommendations-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -45,7 +32,7 @@ header h1 {
 }
 
 /* Recommendation Card */
-.recommendation-card {
+#recommendations .recommendation-card {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -59,11 +46,11 @@ header h1 {
   cursor: pointer;
 }
 
-.recommendation-card:hover {
+#recommendations .recommendation-card:hover {
   transform: scale(1.03);
 }
 
-.cover {
+#recommendations .cover {
   width: 80px;
   height: 80px;
   border-radius: 10px;
@@ -71,18 +58,18 @@ header h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.song-info h2 {
+#recommendations .song-info h2 {
   font-size: 1.2em;
   margin-bottom: 5px;
 }
 
-.song-info p {
+#recommendations .song-info p {
   font-size: 1em;
   color: #333;
 }
 
 /* Play Icon */
-.play-icon {
+#recommendations .play-icon {
   font-size: 1.5em;
   position: absolute;
   right: 20px;
@@ -90,7 +77,7 @@ header h1 {
   transition: transform 0.3s ease;
 }
 
-.recommendation-card:hover .play-icon {
+#recommendations .recommendation-card:hover .play-icon {
   transform: scale(1.2);
 }
 
@@ -108,16 +95,16 @@ header h1 {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  header h1 {
+  #recommendations header h1 {
     font-size: 2em;
   }
 
-  .cover {
+  #recommendations .cover {
     width: 70px;
     height: 70px;
   }
 
-  .play-icon {
+  #recommendations .play-icon {
     font-size: 1.3em;
   }
 }

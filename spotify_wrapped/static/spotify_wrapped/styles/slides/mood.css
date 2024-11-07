@@ -1,51 +1,38 @@
 /* Basic resets */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+#mood.slide-container {
   background: linear-gradient(90deg, #5D8AA8 0%, #FF6F61 100%);
-  color: #ffffff;
-  overflow-y: auto;
 }
 
 /* Container */
-.container {
+#mood .container {
   max-width: 700px;
   width: 90%;
   text-align: center;
   padding: 20px;
 }
 
-header h1 {
+#mood header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
   color: #ffffff;
   animation: fadeIn 1.2s ease-in-out;
 }
 
-.subheader {
+#mood .subheader {
   font-size: 1.2em;
   margin-bottom: 30px;
   color: #dcdcdc;
 }
 
 /* Mood Colors Section */
-.mood-colors {
+#mood .mood-colors {
   display: flex;
   width: 100%;
   background: linear-gradient(90deg, rgba(93, 138, 168, 1) 0%, rgba(93, 138, 168, 0.8) 35%, rgba(255, 111, 97, 0.8) 66%, rgba(255, 111, 97, 1) 100%);
   border-radius: 10px;
 }
 
-.mood-section {
+#mood .mood-section {
   width: 50%;
   padding: 30px;
   display: flex;
@@ -54,20 +41,20 @@ header h1 {
   text-align: center;
 }
 
-.color-one {
+#mood .color-one {
   background: transparent; /* Part of the gradient background */
 }
 
-.color-two {
+#mood .color-two {
   background: transparent; /* Part of the gradient background */
 }
 
-.mood-title {
+#mood .mood-title {
   font-size: 1.8em;
   margin-bottom: 15px;
 }
 
-.mood-section p {
+#mood .mood-section p {
   font-size: 1.1em;
   max-width: 300px;
   color: #f0f0f0;
@@ -87,15 +74,15 @@ header h1 {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  .mood-colors {
+  #mood .mood-colors {
     flex-direction: column;
   }
 
-  .mood-section {
+  #mood .mood-section {
     width: 100%;
   }
 
-  header h1 {
+  #mood header h1 {
     font-size: 2em;
   }
 }

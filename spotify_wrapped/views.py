@@ -32,6 +32,9 @@ def index(request):
     return render(request, "spotify_wrapped/home.html",
                   {"top_tracks": top_tracks, "user": user})
 
+def slideshow(request):
+    return render(request, "spotify_wrapped/slideshow.html",
+                  {"slides": ["cover", "AI_Query", "albums", "artists", "genres", "mood", "popularityScore", "recommendations", "tracks"]})
 # start of all pages
 def cover(request):
     return render(request, "spotify_wrapped/slides/cover.html", {})

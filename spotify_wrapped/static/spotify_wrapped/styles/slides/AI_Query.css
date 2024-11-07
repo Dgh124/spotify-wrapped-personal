@@ -1,22 +1,11 @@
 /* Basic resets */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+#AI_Query.slide-container {
   background: linear-gradient(135deg, #ff5f6d, #ffc371);
-  color: #ffffff;
 }
 
 /* Container */
-.container {
+#AI_Query .container {
   max-width: 800px;
   width: 90%;
   background: rgba(255, 255, 255, 0.1);
@@ -27,26 +16,26 @@ body {
 }
 
 /* Header */
-header h1 {
+#AI_Query header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
   animation: fadeIn 1.2s ease-in-out;
 }
 
-header p {
+#AI_Query header p {
   font-size: 1.2em;
   margin-bottom: 20px;
   color: #ffddc1;
 }
 
 /* Output Section */
-.output-section h2 {
+#AI_Query .output-section h2 {
   font-size: 1.8em;
   margin-bottom: 10px;
   color: #ffcccb;
 }
 
-.traits-list {
+#AI_Query .traits-list {
   font-size: 1.2em;
   margin-top: 15px;
   background: #ffffff;
@@ -57,14 +46,14 @@ header p {
   animation: fadeIn 1.5s ease-in-out forwards;
 }
 
-.traits-list p {
+#AI_Query .traits-list p {
   margin: 10px 0;
   font-size: 1.1em;
   color: #ff5f6d;
 }
 
 /* Footer */
-footer {
+#AI_Query footer {
   margin-top: 20px;
   font-size: 0.9em;
   color: #ffd1a4;
@@ -84,15 +73,15 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  header h1 {
+  #AI_Query header h1 {
     font-size: 2em;
   }
 
-  .output-section h2 {
+  #AI_Query .output-section h2 {
     font-size: 1.5em;
   }
 
-  .traits-list {
+  #AI_Query .traits-list {
     font-size: 1em;
   }
 }

@@ -1,43 +1,30 @@
 /* Basic resets */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+#tracks.slide-container {
   background: linear-gradient(135deg, #89f7fe, #66a6ff);
-  color: #ffffff;
-  overflow-y: auto;
 }
 
 /* Container */
-.container {
+#tracks .container {
   max-width: 600px;
   width: 90%;
   text-align: center;
   padding: 20px;
 }
 
-header h1 {
+#tracks header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
   animation: fadeIn 1.2s ease-in-out;
 }
 
-.subheader {
+#tracks .subheader {
   font-size: 1.2em;
   margin-bottom: 20px;
   color: #b3e5fc; /* Different color for emphasis */
 }
 
 /* Tracks List */
-.tracks-list {
+#tracks .tracks-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -45,7 +32,7 @@ header h1 {
 }
 
 /* Track Card */
-.track-card {
+#tracks .track-card {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -56,11 +43,11 @@ header h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.track-card:hover {
+#tracks .track-card:hover {
   transform: scale(1.02);
 }
 
-.track-card img {
+#tracks .track-card img {
   width: 80px;
   height: 80px;
   border-radius: 5px;
@@ -68,12 +55,12 @@ header h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.track-info h2 {
+#tracks .track-info h2 {
   font-size: 1.2em;
   margin-bottom: 5px;
 }
 
-.track-info p {
+#tracks .track-info p {
   font-size: 1em;
   color: #666;
 }
@@ -92,11 +79,11 @@ header h1 {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  header h1 {
+  #tracks header h1 {
     font-size: 2em;
   }
 
-  .track-card img {
+  #tracks .track-card img {
     width: 70px;
     height: 70px;
   }

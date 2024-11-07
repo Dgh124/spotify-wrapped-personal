@@ -1,43 +1,30 @@
 /* Basic resets */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+#albums.slide-container {
   background: linear-gradient(135deg, #24c6dc, #514a9d);
-  color: #ffffff;
-  overflow-y: auto;
 }
 
 /* Container */
-.container {
+#albums .container {
   max-width: 600px;
   width: 90%;
   text-align: center;
   padding: 20px;
 }
 
-header h1 {
+#albums header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
   animation: fadeIn 1.2s ease-in-out;
 }
 
-header p {
+#albums header p {
   font-size: 1.2em;
   margin-bottom: 20px;
   color: #d1c4e9;
 }
 
 /* Album List */
-.albums-list {
+#albums .albums-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -45,7 +32,7 @@ header p {
 }
 
 /* Album Card */
-.album-card {
+#albums .album-card {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -56,11 +43,11 @@ header p {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.album-card:hover {
+#albums .album-card:hover {
   transform: scale(1.02);
 }
 
-.album-card img {
+#albums .album-card img {
   width: 80px;
   height: 80px;
   border-radius: 5px;
@@ -68,12 +55,12 @@ header p {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.album-info h2 {
+#albums .album-info h2 {
   font-size: 1.2em;
   margin-bottom: 5px;
 }
 
-.album-info p {
+#albums .album-info p {
   font-size: 1em;
   color: #673ab7;
 }
@@ -92,11 +79,11 @@ header p {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  header h1 {
+  #albums header h1 {
     font-size: 2em;
   }
 
-  .album-card img {
+  #albums .album-card img {
     width: 70px;
     height: 70px;
   }

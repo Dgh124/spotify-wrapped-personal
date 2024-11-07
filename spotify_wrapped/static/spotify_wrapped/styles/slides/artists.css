@@ -1,43 +1,30 @@
 /* Basic resets */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+#artists.slide-container {
   background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
-  color: #ffffff;
-  overflow-y: auto;
 }
 
 /* Container */
-.container {
+#artists .container {
   max-width: 600px;
   width: 90%;
   text-align: center;
   padding: 20px;
 }
 
-header h1 {
+#artists header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
   animation: fadeIn 1.2s ease-in-out;
 }
 
-.subheader {
+#artists .subheader {
   font-size: 1.2em;
   margin-bottom: 20px;
   color: #ffb6c1; /* Changed color for emphasis */
 }
 
 /* Artists List */
-.artists-list {
+#artists .artists-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -45,7 +32,7 @@ header h1 {
 }
 
 /* Artist Card */
-.artist-card {
+#artists .artist-card {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -56,11 +43,11 @@ header h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.artist-card:hover {
+#artists .artist-card:hover {
   transform: scale(1.02);
 }
 
-.artist-card img {
+#artists .artist-card img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -68,7 +55,7 @@ header h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.artist-info h2 {
+#artists .artist-info h2 {
   font-size: 1.2em;
 }
 
@@ -86,11 +73,11 @@ header h1 {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  header h1 {
+  #artists header h1 {
     font-size: 2em;
   }
 
-  .artist-card img {
+  #artists .artist-card img {
     width: 70px;
     height: 70px;
   }
