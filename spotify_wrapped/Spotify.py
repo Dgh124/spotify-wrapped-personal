@@ -147,7 +147,7 @@ def get_top_tracks(access_token, expires_at, refresh_token,):
     top_tracks = []
     for item in response["items"]:
         top_tracks.append(
-            Track(item['album']['name'], item['album'][0]['url'], item['name'])
+            Track(item['album']['name'], item['album']['images'][0]['url'], item['name'])
         )
 
     return {"status":"success", "value":top_tracks}
