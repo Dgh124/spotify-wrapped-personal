@@ -3,6 +3,7 @@ import os, requests, time
 import urllib.parse
 from typing import Callable
 from openai import OpenAI
+import json
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -42,7 +43,7 @@ class User:
         self.uri = uri
 
 class WrapObject:
-    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color:list[str]):
+    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color):
         self.top_tracks = top_tracks
         self.top_artists = top_artists
         self.user = user
@@ -341,7 +342,7 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
         user=user_result["value"],
         suggested_tracks=suggested_tracks["value"],
         personality=personality,
-        color= color
+        color= json.dumps(color)
     )}
 
 

@@ -47,6 +47,21 @@
             {% endfor %}
         </ul>
         <h2>What your music taste in colors</h2>
-        <div style="width: 100px; height: 100px; background-color: #3498db;"></div>
+        <div class="musicColors" style="height: 300px; width: 100%; "></div>
+<script>
+    // Pass the colors array to JavaScript safely
+    const colors = {{ user_info.color|safe }};
+
+    console.log("Colors received from Django context:", colors);
+
+    // Ensure colors is a valid array and apply gradient
+    if (Array.isArray(colors) && colors.length === 5) {
+        const gradient = `linear-gradient(90deg, ${colors.join(', ')})`;
+        document.querySelector('.musicColors').style.background = gradient;
+    } else {
+        console.error("Unexpected colors format:", colors);
+    }
+</script>
+
     {% endif %}
 {% endblock %}
