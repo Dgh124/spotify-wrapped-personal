@@ -15,3 +15,6 @@ class Wrap(models.Model):
 
     def __str__(self):
         return self.id
+
+    def get_users(self):
+        return list(self.users.all())

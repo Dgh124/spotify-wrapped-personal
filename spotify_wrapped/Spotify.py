@@ -42,6 +42,9 @@ class User:
         self.product = product
         self.uri = uri
 
+    def get_user_id(self):
+        return self.id
+
 class WrapObject:
     def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color):
         self.top_tracks = top_tracks
@@ -345,8 +348,6 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
         color= json.dumps(color)
     )}
 
-
-
 def get_personality_and_colors(artists: list):
 
     client = OpenAI(
@@ -378,3 +379,7 @@ def get_personality_and_colors(artists: list):
     personality = res_list[:5]
     personality_color = res_list[5:]
     return personality, personality_color
+
+def create_duo_wrapped(wrap_id, ):
+    # getallinfo
+    recipient_id =
