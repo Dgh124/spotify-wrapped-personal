@@ -1,67 +1,63 @@
+<!-- tracks.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top 5 Tracks</title>
+  <title>Your Top Tracks Receipt</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/tracks.css' %}">
   {% block stylesheet %}{% endblock %}
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+  <!-- Meta viewport for mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
   <div class="container">
-    <header>
-      <h1>Your Top Tracks</h1>
-      <p class="subheader">Here's a list of your most played songs!</p>
-    </header>
+    <div class="receipt">
+      <h1 class="receipt-header">Spotify Receipt</h1>
+      <p class="receipt-subheader">Your Top 5 Tracks</p>
+      <p class="receipt-date">Date: {{ current_date }}</p>
+      <div class="receipt-line"></div>
 
-    <section class="tracks-list">
-      <!-- Example track cards with placeholder data -->
-      <div class="track-card">
-        <img src="track1.jpg" alt="Track 1 Cover" class="cover">
-        <div class="track-info">
-          <h2>Track Title 1</h2>
-          <p>Artist Name 1</p>
+      <div class="receipt-items">
+        <!-- Example track items -->
+        <div class="receipt-item">
+          <span class="item-number">1.</span>
+          <span class="item-name">Track Title One</span>
+          <span class="item-artist">Artist One</span>
         </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="track-card">
-        <img src="track2.jpg" alt="Track 2 Cover" class="cover">
-        <div class="track-info">
-          <h2>Track Title 2</h2>
-          <p>Artist Name 2</p>
+        <div class="receipt-item">
+          <span class="item-number">2.</span>
+          <span class="item-name">Track Title Two</span>
+          <span class="item-artist">Artist Two</span>
         </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="track-card">
-        <img src="track3.jpg" alt="Track 3 Cover" class="cover">
-        <div class="track-info">
-          <h2>Track Title 1</h2>
-          <p>Artist Name 1</p>
+        <div class="receipt-item">
+          <span class="item-number">3.</span>
+          <span class="item-name">Track Title Three</span>
+          <span class="item-artist">Artist Three</span>
         </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="track-card">
-        <img src="track4.jpg" alt="Track 4 Cover" class="cover">
-        <div class="track-info">
-          <h2>Track Title 1</h2>
-          <p>Artist Name 1</p>
+        <div class="receipt-item">
+          <span class="item-number">4.</span>
+          <span class="item-name">Track Title Four</span>
+          <span class="item-artist">Artist Four</span>
         </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="track-card">
-        <img src="track5.jpg" alt="Track 5 Cover" class="cover">
-        <div class="track-info">
-          <h2>Track Title 1</h2>
-          <p>Artist Name 1</p>
+        <div class="receipt-item">
+          <span class="item-number">5.</span>
+          <span class="item-name">Track Title Five</span>
+          <span class="item-artist">Artist Five</span>
         </div>
-        <div class="play-icon">▶️</div>
       </div>
-    </section>
+
+      <div class="receipt-line"></div>
+      <div class="receipt-total">
+        <span>Total Tracks:</span>
+        <span>5</span>
+      </div>
+      <p class="receipt-thanks">Thank you for listening!</p>
+    </div>
   </div>
 
 </body>

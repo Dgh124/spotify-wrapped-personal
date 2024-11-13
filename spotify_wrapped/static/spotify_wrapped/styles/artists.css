@@ -7,91 +7,97 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
-  color: #ffffff;
-  overflow-y: auto;
+  background: #000; /* Changed background to black */
+  color: #fff; /* Changed text color to white for contrast */
 }
 
-/* Container */
 .container {
-  max-width: 600px;
-  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 20px;
   text-align: center;
-  padding: 20px;
 }
 
-header h1 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
-  animation: fadeIn 1.2s ease-in-out;
+h1 {
+  font-size: 3em;
+  margin-bottom: 50px;
+  color: #1DB954; /* Changed header color to Spotify green */
 }
 
-.subheader {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  color: #ffb6c1; /* Changed color for emphasis */
-}
-
-/* Artists List */
-.artists-list {
+.artists-grid {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y: auto;
-}
-
-/* Artist Card */
-.artist-card {
-  display: flex;
+  flex-direction: column; /* Stack artist cards vertically */
   align-items: center;
-  padding: 15px;
+  gap: 30px;
+}
+
+.artist-card {
+  width: 100%;
+  max-width: 500px; /* Optional: Limit the width for better readability */
+  background: #1a1a1a; /* Dark background for card */
   border-radius: 10px;
-  background: #ffffff;
-  color: #514a9d;
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.artist-card:hover {
-  transform: scale(1.02);
+.artist-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
 }
 
-.artist-card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-right: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.artist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.artist-info h2 {
-  font-size: 1.2em;
+.artist-number {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #1DB954;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%; /* Makes the shape around numbers a circle */
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+.artist-name {
+  padding: 20px;
+  font-size: 2em;
+  font-weight: 600;
+  background: #1a1a1a; /* Match card background */
+  color: #fff;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 15px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-/* Responsive Design */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 2em;
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
   }
 
-  .artist-card img {
-    width: 70px;
-    height: 70px;
+  .artist-card {
+    width: 100%;
+  }
+
+  .artist-image {
+    height: auto;
+  }
+
+  .artist-name {
+    font-size: 1.5em;
+    padding: 15px;
   }
 }

@@ -1,3 +1,5 @@
+/* tracks.css */
+
 /* Basic resets */
 * {
   margin: 0;
@@ -6,118 +8,176 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  background: #e0f7fa; /* Changed background color to a light cyan */
+  font-family: 'Courier Prime', monospace;
+  min-height: 100vh; /* Ensure body takes at least full viewport height */
+  display: flex; /* Enable flexbox on body */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff);
-  color: #ffffff;
-  overflow-y: auto;
+  padding: 50px 20px;
 }
 
-/* Container */
-.container {
-  max-width: 600px;
-  width: 90%;
-  text-align: center;
+.receipt {
+  width: 400px;
+  max-width: 100%;
+  background: #fff;
   padding: 20px;
-}
-
-header h1 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
-  animation: fadeIn 1.2s ease-in-out;
-}
-
-.subheader {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  color: #b3e5fc; /* Different color for emphasis */
-}
-
-/* Tracks List */
-.tracks-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y: auto;
-}
-
-/* Track Card */
-.track-card {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #333;
-  transition: transform 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 2px dashed #000;
   position: relative;
-  overflow: hidden;
-  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.track-card:hover {
-  transform: scale(1.03);
+.receipt:before, .receipt:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  background: #fff;
+  left: 0;
 }
 
-.track-card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 5px;
-  margin-right: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.receipt:before {
+  top: -20px;
+  border-bottom: 2px dashed #000;
 }
 
-.track-info h2 {
-  font-size: 1.2em;
+.receipt:after {
+  bottom: -20px;
+  border-top: 2px dashed #000;
+}
+
+.receipt-header {
+  text-align: center;
+  font-size: 2em;
   margin-bottom: 5px;
 }
 
-.track-info p {
+.receipt-subheader {
+  text-align: center;
   font-size: 1em;
-  color: #666;
+  margin-bottom: 10px;
 }
 
-/* Play Icon */
-.play-icon {
-  font-size: 1.5em;
-  position: absolute;
-  right: 20px;
-  color: #ff6f61;
-  transition: transform 0.3s ease;
+.receipt-date {
+  text-align: right;
+  font-size: 0.9em;
+  margin-bottom: 10px;
 }
 
-.track-card:hover .play-icon {
-  transform: scale(1.2);
+.receipt-line {
+  border-bottom: 1px dashed #000;
+  margin: 10px 0;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.receipt-items {
+  margin-bottom: 20px;
+}
+
+.receipt-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 0.9em;
+}
+
+.item-number {
+  width: 10%;
+}
+
+.item-name {
+  width: 50%;
+  text-align: left;
+}
+
+.item-artist {
+  width: 40%;
+  text-align: right;
+}
+
+.receipt-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.receipt-thanks {
+  text-align: center;
+  font-size: 1em;
+  margin-top: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  header h1 {
-    font-size: 2em;
+  body {
+    padding: 20px;
   }
 
-  .track-card img {
-    width: 70px;
-    height: 70px;
+  .receipt {
+    width: 100%;
+    padding: 15px;
+    border-width: 1px;
   }
 
-  .play-icon {
-    font-size: 1.3em;
+  .receipt:before, .receipt:after {
+    height: 15px;
+  }
+
+  .receipt:before {
+    top: -15px;
+    border-bottom-width: 1px;
+  }
+
+  .receipt:after {
+    bottom: -15px;
+    border-top-width: 1px;
+  }
+
+  .receipt-header {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+  }
+
+  .receipt-subheader {
+    font-size: 0.9em;
+    margin-bottom: 8px;
+  }
+
+  .receipt-date {
+    font-size: 0.8em;
+    margin-bottom: 8px;
+  }
+
+  .receipt-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-number, .item-name, .item-artist {
+    width: 100%;
+    text-align: left;
+  }
+
+  .item-name, .item-artist {
+    margin-left: 20px;
+  }
+
+  .item-artist {
+    margin-bottom: 5px;
+  }
+
+  .receipt-total {
+    font-size: 0.9em;
+  }
+
+  .receipt-thanks {
+    font-size: 0.9em;
+    margin-top: 15px;
   }
 }
