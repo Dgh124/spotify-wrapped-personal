@@ -380,6 +380,5 @@ def get_personality_and_colors(artists: list):
     personality_color = res_list[5:]
     return personality, personality_color
 
-def create_duo_wrapped(wrap_id, ):
-    # getallinfo
-    recipient_id =
+#def create_duo_wrapped(wrap_id, ):
+    # getallinfo recipient_id =
