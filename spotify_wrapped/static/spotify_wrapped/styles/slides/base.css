@@ -16,4 +16,6 @@ body {
     min-height: 100vh;
     color: #ffffff;
     flex-direction: column;
+    overflow-y: auto;
+    box-sizing: border-box;
 }

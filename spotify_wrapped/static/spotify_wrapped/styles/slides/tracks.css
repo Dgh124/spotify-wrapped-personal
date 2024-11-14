@@ -5,6 +5,7 @@
   display: flex; /* Enable flexbox on body */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
+  color: black;
 }
 
 #tracks .container {
@@ -24,7 +25,7 @@
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-#tracks .receipt:before, .receipt:after {
+#tracks .receipt:before, #tracks .receipt:after {
   content: '';
   position: absolute;
   width: 100%;
@@ -106,7 +107,7 @@
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  #tracks body {
+  #tracks.slide-container {
     padding: 20px;
   }
 
@@ -116,7 +117,7 @@
     border-width: 1px;
   }
 
-  #tracks .receipt:before, .receipt:after {
+  #tracks .receipt:before, #tracks .receipt:after {
     height: 15px;
   }
 
@@ -150,12 +151,12 @@
     align-items: flex-start;
   }
 
-  #tracks .item-number, .item-name, .item-artist {
+  #tracks .item-number, #tracks .item-name, #tracks .item-artist {
     width: 100%;
     text-align: left;
   }
 
-  #tracks .item-name, .item-artist {
+  #tracks .item-name, #tracks .item-artist {
     margin-left: 20px;
   }
 

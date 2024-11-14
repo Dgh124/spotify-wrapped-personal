@@ -1,10 +1,13 @@
 {% extends "spotify_wrapped/base.html" %}
 
 {% block title %}Slideshow{% endblock %}
+
 {% block stylesheet %}
     {% load static %}
     <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slideshow.css" %}">
     <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slides/base.css" %}">
+
+    <!-- loads css for every slide     -->
     {% for slide in slides %}
         {% with slide_style=slide|stringformat:"s"|add:".css" %}
             <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slides/"|add:slide_style %}">
@@ -13,6 +16,23 @@
 {% endblock %}
 
 {% block content %}
+    <div id="status-bar">
+	{% for slide in slides %}
+	    <div id="status-{{ forloop.counter|add:-1 }}" class="slide-status">
+	    </div>
+	{% endfor %}
+    </div>
+
+    <div id="pause-button">
+	<svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	    <polygon points="7,4 19,12 7,20" fill="#fff" />
+	</svg>
+	<svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	    <rect x="5" y="4" width="5" height="16" fill="#fff" />
+	    <rect x="14" y="4" width="5" height="16" fill="#fff" />
+	</svg>
+    </div>
+
     <div class="slideshow-wrapper">
         <div id="slides" class="slides">
             {% for slide in slides %}
@@ -28,27 +48,6 @@
     <div class="arrow left-arrow"><div class="left-arrow-symbol arrow-symbol"></div></div>
     <div class="arrow right-arrow"><div class="right-arrow-symbol arrow-symbol"></div></div>
 
-    <script>
-        let counter = 0;
-        const totalSlides = document.getElementsByClassName("slide-container").length;
-        const slidesContainer = document.getElementById("slides");
-
-        const show_slide = (counter) => {
-            slidesContainer.style.transform = `translateX(${-counter * 100}%)`;
-            slidesContainer.style.transition = "transform 0.5s ease";
-        };
-
-        document.querySelector(".left-arrow").addEventListener("click", () => {
-            counter = (counter + totalSlides - 1) % totalSlides;
-            show_slide(counter);
-        });
-        document.querySelector(".right-arrow").addEventListener("click", () => {
-            counter = (counter + 1) % totalSlides;
-            show_slide(counter);
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            show_slide(counter);
-        });
-    </script>
+    {% load static %}
+    <script src="{% static 'spotify_wrapped/js/slideshow.js' %}" ></script>
 {% endblock %}
