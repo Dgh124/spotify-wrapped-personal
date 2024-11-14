@@ -35,6 +35,18 @@ def auth(request):
     request.session['refresh_token'] = refresh_token
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
 
+def wrap(request):
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    # If not logged in yet, show base home page
+    if access_token is None or expire_time is None or refresh_token is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:login"))
+
+    wrap_object = get_all_info(access_token, expire_time, refresh_token)
+    print(wrap_object['value'])
+
 
 def logout(request):
     request.session.pop('access_token', None)

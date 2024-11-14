@@ -56,6 +56,16 @@ class WrapObject:
         self.personality = personality
         self.color = color
 
+    def __str__(self):
+        return (f"Top Tracks:{self.top_tracks}\n"
+                f"Top Artists:{self.top_artists}\n"
+                f"User: {self.user}\n"
+                f"Top Genres: {self.top_genres}\n"
+                f"Audio Link: {self.audio_link}\n"
+                f"Suggested Tracks: {self.suggested_tracks}\n"
+                f"Personality: {self.personality}"
+                f"Color: {self.color}\n")
+
 redirect_uri = "http://127.0.0.1:8000/auth"
 
 
@@ -220,7 +230,7 @@ def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_t
             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
             song_name=track["name"],
             artists=[artist["name"] for artist in track["artists"]],
-            preview_url=track["preview_url"]
+            preview_url=track.get("preview_url", "")
         )
         for track in response["items"]
     ]

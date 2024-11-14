@@ -2,9 +2,9 @@ import uuid
 
 from django.db import models
 
-from django.contrib.postgres.fields import ArrayField
-
 from spotify_wrapped.Spotify import Artist
+
+from spotify_wrapped.helperFunc import convert_tuple_to_dict
 
 
 class User(models.Model):
@@ -17,7 +17,7 @@ class User(models.Model):
 
 class Artist(models.Model):
     name = models.CharField(max_length=200)
-    id = models.CharField(max_length=200)
+    id = models.CharField(max_length=200, primary_key=True)
     image = models.CharField(max_length=200)
     genres = models.CharField(max_length=200)
 
@@ -30,7 +30,7 @@ class Track(models.Model):
     album_name = models.CharField(max_length=200)
     album_image = models.CharField(max_length=200)
     track_name = models.CharField(max_length=200)
-    artist_list = models.ManyToManyField(Artist, blank=True, related_name='artist_list')
+    artist_list = models.ManyToManyField(Artist, related_name='artist_list')
 
 
 
@@ -42,11 +42,11 @@ class Track(models.Model):
 class Wrap(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    top_tracks = models.ManyToManyField(Track)
+    top_tracks = models.ManyToManyField(Track, related_name='top_tracks')
     top_artists = models.ManyToManyField(Artist)
     top_audio = models.CharField(max_length=300)
-    suggested_tracks = models.ManyToManyField(Track)
-    personality = ArrayField(models.CharField(max_length=255), default=list)
+    suggested_tracks = models.ManyToManyField(Track, related_name='suggested_tracks')
+    personality = models.JSONField(default = list) #list of strings
     color = models.CharField(max_length=255)
     #genres requires a dictionary as input. by default genres is a tuple. use
     #helper function to convert
@@ -54,6 +54,12 @@ class Wrap(models.Model):
 
     def __str__(self):
         return self.id
+
+    def convert_to_dict(self):
+        return convert_tuple_to_dict(self.top_genres)
+
+
+
 
 
     #on hold, currently wraps only have one user
