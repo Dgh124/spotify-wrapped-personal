@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
+from.models import Feedback
+from django.views.decorators.csrf import csrf_protect
 
 from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_top_tracks, get_user
 
@@ -52,7 +54,28 @@ def genres(request):
     return render(request, "spotify_wrapped/slides/genres.html", {})
 
 def meetDevs(request):
-    return render(request, "spotify_wrapped/meetDevs.html", {})
+    """
+     View to handle 'Contact the Developers' feedback form submissions. Saves feedback to the database.
+
+    If the request method is POST, retrieves name, email, and message from the form and stores it in the Feedback model.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing metadata about the request.
+
+    Returns:
+        HttpResponse: Redirects to a thank-you page after feedback is submitted, or renders the feedback form on GET request.
+    """
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        Feedback.objects.create(name=name, email=email, message=message)
+
+        context = {'success_message': 'Thank you!'}
+
+        return render(request, "spotify_wrapped/meetDevs.html", context)
+    return render(request, 'spotify_wrapped/meetDevs.html')
 
 def mood(request):
     return render(request, "spotify_wrapped/slides/mood.html", {})

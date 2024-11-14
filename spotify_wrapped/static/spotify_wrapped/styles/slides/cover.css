@@ -1,190 +1,72 @@
 #cover.slide-container {
-    background-color: #141414;
+  font-family: 'Fredoka One', cursive;
+  overflow: hidden;
+  height: 100vh;
+  background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  animation: backgroundAnimation 10s infinite alternate;
 }
 
-#cover .wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: relative;
-    background: radial-gradient(circle, #0f0f0f 10%, #0057b8 50%, #00aaff 90%); /* Updated blue gradient */
-    padding: 2vw;
+/* Container to center content */
+#cover .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
+/* Content styling */
 #cover .content {
-    text-align: center;
-    z-index: 10;
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px #000;
 }
 
-#cover h1, #cover h2, #cover h3 {
-    opacity: 0;
-    color: #FFFFFF;
+/* Line styling */
+#cover .line {
+  font-size: 3em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation-fill-mode: forwards;
+  margin-bottom: 20px;
 }
 
-/* Spacing between lines */
-#cover .line1 {
-    font-size: calc(3rem + 2vw);
-    margin-bottom: 2rem; /* Increased spacing */
-    animation: fadeInUp 1.5s forwards ease-out;
+/* Line animations */
+#cover .line-1 {
+  animation: fadeInUp 1s ease-in-out 0.5s forwards;
 }
 
-#cover .line2 {
-    font-size: calc(2rem + 1.5vw);
-    margin-bottom: 2rem; /* Increased spacing */
-    animation: slideInLeft 1.5s forwards ease-out 2s; /* Starts after Line 1 */
+#cover .line-2 {
+  animation: fadeInUp 1s ease-in-out 2s forwards;
 }
 
-#cover .line3 {
-    font-size: calc(1.5rem + 1.2vw);
-    animation: zoomInWords 1.5s forwards ease-out 4s; /* Starts after Line 2 */
+#cover .line-3 {
+  animation: fadeInUp 1s ease-in-out 3.5s forwards;
 }
 
-/* Keyframes */
+/* Keyframes for text animation */
 @keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(5vh);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes slideInLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(-100%);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
+/* Background animation */
+@keyframes backgroundAnimation {
+  0% {
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  }
+  50% {
+    background: linear-gradient(45deg, #fbc7d4, #9796f0);
+  }
+  100% {
+    background: linear-gradient(45deg, #c3cfe2, #c3cfe2);
+  }
 }
 
-@keyframes zoomInWords {
-    0% {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Psychedelic Background Animations */
-@keyframes bubbleRise {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-100vh);
-    }
-}
-
-#cover .bubble {
-    position: absolute;
-    bottom: -10%;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    animation: bubbleRise 7s infinite ease-in-out;
-}
-
-#cover .bubble:nth-child(2) {
-    left: 20%;
-    width: 6vw;
-    height: 6vw;
-    animation-duration: 6s;
-}
-
-#cover .bubble:nth-child(3) {
-    left: 40%;
-    width: 5vw;
-    height: 5vw;
-    animation-duration: 8s;
-}
-
-#cover .bubble:nth-child(4) {
-    left: 60%;
-    width: 3vw;
-    height: 3vw;
-    animation-duration: 5s;
-}
-
-#cover .bubble:nth-child(5) {
-    left: 80%;
-    width: 7vw;
-    height: 7vw;
-    animation-duration: 10s;
-}
-
-/* Glow and Colorful Effects for Psychedelic Theme */
-#cover h1, #cover h2, #cover h3 {
-    text-shadow: 0 0 1vw rgba(255, 255, 255, 0.8), 0 0 2vw #00ffff, 0 0 3vw #0057b8;
-}
-
-#cover.slide-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(0, 170, 255, 0.2), rgba(0, 87, 184, 0.1));
-    z-index: 1;
-    animation: moveBackground 15s infinite alternate;
-}
-
-@keyframes moveBackground {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 100px 100px;
-    }
-}
-
-/* Add Bubbles */
-#cover .wrapper::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-#cover .wrapper .bubble {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    animation: bubbleAnimation 10s infinite linear;
-    z-index: 1;
-}
-
-@keyframes bubbleAnimation {
-    0% {
-        bottom: -10%;
-        transform: translateX(0);
-    }
-    100% {
-        bottom: 110%;
-        transform: translateX(50px);
-    }
-}
-
-/* Responsive Typography */
-@media (max-width: 600px) {
-    #cover h1 {
-        font-size: calc(2rem + 1.5vw);
-    }
-
-    #cover h2 {
-        font-size: calc(1.5rem + 1vw);
-    }
-
-    #cover h3 {
-        font-size: calc(1.2rem + 0.8vw);
-    }
+/* Responsive design */
+@media (max-width: 768px) {
+  #cover .line {
+    font-size: 2em;
+  }
 }

@@ -1,29 +1,74 @@
-{# what chatgpt has to say abt your personality type #}
-{#{% extends "spotify_wrapped/slides/base.html" %}#}
-
-{#{% block title %}Spotify Personality Traits{% endblock %}#}
-
-{#{% block stylesheet %}#}
-{#  {% load static %}#}
-{#  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/AI_Query.css' %}">#}
-{#{% endblock %}#}
+{% extends "spotify_wrapped/slides/base.html" %}
 
 {% block body %}
-  <div class="container">
-    <header>
-      <h1>Your Spotify Personality Traits</h1>
-      <p>Based on your top Spotify artists, here are your personality insights!</p>
-    </header>
+    <div class="container">
+        <h1>Your Personality Through Music</h1>
+        <div class="timeline">
+            <!-- Trait 1 -->
+            <div class="timeline-item left">
+                <div class="content">
+                    <h2>Trait One</h2>
+                    <p>Description of Trait One.</p>
+                </div>
+            </div>
+            <!-- Trait 2 -->
+            <div class="timeline-item right">
+                <div class="content">
+                    <h2>Trait Two</h2>
+                    <p>Description of Trait Two.</p>
+                </div>
+            </div>
+            <!-- Trait 3 -->
+            <div class="timeline-item left">
+                <div class="content">
+                    <h2>Trait Three</h2>
+                    <p>Description of Trait Three.</p>
+                </div>
+            </div>
+            <!-- Trait 4 -->
+            <div class="timeline-item right">
+                <div class="content">
+                    <h2>Trait Four</h2>
+                    <p>Description of Trait Four.</p>
+                </div>
+            </div>
+            <!-- Trait 5 -->
+            <div class="timeline-item left">
+                <div class="content">
+                    <h2>Trait Five</h2>
+                    <p>Description of Trait Five.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <section class="output-section">
-      <h2>Your Top Personality Traits</h2>
-      <div class="traits-list">
-        <p>🎶 Music Lover</p>
-        <p>🎭 Artistic Soul</p>
-        <p>💬 Communicative & Open</p>
-        <p>💫 Dreamer</p>
-        <p>🔥 Passionate & Driven</p>
-      </div>
-    </section>
-  </div>
+    <!-- JavaScript for Animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const items = document.querySelectorAll('.timeline-item');
+
+            const isInViewport = (el) => {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.bottom >= 0
+                );
+            };
+
+            const run = () => {
+                items.forEach(item => {
+                    if (isInViewport(item)) {
+                        item.classList.add('in-view');
+                    }
+                });
+            };
+
+            // Initial check
+            run();
+
+            // Events
+            window.addEventListener('scroll', run);
+            window.addEventListener('resize', run);
+        });
+    </script>
 {% endblock %}

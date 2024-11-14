@@ -1,32 +1,18 @@
-{# the color you are based on your listening#}
-{#    two colors --> gradient #}
-{#    has two mood descriptors #}
-
 {% extends "spotify_wrapped/slides/base.html" %}
-
-{% block title %}Your Listening Mood{% endblock %}
-
-{% block stylesheet %}
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/mood.css' %}">
-{% endblock %}
 
 {% block body %}
   <div class="container">
     <header>
       <h1>Your Mood Colors</h1>
-      <p class="subheader">Based on your listening habits, here are your two mood colors:</p>
     </header>
 
     <section class="mood-colors">
       <div class="mood-section color-one">
         <h2 class="mood-title">Calm & Peaceful</h2>
-        <p>Soothing, reflective, and tranquil. You enjoy music that brings a sense of calm and inner peace.</p>
       </div>
 
       <div class="mood-section color-two">
         <h2 class="mood-title">Energetic & Bold</h2>
-        <p>Exciting, upbeat, and dynamic. Your music choices are lively and fill you with energy and confidence.</p>
       </div>
     </section>
   </div>

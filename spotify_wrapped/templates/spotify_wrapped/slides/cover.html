@@ -1,18 +1,11 @@
 {% extends "spotify_wrapped/slides/base.html" %}
 
-{% block title %}Spotify Wrapped{% endblock %}
-
-{% block stylesheet %}
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/cover.css' %}">
-{% endblock %}
-
 {% block body %}
-    <div class="wrapper">
+    <div class="container">
         <div class="content">
-            <h1 class="line1">hello <span id="username">[Username]</span></h1>
-            <h2 class="line2">it's wrapped time.</h2>
-            <h3 class="line3">are you ready?</h3>
+            <h1 class="line line-1">hello <span id="username">[Username]</span></h1>
+            <h2 class="line line-2">it's wrapped time.</h2>
+            <h3 class="line line-3">are you ready?</h3>
         </div>
     </div>
 

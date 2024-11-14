@@ -1,15 +1,4 @@
-{# takes top 100 songs popularity score and calculates the average #}
-{#    top 3 popular songs #}
-{#    top 3 least popular songs #}
-
 {% extends "spotify_wrapped/slides/base.html" %}
-
-{% block title %}Popularity Score{% endblock %}
-
-{% block stylesheet %}
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/popularityScore.css' %}">
-{% endblock %}
 
 {% block body %}
   <div class="container">

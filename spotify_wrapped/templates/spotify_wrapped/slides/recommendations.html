@@ -1,62 +1,67 @@
-{# top 5 recommended songs based on your listening #}
-{% extends "spotify_wrapped/slides/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommended Songs for You</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/recommendations.css' %}">
+    {% block stylesheet %}{% endblock %}
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Meta viewport for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-{% block title %}Top 5 Recommended Songs{% endblock %}
+    <div class="container">
+        <h1>Recommended Songs for You</h1>
+        <div class="songs-grid">
+            <!-- Song 1 -->
+            <div class="song-card">
+                <div class="song-image">
+                    <img src="{% static 'spotify_wrapped/images/song1.jpg' %}" alt="Song 1">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <div class="song-title">Song Title One</div>
+                    <div class="song-artist">Artist One</div>
+                </div>
+            </div>
+            <!-- Song 2 -->
+            <div class="song-card">
+                <div class="song-image">
+                    <img src="{% static 'spotify_wrapped/images/song2.jpg' %}" alt="Song 2">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <div class="song-title">Song Title Two</div>
+                    <div class="song-artist">Artist Two</div>
+                </div>
+            </div>
+            <!-- Song 3 -->
+            <div class="song-card">
+                <div class="song-image">
+                    <img src="{% static 'spotify_wrapped/images/song3.jpg' %}" alt="Song 3">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <div class="song-title">Song Title Three</div>
+                    <div class="song-artist">Artist Three</div>
+                </div>
+            </div>
+            <!-- Add more song cards as needed -->
+        </div>
+    </div>
 
-{% block stylesheet %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/recommendations.css' %}">
-{% endblock %}
+    <!-- Font Awesome for Play Button Icon -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-{% block body %}
-  <div class="container">
-    <header>
-      <h1>Recommended for You</h1>
-      <p class="subheader">Here are the top 5 songs curated just for you!</p>
-    </header>
-
-    <section class="recommendations-list">
-      <!-- Example recommended song cards with placeholder data -->
-      <div class="recommendation-card">
-        <img src="song1.jpg" alt="Song 1 Cover" class="cover">
-        <div class="song-info">
-          <h2>Song Title 1</h2>
-          <p>Artist Name 1</p>
-        </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="recommendation-card">
-        <img src="song2.jpg" alt="Song 2 Cover" class="cover">
-        <div class="song-info">
-          <h2>Song Title 2</h2>
-          <p>Artist Name 2</p>
-        </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="recommendation-card">
-        <img src="song3.jpg" alt="Song 3 Cover" class="cover">
-        <div class="song-info">
-          <h2>Song Title 3</h2>
-          <p>Artist Name 3</p>
-        </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="recommendation-card">
-        <img src="song4.jpg" alt="Song 4 Cover" class="cover">
-        <div class="song-info">
-          <h2>Song Title 4</h2>
-          <p>Artist Name 4</p>
-        </div>
-        <div class="play-icon">▶️</div>
-      </div>
-      <div class="recommendation-card">
-        <img src="song5.jpg" alt="Song 5 Cover" class="cover">
-        <div class="song-info">
-          <h2>Song Title 5</h2>
-          <p>Artist Name 5</p>
-        </div>
-        <div class="play-icon">▶️</div>
-      </div>
-    </section>
-  </div>
-{% endblock %}
+</body>
+</html>

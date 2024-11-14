@@ -1,55 +1,29 @@
 {% extends "spotify_wrapped/slides/base.html" %}
 
-{% block title %}Top 5 Genres{% endblock %}
-
-{% block stylesheet %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/genres.css' %}">
-{% endblock %}
-
 {% block body %}
   <div class="container">
-    <header>
-      <h1>Your Top 5 Genres</h1>
-      <p>Scroll through your most-listened-to genres!</p>
-    </header>
-
-    <section class="genres-list">
-      <!-- Example genre cards with placeholder data -->
-      <div class="genre-card">
-        <div class="genre-icon">🎶</div>
-        <div class="genre-info">
-          <h2>Pop</h2>
-          <p>Lively and catchy beats that uplift your mood</p>
-        </div>
+    <h1>Your Top Genres</h1>
+    <div class="genres-list">
+      <div class="genre-row genre1">
+        <span class="genre-number">1</span>
+        <span class="genre-name">Genre One</span>
       </div>
-      <div class="genre-card">
-        <div class="genre-icon">🎸</div>
-        <div class="genre-info">
-          <h2>Rock</h2>
-          <p>Powerful rhythms and expressive guitar riffs</p>
-        </div>
+      <div class="genre-row genre2">
+        <span class="genre-number">2</span>
+        <span class="genre-name">Genre Two</span>
       </div>
-      <div class="genre-card">
-        <div class="genre-icon">🎤</div>
-        <div class="genre-info">
-          <h2>Hip Hop</h2>
-          <p>Rhythmic beats and lyrical flow</p>
-        </div>
+      <div class="genre-row genre3">
+        <span class="genre-number">3</span>
+        <span class="genre-name">Genre Three</span>
       </div>
-      <div class="genre-card">
-        <div class="genre-icon">🎷</div>
-        <div class="genre-info">
-          <h2>Jazz</h2>
-          <p>Improvisational and soulful sounds</p>
-        </div>
+      <div class="genre-row genre4">
+        <span class="genre-number">4</span>
+        <span class="genre-name">Genre Four</span>
       </div>
-      <div class="genre-card">
-        <div class="genre-icon">🎹</div>
-        <div class="genre-info">
-          <h2>Classical</h2>
-        </div>
+      <div class="genre-row genre5">
+        <span class="genre-number">5</span>
+        <span class="genre-name">Genre Five</span>
       </div>
-    </section>
+    </div>
   </div>
 {% endblock %}

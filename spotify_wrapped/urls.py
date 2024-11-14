@@ -8,6 +8,8 @@ urlpatterns = [
     path("auth/", views.auth, name="auth"),
 
     path("slideshow/", views.slideshow, name="slideshow"),
+    # path("contact-developers/", views.feedback_view, name="contact_devs"),
+
     # paths for all pages
     path("cover/", views.cover, name="cover"),
     path("AI_Query/", views.AI_Query, name="AI_Query"),

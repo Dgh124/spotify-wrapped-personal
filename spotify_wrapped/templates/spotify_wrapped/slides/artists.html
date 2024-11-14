@@ -1,52 +1,49 @@
 {% extends "spotify_wrapped/slides/base.html" %}
 
-{% block title %}Top 5 Artists{% endblock %}
-
-{% block stylesheet %}
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/slides/artists.css' %}">
-{% endblock %}
-
 {% block body %}
   <div class="container">
-    <header>
-      <h1>Your Top 5 Artists</h1>
-      <p class="subheader">Scroll through your most-listened-to artists!</p>
-    </header>
-
-    <section class="artists-list">
-      <!-- Example artist cards with placeholder data -->
+    <h1>Your Top 5 Artists</h1>
+    <div class="artists-grid">
+      <!-- Artist 1 -->
       <div class="artist-card">
-        <img src="artist1.jpg" alt="Artist 1 Image">
-        <div class="artist-info">
-          <h2>Artist Name 1</h2>
+        <div class="artist-image">
+{#          <img src="{% static 'spotify_wrapped/images/artist1.jpg' %}" alt="Artist 1">#}
+          <span class="artist-number">1</span>
         </div>
+        <div class="artist-name">Artist One</div>
       </div>
+      <!-- Artist 2 -->
       <div class="artist-card">
-        <img src="artist2.jpg" alt="Artist 2 Image">
-        <div class="artist-info">
-          <h2>Artist Name 2</h2>
+        <div class="artist-image">
+{#          <img src="{% static 'spotify_wrapped/images/artist2.jpg' %}" alt="Artist 2">#}
+          <span class="artist-number">2</span>
         </div>
+        <div class="artist-name">Artist Two</div>
       </div>
+      <!-- Artist 3 -->
       <div class="artist-card">
-        <img src="artist3.jpg" alt="Artist 3 Image">
-        <div class="artist-info">
-          <h2>Artist Name 3</h2>
+        <div class="artist-image">
+{#          <img src="{% static 'spotify_wrapped/images/artist3.jpg' %}" alt="Artist 3">#}
+          <span class="artist-number">3</span>
         </div>
+        <div class="artist-name">Artist Three</div>
       </div>
+      <!-- Artist 4 -->
       <div class="artist-card">
-        <img src="artist4.jpg" alt="Artist 4 Image">
-        <div class="artist-info">
-          <h2>Artist Name 4</h2>
+        <div class="artist-image">
+{#          <img src="{% static 'spotify_wrapped/images/artist4.jpg' %}" alt="Artist 4">#}
+          <span class="artist-number">4</span>
         </div>
+        <div class="artist-name">Artist Four</div>
       </div>
+      <!-- Artist 5 -->
       <div class="artist-card">
-        <img src="artist5.jpg" alt="Artist 5 Image">
-        <div class="artist-info">
-          <h2>Artist Name 5</h2>
+        <div class="artist-image">
+{#          <img src="{% static 'spotify_wrapped/images/artist5.jpg' %}" alt="Artist 5">#}
+          <span class="artist-number">5</span>
         </div>
+        <div class="artist-name">Artist Five</div>
       </div>
-    </section>
+    </div>
   </div>
-
 {% endblock %}
