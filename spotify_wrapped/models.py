@@ -6,8 +6,11 @@ from django.db import models
 
 
 class User(models.Model):
-    id = models.CharField(max_length=22, default=0, primary_key=True)
+    id = models.TextField(default=0, primary_key=True)
     display_name = models.CharField(max_length=30, default="")
+    pfp = models.TextField(default="", blank=True, null=True)
+    product = models.TextField(default="")
+    uri = models.TextField(default="")
 
     def __str__(self):
         return self.display_name
