@@ -96,7 +96,9 @@
 
 @media (max-width: 768px) {
     #recommendations .container {
-        padding: 30px 15px;
+	padding: 0;
+	margin: 0;
+        /* padding: 30px 15px; */
     }
 
     #recommendations h1 {
@@ -105,7 +107,7 @@
     }
 
     #recommendations .song-card {
-        max-width: 100%;
+        max-width: 90%;
     }
 
     #recommendations .song-info {

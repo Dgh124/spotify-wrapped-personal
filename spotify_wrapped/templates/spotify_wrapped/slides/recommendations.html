@@ -1,26 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Recommended Songs for You</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/recommendations.css' %}">
-    {% block stylesheet %}{% endblock %}
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-    <!-- Meta viewport for mobile responsiveness -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+{% extends "spotify_wrapped/slides/base.html" %}
 
+{% block body %}
     <div class="container">
         <h1>Recommended Songs for You</h1>
         <div class="songs-grid">
             <!-- Song 1 -->
             <div class="song-card">
                 <div class="song-image">
-                    <img src="{% static 'spotify_wrapped/images/song1.jpg' %}" alt="Song 1">
+		    {# <img src="{% static 'spotify_wrapped/images/song1.jpg' %}" alt="Song 1"> #}
                     <div class="play-button">
                         <i class="fas fa-play"></i>
                     </div>
@@ -33,7 +20,7 @@
             <!-- Song 2 -->
             <div class="song-card">
                 <div class="song-image">
-                    <img src="{% static 'spotify_wrapped/images/song2.jpg' %}" alt="Song 2">
+		    {# <img src="{% static 'spotify_wrapped/images/song2.jpg' %}" alt="Song 2"> #}
                     <div class="play-button">
                         <i class="fas fa-play"></i>
                     </div>
@@ -46,7 +33,7 @@
             <!-- Song 3 -->
             <div class="song-card">
                 <div class="song-image">
-                    <img src="{% static 'spotify_wrapped/images/song3.jpg' %}" alt="Song 3">
+		    {# <img src="{% static 'spotify_wrapped/images/song3.jpg' %}" alt="Song 3"> #}
                     <div class="play-button">
                         <i class="fas fa-play"></i>
                     </div>
@@ -62,6 +49,4 @@
 
     <!-- Font Awesome for Play Button Icon -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-</body>
-</html>
+{% endblock %}

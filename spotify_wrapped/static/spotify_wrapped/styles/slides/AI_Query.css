@@ -2,6 +2,8 @@
     font-family: 'Montserrat', sans-serif;
     background: linear-gradient(to bottom, #f0f4f8, #8256a9); /* Gradient background */
     color: #333;
+
+    display: block;
 }
 
 #AI_Query .container {
@@ -80,7 +82,7 @@
 #AI_Query .timeline-item::before {
     content: '';
     position: absolute;
-    top: 15px;
+    top: 40px;
     width: 20px;
     height: 20px;
     background-color: #FF6F61;
@@ -97,23 +99,24 @@
     left: -70px;
 }
 
-#AI_Query .timeline-item.left .content::after {
+#AI_Query .timeline-item .content::after {
     content: '';
     position: absolute;
     top: 22px;
+    border-style: solid;
+}
+
+
+
+#AI_Query .timeline-item.left .content::after {
     right: -45px;
     border-width: 10px 0 10px 15px;
-    border-style: solid;
     border-color: transparent transparent transparent #fff;
 }
 
 #AI_Query .timeline-item.right .content::after {
-    content: '';
-    position: absolute;
-    top: 22px;
     left: -45px;
     border-width: 10px 15px 10px 0;
-    border-style: solid;
     border-color: transparent #fff transparent transparent;
 }
 
@@ -163,6 +166,16 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    #AI_Query .container {
+	margin: 0;
+	padding: 0;
+    }
+
+    #AI_Query .timeline {
+	margin: 0;
+	padding: 0;
+    }
+
     #AI_Query .timeline::after {
         left: 20px;
     }
@@ -184,11 +197,15 @@
     }
 
     #AI_Query .timeline-item::before {
-        left: 40px; /* Adjusted position to move marker away from the line */
+        left: 40px !important; /* Adjusted position to move marker away from the line */
     }
 
     #AI_Query .timeline-item.left .content::after,
     #AI_Query .timeline-item.right .content::after {
         content: none;
+    }
+
+    #AI_Query h1 {
+	font-size: 2em;
     }
 }
