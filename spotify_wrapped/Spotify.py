@@ -34,6 +34,10 @@ class Track:
         self.artists = artists
         self.preview_url = preview_url
 
+    def __str__(self):
+        return self.name
+
+
 class User:
     def __init__(self, display_name:str, _id:str, pfp:str, product:str, uri:str):
         self.display_name = display_name
@@ -63,7 +67,7 @@ class WrapObject:
                 f"Top Genres: {self.top_genres}\n"
                 f"Audio Link: {self.audio_link}\n"
                 f"Suggested Tracks: {self.suggested_tracks}\n"
-                f"Personality: {self.personality}"
+                f"Personality: {self.personality}\n"
                 f"Color: {self.color}\n")
 
 redirect_uri = "http://127.0.0.1:8000/auth"

@@ -2,9 +2,7 @@ import uuid
 
 from django.db import models
 
-from spotify_wrapped.Spotify import Artist
-
-from spotify_wrapped.helperFunc import convert_tuple_to_dict
+#from spotify_wrapped.Spotify import Artist
 
 
 class User(models.Model):
@@ -27,11 +25,10 @@ class Artist(models.Model):
 
 
 class Track(models.Model):
-    album_name = models.CharField(max_length=200)
-    album_image = models.CharField(max_length=200)
-    track_name = models.CharField(max_length=200)
-    artist_list = models.ManyToManyField(Artist, related_name='artist_list')
-
+    album_name = models.TextField(blank=True)
+    album_image = models.TextField(blank=True)
+    track_name = models.TextField(blank=True)
+    artist_list = models.JSONField(default = list) #list of strings
 
 
     def __str__(self):
@@ -41,24 +38,19 @@ class Track(models.Model):
 
 class Wrap(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     top_tracks = models.ManyToManyField(Track, related_name='top_tracks')
     top_artists = models.ManyToManyField(Artist)
-    top_audio = models.CharField(max_length=300)
+    top_audio = models.TextField(blank=True)
     suggested_tracks = models.ManyToManyField(Track, related_name='suggested_tracks')
     personality = models.JSONField(default = list) #list of strings
-    color = models.CharField(max_length=255)
+    color = models.TextField(blank = True)
     #genres requires a dictionary as input. by default genres is a tuple. use
     #helper function to convert
     top_genres = models.JSONField(blank = True, default=dict)
 
     def __str__(self):
         return self.id
-
-    def convert_to_dict(self):
-        return convert_tuple_to_dict(self.top_genres)
-
-
 
 
 

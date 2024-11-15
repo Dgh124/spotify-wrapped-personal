@@ -2,8 +2,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from spotify_wrapped.models import Track, Artist, Wrap
+
 from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
 
+from spotify_wrapped.helperFunc import *
 
 def index(request):
     access_token = request.session.get("access_token", None)
@@ -45,7 +48,11 @@ def wrap(request):
         return HttpResponseRedirect(reverse("spotify_wrapped:login"))
 
     wrap_object = get_all_info(access_token, expire_time, refresh_token)
-    print(wrap_object['value'])
+    #new_artist = convert_artist_object_to_artist_model(wrap_object['value'].top_artists[0])
+    #print(wrap_object['value'].top_tracks[0])
+    #print(new_artist)
+    converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
+    converted_obj.save()
 
 
 def logout(request):
