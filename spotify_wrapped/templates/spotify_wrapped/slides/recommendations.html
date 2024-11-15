@@ -1,0 +1,52 @@
+{% extends "spotify_wrapped/slides/base.html" %}
+
+{% block body %}
+    <div class="container">
+        <h1>Recommended Songs for You</h1>
+        <div class="songs-grid">
+            <!-- Song 1 -->
+            <div class="song-card">
+                <div class="song-image">
+		    {# <img src="{% static 'spotify_wrapped/images/song1.jpg' %}" alt="Song 1"> #}
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <div class="song-title">Song Title One</div>
+                    <div class="song-artist">Artist One</div>
+                </div>
+            </div>
+            <!-- Song 2 -->
+            <div class="song-card">
+                <div class="song-image">
+		    {# <img src="{% static 'spotify_wrapped/images/song2.jpg' %}" alt="Song 2"> #}
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <div class="song-title">Song Title Two</div>
+                    <div class="song-artist">Artist Two</div>
+                </div>
+            </div>
+            <!-- Song 3 -->
+            <div class="song-card">
+                <div class="song-image">
+		    {# <img src="{% static 'spotify_wrapped/images/song3.jpg' %}" alt="Song 3"> #}
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <div class="song-title">Song Title Three</div>
+                    <div class="song-artist">Artist Three</div>
+                </div>
+            </div>
+            <!-- Add more song cards as needed -->
+        </div>
+    </div>
+
+    <!-- Font Awesome for Play Button Icon -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}

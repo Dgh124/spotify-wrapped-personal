@@ -1,0 +1,49 @@
+{% extends "spotify_wrapped/slides/base.html" %}
+
+{% block body %}
+  <div class="container">
+    <h1>Your Top Albums</h1>
+    <div class="albums-grid">
+      <!-- Album 1 -->
+      <div class="album-card">
+        <div class="album-image">
+{#          <img src="{% static 'spotify_wrapped/images/album1.jpg' %}" alt="Album 1">#}
+          <span class="album-number">1</span>
+        </div>
+        <div class="album-name">Album One</div>
+      </div>
+      <!-- Album 2 -->
+      <div class="album-card">
+        <div class="album-image">
+{#          <img src="{% static 'spotify_wrapped/images/album2.jpg' %}" alt="Album 2">#}
+          <span class="album-number">2</span>
+        </div>
+        <div class="album-name">Album Two</div>
+      </div>
+      <!-- Album 3 -->
+      <div class="album-card">
+        <div class="album-image">
+{#          <img src="{% static 'spotify_wrapped/images/album3.jpg' %}" alt="Album 3">#}
+          <span class="album-number">3</span>
+        </div>
+        <div class="album-name">Album Three</div>
+      </div>
+      <!-- Album 4 -->
+      <div class="album-card">
+        <div class="album-image">
+{#          <img src="{% static 'spotify_wrapped/images/album4.jpg' %}" alt="Album 4">#}
+          <span class="album-number">4</span>
+        </div>
+        <div class="album-name">Album Four</div>
+      </div>
+      <!-- Album 5 -->
+      <div class="album-card">
+        <div class="album-image">
+{#          <img src="{% static 'spotify_wrapped/images/album5.jpg' %}" alt="Album 5">#}
+          <span class="album-number">5</span>
+        </div>
+        <div class="album-name">Album Five</div>
+      </div>
+    </div>
+  </div>
+{%  endblock %}

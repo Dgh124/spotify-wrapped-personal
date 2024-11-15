@@ -1,0 +1,21 @@
+body {
+    flex-direction: column;
+}
+
+/*.slide-container * {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+.slide-container {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #ffffff;
+    flex-direction: column;
+    overflow-y: auto;
+    box-sizing: border-box;
+}

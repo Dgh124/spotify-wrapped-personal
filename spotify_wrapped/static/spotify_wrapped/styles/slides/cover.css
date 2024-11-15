@@ -1,0 +1,72 @@
+#cover.slide-container {
+  font-family: 'Fredoka One', cursive;
+  overflow: hidden;
+  height: 100vh;
+  background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  animation: backgroundAnimation 10s infinite alternate;
+}
+
+/* Container to center content */
+#cover .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Content styling */
+#cover .content {
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px #000;
+}
+
+/* Line styling */
+#cover .line {
+  font-size: 3em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation-fill-mode: forwards;
+  margin-bottom: 20px;
+}
+
+/* Line animations */
+#cover .line-1 {
+  animation: fadeInUp 1s ease-in-out 0.5s forwards;
+}
+
+#cover .line-2 {
+  animation: fadeInUp 1s ease-in-out 2s forwards;
+}
+
+#cover .line-3 {
+  animation: fadeInUp 1s ease-in-out 3.5s forwards;
+}
+
+/* Keyframes for text animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Background animation */
+@keyframes backgroundAnimation {
+  0% {
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  }
+  50% {
+    background: linear-gradient(45deg, #fbc7d4, #9796f0);
+  }
+  100% {
+    background: linear-gradient(45deg, #c3cfe2, #c3cfe2);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #cover .line {
+    font-size: 2em;
+  }
+}

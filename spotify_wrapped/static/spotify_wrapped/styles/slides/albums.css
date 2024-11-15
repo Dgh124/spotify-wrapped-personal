@@ -1,0 +1,105 @@
+#albums.slide-container {
+  font-family: 'Oswald', sans-serif;
+  background: radial-gradient(circle, #f2e9e1 0%, #c2b280 50%, #98a869 100%); /* Vintage paper-like background */
+  color: #333;
+}
+
+#albums .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+#albums h1 {
+  font-size: 4em; /* Made the header bigger */
+  margin-bottom: 60px;
+  color: #4a3f35;
+}
+
+#albums .albums-grid {
+  display: flex;
+  flex-direction: column; /* Stack album cards vertically */
+  align-items: center;
+  gap: 40px;
+}
+
+#albums .album-card {
+  width: 100%;
+  max-width: 600px; /* Adjusted max-width for better readability */
+  background: #fff;
+  border: 1px solid #d3c4b7; /* Light brown border */
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#albums .album-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+#albums .album-image {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+#albums .album-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: sepia(20%); /* Apply vintage filter */
+  transition: transform 0.3s ease;
+}
+
+#albums .album-card:hover .album-image img {
+  transform: scale(1.05);
+}
+
+#albums .album-number {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #4a3f35; /* Dark brown */
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#albums .album-name {
+  padding: 20px;
+  font-size: 2em;
+  font-weight: 600;
+  background: #e0d5c6; /* Light brown */
+  color: #4a3f35; /* Dark brown */
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  #albums .container {
+    padding: 30px 15px;
+  }
+
+  #albums h1 {
+    font-size: 3em;
+    margin-bottom: 40px;
+  }
+
+  #albums .album-card {
+    max-width: 100%;
+  }
+
+  #albums .album-name {
+    font-size: 1.5em;
+    padding: 15px;
+  }
+}

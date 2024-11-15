@@ -1,0 +1,48 @@
+{% extends "spotify_wrapped/slides/base.html" %}
+
+{% block body %}
+  <div class="container">
+    <div class="receipt">
+      <h1 class="receipt-header">Spotify Receipt</h1>
+      <p class="receipt-subheader">Your Top 5 Tracks</p>
+      <p class="receipt-date">Date: {{ current_date }}</p>
+      <div class="receipt-line"></div>
+
+      <div class="receipt-items">
+        <!-- Example track items -->
+        <div class="receipt-item">
+          <span class="item-number">1.</span>
+          <span class="item-name">Track Title One</span>
+          <span class="item-artist">Artist One</span>
+        </div>
+        <div class="receipt-item">
+          <span class="item-number">2.</span>
+          <span class="item-name">Track Title Two</span>
+          <span class="item-artist">Artist Two</span>
+        </div>
+        <div class="receipt-item">
+          <span class="item-number">3.</span>
+          <span class="item-name">Track Title Three</span>
+          <span class="item-artist">Artist Three</span>
+        </div>
+        <div class="receipt-item">
+          <span class="item-number">4.</span>
+          <span class="item-name">Track Title Four</span>
+          <span class="item-artist">Artist Four</span>
+        </div>
+        <div class="receipt-item">
+          <span class="item-number">5.</span>
+          <span class="item-name">Track Title Five</span>
+          <span class="item-artist">Artist Five</span>
+        </div>
+      </div>
+
+      <div class="receipt-line"></div>
+      <div class="receipt-total">
+        <span>Total Tracks:</span>
+        <span>5</span>
+      </div>
+      <p class="receipt-thanks">Thank you for listening!</p>
+    </div>
+  </div>
+{% endblock %}

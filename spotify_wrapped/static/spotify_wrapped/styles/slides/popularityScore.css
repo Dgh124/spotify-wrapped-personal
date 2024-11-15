@@ -1,0 +1,145 @@
+/* Basic resets */
+#popularityScore.slide-container {
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+}
+
+/* Container */
+#popularityScore .container {
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+  padding: 20px;
+}
+
+#popularityScore header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #ffdd57;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+#popularityScore .subheader {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  color: #ffd1a4;
+}
+
+/* Average Score */
+#popularityScore .average-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+#popularityScore .score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: conic-gradient(#ffdd57 75%, #333 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1a1a2e;
+}
+
+#popularityScore .score-number {
+  font-size: 2.5em;
+  font-weight: 600;
+}
+
+#popularityScore .score-text {
+  font-size: 1.2em;
+  margin-top: 10px;
+  color: #ffdd57;
+}
+
+/* Top & Least Popular Sections */
+#popularityScore .top-least-popular {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#popularityScore .top-songs, #popularityScore .least-popular-songs {
+  flex: 1;
+}
+
+#popularityScore h2 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+}
+
+#popularityScore .song-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 10px;
+  background: #1a1a2e;
+  color: #ffffff;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+#popularityScore .song-info h3 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+#popularityScore .song-info p {
+  font-size: 1em;
+  color: #cccccc;
+}
+
+/* Popularity Circle */
+#popularityScore .popularity-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: conic-gradient(#ffdd57 calc(var(--popularity-score) * 1%), #333 calc(var(--popularity-score) * 1%));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  color: #ffdd57;
+  position: absolute;
+  right: 15px;
+}
+
+#popularityScore .popularity-circle::after {
+  content: attr(data-score);
+  color: #ffffff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  #popularityScore .top-least-popular {
+    flex-direction: column;
+  }
+
+  #popularityScore .average-score {
+    margin-bottom: 30px;
+  }
+
+  #popularityScore h2 {
+    font-size: 1.5em;
+  }
+
+  #popularityScore .score-circle {
+    width: 120px;
+    height: 120px;
+  }
+}

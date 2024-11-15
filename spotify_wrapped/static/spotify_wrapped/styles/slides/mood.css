@@ -1,0 +1,102 @@
+#mood.slide-container {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(90deg, #5D8AA8 0%, #FF6F61 100%);
+  color: #ffffff;
+  overflow-y: auto;
+}
+
+/* Container */
+#mood .container {
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+  padding: 20px;
+}
+
+#mood header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #ffffff;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+#mood .subheader {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  color: #dcdcdc;
+}
+
+/* Mood Colors Section */
+#mood .mood-colors {
+  display: flex;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(93, 138, 168, 1) 0%, rgba(93, 138, 168, 0.8) 35%, rgba(255, 111, 97, 0.8) 66%, rgba(255, 111, 97, 1) 100%);
+  border-radius: 10px;
+}
+
+#mood .mood-section {
+  width: 50%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#mood .color-one {
+  background: transparent; /* Part of the gradient background */
+}
+
+#mood .color-two {
+  background: transparent; /* Part of the gradient background */
+}
+
+#mood .mood-title {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+}
+
+#mood .mood-section p {
+  font-size: 1.1em;
+  max-width: 300px;
+  color: #f0f0f0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  #mood.slide-container {
+    background: linear-gradient(to bottom, #5D8AA8 0%, #FF6F61 100%);
+  }
+
+  #mood .mood-colors {
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(93, 138, 168, 1) 0%, rgba(93, 138, 168, 0.8) 35%, rgba(255, 111, 97, 0.8) 66%, rgba(255, 111, 97, 1) 100%);
+  }
+
+  #mood .mood-section {
+    width: 100%;
+    padding: 10px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #mood header h1 {
+    font-size: 2em;
+  }
+}

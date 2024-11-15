@@ -1,0 +1,96 @@
+#artists.slide-container {
+  font-family: 'Poppins', sans-serif;
+  background: #000; /* Changed background to black */
+  color: #fff; /* Changed text color to white for contrast */
+}
+
+#artists .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+#artists h1 {
+  font-size: 3em;
+  margin-bottom: 50px;
+  color: #1DB954; /* Changed header color to Spotify green */
+}
+
+#artists .artists-grid {
+  display: flex;
+  flex-direction: column; /* Stack artist cards vertically */
+  align-items: center;
+  gap: 30px;
+}
+
+#artists .artist-card {
+  width: 100%;
+  max-width: 500px; /* Optional: Limit the width for better readability */
+  background: #1a1a1a; /* Dark background for card */
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#artists .artist-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+#artists .artist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#artists .artist-number {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #1DB954;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%; /* Makes the shape around numbers a circle */
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#artists .artist-name {
+  padding: 20px;
+  font-size: 2em;
+  font-weight: 600;
+  background: #1a1a1a; /* Match card background */
+  color: #fff;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  #artists .container {
+    padding: 30px 15px;
+  }
+
+  #artists h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+  }
+
+  #artists .artist-card {
+    width: 100%;
+  }
+
+  #artists .artist-image {
+    height: auto;
+  }
+
+  #artists .artist-name {
+    font-size: 1.5em;
+    padding: 15px;
+  }
+}

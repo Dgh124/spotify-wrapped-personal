@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact the Developers</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'spotify_wrapped/styles/meetDevs.css' %}">
+  {% block stylesheet %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var successMessage = document.getElementById('success-message');
+          if (successMessage) {
+              setTimeout(function() {
+                  successMessage.style.display = 'none';
+              }, 10000);
+          }
+      });
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Contact the Developers</h1>
+      <p class="subheader">Learn more about the team behind this project and share your feedback!</p>
+    </header>
+
+    <section class="team-info">
+      <h2>Meet the Development Team</h2>
+      <p>Our team is passionate about creating amazing user experiences. For more information, visit our website:</p>
+      <a href="https://team-website-placeholder.com" target="_blank" class="team-link">Visit Our Website</a>
+    </section>
+
+    {% if success_message %}
+    <div id="success-message" class="success-message">
+      {{ success_message }}
+    </div>
+    {% endif %}
+
+    <section class="feedback-form">
+      <h2>Send Us Your Feedback</h2>
+      <form action="#" method="POST">
+        {%  csrf_token %}
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+        <label for="message">Your Feedback</label>
+        <textarea id="message" name="message" placeholder="Share your thoughts..." rows="5" required></textarea>
+
+        <button type="submit">Send Feedback</button>
+      </form>
+    </section>
+  </div>
+
+</body>
+</html>

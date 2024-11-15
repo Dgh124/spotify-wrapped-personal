@@ -1,0 +1,69 @@
+{% extends "spotify_wrapped/slides/base.html" %}
+
+{% block body %}
+  <div class="container">
+    <header>
+      <h1>Popularity Score</h1>
+      <p class="subheader">Analyzing the popularity of your top 100 songs</p>
+    </header>
+
+    <section class="average-score">
+      <div class="score-circle">
+        <span class="score-number">84</span>
+      </div>
+      <p class="score-text">Average Popularity Score</p>
+    </section>
+
+    <section class="top-least-popular">
+      <div class="top-songs">
+        <h2>Top 3 Most Popular Songs</h2>
+        <div class="song-card">
+          <div class="song-info">
+            <h3>Song Title 1</h3>
+            <p>Artist Name 1</p>
+          </div>
+          <div class="popularity-circle" data-score="95"></div>
+        </div>
+        <div class="song-card">
+          <div class="song-info">
+            <h3>Song Title 2</h3>
+            <p>Artist Name 2</p>
+          </div>
+          <div class="popularity-circle" data-score="92"></div>
+        </div>
+        <div class="song-card">
+          <div class="song-info">
+            <h3>Song Title 3</h3>
+            <p>Artist Name 3</p>
+          </div>
+          <div class="popularity-circle" data-score="89"></div>
+        </div>
+      </div>
+
+      <div class="least-popular-songs">
+        <h2>Top 3 Least Popular Songs</h2>
+        <div class="song-card">
+          <div class="song-info">
+            <h3>Song Title 98</h3>
+            <p>Artist Name 98</p>
+          </div>
+          <div class="popularity-circle" data-score="25"></div>
+        </div>
+        <div class="song-card">
+          <div class="song-info">
+            <h3>Song Title 99</h3>
+            <p>Artist Name 99</p>
+          </div>
+          <div class="popularity-circle" data-score="20"></div>
+        </div>
+        <div class="song-card">
+          <div class="song-info">
+            <h3>Song Title 100</h3>
+            <p>Artist Name 100</p>
+          </div>
+          <div class="popularity-circle" data-score="15"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
