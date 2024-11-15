@@ -217,7 +217,7 @@ def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_t
             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
             song_name=track["name"],
             artists=[artist["name"] for artist in track["artists"]],
-            preview_url=track["preview_url"]
+            preview_url=track.get("preview_url", "")
         )
         for track in response["items"]
     ]
