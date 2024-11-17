@@ -46,6 +46,7 @@ class WrapObject:
     def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color):
         self.top_tracks = top_tracks
         self.top_artists = top_artists
+        self.top_albums = get_top_albums(top_tracks)
         self.user = user
         self.top_genres = get_top_genres(top_artists)
         self.audio_link = get_top_track_audio_link(top_tracks)

@@ -61,7 +61,7 @@ function createGame(gameData) {
 	    updateGridDimensions();
 	    // it should take three seconds to cross the screen's shortest length
 	    lastMoveTime = 0;
-	    moveInterval = Math.floor(5*1000/Math.min(rows, cols));
+	    moveInterval = Math.floor(3*1000/Math.min(rows, cols));
 
 	    // 0: LEFT; 1: UP; 2: RIGHT; 3: DOWN;
 	    direction = Math.floor(Math.random()*4);
@@ -69,7 +69,7 @@ function createGame(gameData) {
 	    snake = [[Math.floor(cols/2), Math.floor(rows/2)]];
 	    growth = 3;
 	    questionNo = 0;
-	    gameState = 1;
+	    gameState = 0;
 
 	    const overlapping = (oldCords, newCord) => 
 		oldCords.filter(cord => cord[0] === newCord[0] && cord[1] === newCord[1])
@@ -88,7 +88,7 @@ function createGame(gameData) {
 		}
 	    }
 
-	    questions[0].song.play();
+	    // questions[0].song.play();
 	}
 
 	sketch.draw = () => {
@@ -157,6 +157,23 @@ function createGame(gameData) {
 	    direction = newDirection;
 	    lastMoveTime -= 100000;
 	}
+
+	// sketch.rect(sketch.width/2, sketch.height*13/16, Math.max(sketch.width, sketch.height)/4, sketch.height*3/32);
+	sketch.mousePressed = () => {
+	    const boxWidth = Math.max(sketch.width, sketch.height)/4;
+	    const boxHeight = sketch.height*3/32;
+	    const leftEdge = sketch.width/2-boxWidth/2;
+	    const rightEdge = sketch.width/2+boxWidth/2;
+	    const topEdge = sketch.height*13/16-boxHeight/2;
+	    const bottomEdge = sketch.height*13/16+boxHeight/2;
+
+	    if (sketch.mouseX > leftEdge && sketch.mouseY < rightEdge
+		&& sketch.mouseY > topEdge && sketch.mouseY < bottomEdge) {
+		questions[0].song.play();
+		gameState = 1;
+		lastMoveTime = sketch.millis();
+	    }
+	}
 	
 	let startX, startY;
 	sketch.touchStarted = (event) => {
@@ -183,7 +200,6 @@ function createGame(gameData) {
 	    let diffY = endY - startY;
 	    let newDirection = direction;
 	    
-	    console.log(diffX, diffY);
 	    const swipeThreshold = 25;
 	    // determine if it was a horizontal or vertical swipe
 	    if (Math.abs(diffX) > Math.abs(diffY)) {
@@ -212,9 +228,47 @@ function createGame(gameData) {
 	    return false;
 	}
 		
-
+	// function playCurrentSong() {
+	//     if (questionNo >= questions.length) return;
+	//
+	//     currentSong = questions[questionNo].song;
+	//     currentSong.play();
+	//     
+	//     currentSong.onended(() => console.log("HERE"));
+	//     console.log(currentSong);
+	// }
+	//
 	function drawOpeningMenu() {
+	    sketch.fill(255);
+	    sketch.stroke(0);
+	    sketch.strokeWeight(2);
+	    sketch.rectMode(sketch.CENTER);
+	    sketch.rect(sketch.width/2, sketch.height/2, sketch.width*3/4, sketch.height*3/4);
 
+	    sketch.fill(0);
+	    sketch.textAlign(sketch.CENTER);
+	    sketch.textFont('Fredoka');
+	    const dim = Math.min(sketch.width, sketch.height);
+	    const title = "Snake Wrapped";
+	    sketch.textSize(dim/12);
+	    sketch.text(title, sketch.width/2, sketch.height*1/4, sketch.width*5/8, sketch.height/4);
+
+	    const desc = "How well do you know your music? If the " +
+			    "snake eats the cover of the song playing, " +
+			    "you move on. The wrong one, and you lose. " +
+			    "Good Luck!"
+	    sketch.textSize(dim/20);
+	    sketch.textFont('Montserrat');
+	    sketch.rectMode(sketch.CORNER);
+	    sketch.text(desc, sketch.width*3/16, sketch.height*5/16, sketch.width*5/8, sketch.height*3/8);
+	    
+	    
+	    sketch.rectMode(sketch.CENTER);
+	    sketch.fill("white");
+	    sketch.rect(sketch.width/2, sketch.height*13/16, Math.max(sketch.width, sketch.height)/4, sketch.height*3/32);
+
+	    sketch.fill("black");
+	    sketch.text("START?", sketch.width/2, sketch.height*13/16);
 	}
 
 	function drawLossMenu() {
@@ -238,6 +292,7 @@ function createGame(gameData) {
 	    sketch.fill("#FFCBA4");
 	    sketch.stroke("#000");
 	    sketch.strokeWeight(2);
+	    sketch.rectMode(sketch.CORNER);
 	    for (let col = 0; col < cols; col++) {
 		for (let row = 0; row < rows; row++) {
 		    sketch.square(col*sqSize, row*sqSize, sqSize);
@@ -282,6 +337,7 @@ function createGame(gameData) {
 	}
 
 	function drawApples() {
+	    sketch.rectMode(sketch.CENTER);
 	    for (let i = 0; i < 3; i++) {
 		sketch.image(questions[questionNo].images[i], 	
 		    questions[questionNo].locations[i][0]*sqSize,
