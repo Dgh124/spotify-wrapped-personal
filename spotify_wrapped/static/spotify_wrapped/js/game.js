@@ -184,6 +184,29 @@ function createGame(gameData) {
 		startX = event.pageX;
 		startY = event.pageY;
 	    }
+
+	    if (gameState === 0) {
+		let mouseX, mouseY;
+		if (event.touches && event.touches[0].clientX && event.touches[0].clientY) {
+		    mouseX = event.touches[0].clientX;
+		    mouseY = event.touches[0].clientY;
+		}
+
+		const boxWidth = Math.max(sketch.width, sketch.height)/4;
+		const boxHeight = sketch.height*3/32;
+		const leftEdge = sketch.width/2-boxWidth/2;
+		const rightEdge = sketch.width/2+boxWidth/2;
+		const topEdge = sketch.height*13/16-boxHeight/2;
+		const bottomEdge = sketch.height*13/16+boxHeight/2;
+
+		if (mouseX > leftEdge && mouseX < rightEdge
+		    && mouseY > topEdge && mouseY < bottomEdge) {
+		    questions[0].song.play();
+		    gameState = 1;
+		    lastMoveTime = sketch.millis();
+		}
+
+	    }
 	}
 
 	sketch.touchEnded = (event) => {
