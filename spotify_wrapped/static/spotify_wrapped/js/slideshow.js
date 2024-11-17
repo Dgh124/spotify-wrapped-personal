@@ -7,6 +7,12 @@ const pauseButton = document.getElementById("pause-button");
 let slide_progress = 0;
 const slide_length = 10; // in seconds
 let progress_interval = null;
+
+// sets placeholder for createGame function
+window.createGame = window.createGame || function() {
+    console.warn('createGame() is not available yet. It will be loaded later.');
+};
+
 const makeProgressInterval = (counter) => {
     return () => {
 	slide_progress += 0.1;
@@ -40,6 +46,11 @@ const show_slide = (new_counter) => {
     clearInterval(progress_interval);
     progress_interval = setInterval(makeProgressInterval(counter), slide_length);
     pauseButton.classList.remove("paused");
+
+    if (slides.children[counter].id == "games") {
+	window.createGame();
+	clearInterval(progress_interval);
+    }
 };
 
 document.querySelector(".left-arrow").addEventListener("click", () => {

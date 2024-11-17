@@ -200,7 +200,7 @@ def get_user(access_token, expires_at, refresh_token):
                                "", user_transform_fn)
 
 
-def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=10):
+def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=50):
     """
     Queries Spotify API for user's top tracks over a time range
     :param access_token: see get_user_attributes
@@ -252,7 +252,17 @@ def get_top_artists(access_token, expires_at, refresh_token, time_range="medium_
     )
 
 
-def get_top_genres(top_artists: list[Artist]) -> list[(str,int)]:
+def get_top_albums(top_tracks: list[Track]) -> list[tuple[str, list[Track]]]:
+    albums = {}
+    for track in top_tracks:
+        if track.album_name in albums:
+            albums[track.album_name].append(track)
+        else:
+            albums[track.album_name] = [track]
+    return sorted(albums.items(), key=lambda item: len(item[1]), reverse=True)
+
+
+def get_top_genres(top_artists: list[Artist]) -> list[tuple[str,int]]:
     """
     returns top genres given a list of artists
     :param top_artists: sorted list of user's top artists
