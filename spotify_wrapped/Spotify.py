@@ -141,6 +141,7 @@ def get_requests(url, access_token):
     if response.status_code == 200:
         return response.json()
     else:
+        print(response.headers)
         print("request returned error")
         return None
 
@@ -338,12 +339,14 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
         return {"status": "error", "reason": "request returned error status code"}
 
-    suggested_tracks = get_suggested_tracks(
-        access_token=access_token,
-        top_artists=top_artists_result["value"],
-    )
-    if suggested_tracks["status"] == "error":
-        return suggested_tracks #includes error message and value
+    # commented because of rate limit. Uncomment before production
+    suggested_tracks = {"status": "success", "value": []}
+    # suggested_tracks = get_suggested_tracks(
+    #     access_token=access_token,
+    #     top_artists=top_artists_result["value"],
+    # )
+    # if suggested_tracks["status"] == "error":
+    #     return suggested_tracks #includes error message and value
 
     personality, color = get_personality_and_colors(top_artists_result['value'])
 
