@@ -81,8 +81,12 @@ def tracks(request):
     return render(request, "spotify_wrapped/slides/tracks.html", {})
 # end of all pages
 
-def login(request):
-    return HttpResponseRedirect(get_auth_url())
+def logIn(request):
+    context = {"url": get_auth_url()}
+    return render(request, "spotify_wrapped/logIn.html", context)
+
+def profile(request):
+    return render(request, "spotify_wrapped/profile.html", {})
 
 def auth(request):
     auth_code = request.GET.get('code')

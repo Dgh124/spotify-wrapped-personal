@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    padding: 45px 90px;
+    font-size: 50px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    display: block;
+    box-sizing: border-box;
+}
+
+.login-button:hover {
+    background-color: #45a049;
+}
