@@ -41,7 +41,7 @@ class Track(models.Model):
 
 class Wrap(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ManyToManyField(User, related_name="user")
     top_tracks = models.ManyToManyField(Track, related_name='top_tracks')
     top_artists = models.ManyToManyField(Artist)
     top_audio = models.TextField(blank=True)
@@ -53,7 +53,7 @@ class Wrap(models.Model):
     top_genres = models.JSONField(blank = True, default=dict)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 

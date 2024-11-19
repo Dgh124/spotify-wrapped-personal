@@ -44,11 +44,19 @@ def convert_wrap_object_to_wrap_model(wrap_obj):
     color = wrap_obj['value'].color
     top_genres = convert_tuple_to_dict(wrap_obj['value'].top_genres)
     #need to add them using manytomany .add()
-    new_wrap = Wrap(user = user,color = color, personality = personality,
+    new_wrap = Wrap(color = color, personality = personality,
                     top_audio = top_audio, top_genres=top_genres)
     new_wrap.save()
     new_wrap.top_tracks.add(*top_tracks)
     new_wrap.top_artists.add(*top_artists)
     new_wrap.suggested_tracks.add(*suggested_tracks)
+    new_wrap.user.add(user)
     return new_wrap
 
+def get_wrap(wrap_id):
+    return Wrap.objects.get(id = wrap_id)
+
+#user id is the id they have on spotify. saved on both
+def get_all_user_wraps(user_id):
+    user = User.objects.get(id = user_id)
+    return user.user.all()

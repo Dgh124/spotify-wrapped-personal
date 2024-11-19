@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from spotify_wrapped.models import Track, Artist, Wrap
 
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, get_user
 
 from spotify_wrapped.helperFunc import *
 
@@ -53,6 +53,7 @@ def wrap(request):
     #print(new_artist)
     converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
     converted_obj.save()
+    print(get_all_user_wraps(wrap_object['value'].user.id))
 
 
 def logout(request):
