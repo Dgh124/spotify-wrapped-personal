@@ -1,4 +1,4 @@
-let audioContext, audioBuffers, currentAudioSource;
+let audioContext, audioBuffers, currentSource;
 
 function createGame(gameData) {
     new p5((sketch) => {
@@ -9,14 +9,13 @@ function createGame(gameData) {
 	let snake;
 	let direction, growth;
 	let questionNo, questions;
-	// let gameState;
 	let lastMoveTime, moveInterval;
 
 	
 	sketch.preload = () => {
 	    // loads the question images into the object
 	    const albumHasPreviewUrl = (album) => {
-		return	album.tracks.filter(track => track.preview_url !== null).length > 0
+		return album.tracks.filter(track => track.preview_url !== null).length > 0
 	    };
 
 	    questions = [];
@@ -45,23 +44,27 @@ function createGame(gameData) {
 
 		questions[qcount].images.push(
 		    sketch.loadImage(window.albums[decoy1].tracks[0].album_image)
-		)
+		);
 		questions[qcount].images.push(
 		    sketch.loadImage(window.albums[decoy2].tracks[0].album_image)
 		)
 	    }
-
-
 	}
 
 	sketch.setup = () => {
 	    const canvasParent = document.getElementById("games");
-	    const albums = window.albums;
 	    const canvasWidth = sqSize*Math.floor(window.innerWidth/sqSize);
-	    const canvasHeight = sqSize*Math.floor(window.innerHeight/sqSize);
+	    const canvasHeight = sqSize*(Math.floor(window.innerHeight/sqSize)-1);
 	    sketch.createCanvas(canvasWidth, canvasHeight)
 		.parent(canvasParent);
 	    updateGridDimensions();
+
+	    start();
+
+	    activateStartMenu();
+	}
+
+	function start() {
 	    // it should take three seconds to cross the screen's shortest length
 	    lastMoveTime = 0;
 	    moveInterval = Math.floor(3*1000/Math.min(rows, cols));
@@ -80,8 +83,6 @@ function createGame(gameData) {
 
 	    for (let i = 0; i < maxAlbums; i++) {
 		const idx = questions[i].index;
-		// questions[i].song = sketch.createAudio(window.albums[idx].tracks[0].preview_url);
-
 		questions[i].locations = [];
 		for (let j = 0; j < 3; j++) {
 		    let newCord = randomCoords();
@@ -90,8 +91,10 @@ function createGame(gameData) {
 		    questions[i].locations.push(newCord);
 		}
 	    }
+	}
 
-	    activateStartMenu();
+	window.gameSetup = () => {
+	    start();
 	}
 
 	sketch.draw = () => {
@@ -142,7 +145,7 @@ function createGame(gameData) {
 	
 	let startX, startY;
 	sketch.touchStarted = (event) => {
-	    if (event.changedTouches) {
+	    if (event.touches) {
 		startX = event.touches[0].pageX;
 		startY = event.touches[0].pageY;
 	    } else if (event.pageX && event.pageY) {
@@ -222,6 +225,7 @@ function createGame(gameData) {
 			if (++questionNo === questions.length) {
 			    window.gameState = 3;
 			    activateWinMenu();
+			    window.currentSource.stop();
 			    return;
 			}
 			playAudio(questionNo);
@@ -232,7 +236,7 @@ function createGame(gameData) {
 		) {
 		    window.gameState = 2;
 		    activateLossMenu();
-		    audioBuffers[questionNo].stop();
+		    window.currentSource.stop();
 		}
 
 	}
@@ -344,7 +348,7 @@ function createGame(gameData) {
 	.addEventListener("click", (e) => {
 	    startMenu.classList.add("hidden");
 	    window.gameState = 1;
-	    console.log("HERE");
+	    // play the first song
 	    (window.audioContextInit || (() => console.warn("audio context not initialized")))();
 	});
 
@@ -352,14 +356,18 @@ function createGame(gameData) {
     lossMenu.children.item(2)
 	.addEventListener("click", (e) => {
 	    lossMenu.classList.add("hidden");
+	    window.gameSetup();
 	    window.gameState = 1;
+	    (window.audioContextInit || (() => console.warn("audio context not initialized")))();
 	});
 
     const winMenu = document.getElementById("wonGame");
     winMenu.children.item(2)
 	.addEventListener("click", (e) => {
 	    winMenu.classList.add("hidden");
+	    window.gameSetup();
 	    window.gameState = 1;
+	    (window.audioContextInit || (() => console.warn("audio context not initialized")))();
 	});
 })();
 
