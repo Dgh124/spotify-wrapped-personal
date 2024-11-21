@@ -27,7 +27,8 @@ def index(request):
 
 def slideshow(request):
     return render(request, "spotify_wrapped/slideshow.html",
-                  {"slides": ["cover", "AI_Query", "albums", "artists", "genres", "mood", "popularityScore", "recommendations", "tracks"]})
+                      {"slides": ["cover", "AI_Query", "albums", "artists", "genres", "mood", "popularityScore", "recommendations", "tracks"],
+                   })
 # start of all pages
 def cover(request):
     return render(request, "spotify_wrapped/slides/cover.html", {})
@@ -98,7 +99,6 @@ def logout(request):
     request.session.pop('access_token', None)
     request.session.pop('refresh_token', None)
     request.session.pop('expire_time', None)
-    # spotify_logout()
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
 
 def games(request):

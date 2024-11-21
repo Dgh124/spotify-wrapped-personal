@@ -1,3 +1,5 @@
+let audioContext, audioBuffers, currentAudioSource;
+
 function createGame(gameData) {
     new p5((sketch) => {
 	let rows, cols;
@@ -5,18 +7,17 @@ function createGame(gameData) {
 	const maxAlbums = 5;
 	
 	let snake;
-	let direction;
-	let questionNo;
-	let questions;
-	let growth;
-	let gameState;
+	let direction, growth;
+	let questionNo, questions;
+	// let gameState;
 	let lastMoveTime, moveInterval;
+
 	
 	sketch.preload = () => {
 	    // loads the question images into the object
-	    const albumHasPreviewUrl = (album) => (
-		album.tracks.filter(track => track.preview_url !== "").length > 0
-	    );
+	    const albumHasPreviewUrl = (album) => {
+		return	album.tracks.filter(track => track.preview_url !== null).length > 0
+	    };
 
 	    questions = [];
 	    for (let i = 0; i < window.albums.length && questions.length < 5; i++) {
@@ -49,6 +50,8 @@ function createGame(gameData) {
 		    sketch.loadImage(window.albums[decoy2].tracks[0].album_image)
 		)
 	    }
+
+
 	}
 
 	sketch.setup = () => {
@@ -69,7 +72,7 @@ function createGame(gameData) {
 	    snake = [[Math.floor(cols/2), Math.floor(rows/2)]];
 	    growth = 3;
 	    questionNo = 0;
-	    gameState = 0;
+	    window.gameState = 0;
 
 	    const overlapping = (oldCords, newCord) => 
 		oldCords.filter(cord => cord[0] === newCord[0] && cord[1] === newCord[1])
@@ -77,7 +80,7 @@ function createGame(gameData) {
 
 	    for (let i = 0; i < maxAlbums; i++) {
 		const idx = questions[i].index;
-		questions[i].song = sketch.createAudio(window.albums[idx].tracks[0].preview_url);
+		// questions[i].song = sketch.createAudio(window.albums[idx].tracks[0].preview_url);
 
 		questions[i].locations = [];
 		for (let j = 0; j < 3; j++) {
@@ -88,51 +91,28 @@ function createGame(gameData) {
 		}
 	    }
 
-	    // questions[0].song.play();
+	    activateStartMenu();
 	}
 
 	sketch.draw = () => {
 	    sketch.background(255);
 	    drawGrid();
-	    drawSnake();
-	    drawApples();
 
-	    if (gameState === 0) {
-		drawOpeningMenu();
-	    } else if (gameState === 2) {
-		drawLossMenu();
-	    } else if (gameState === 3) {
-		drawWinMenu();
-	    }
+	    if (window.gameState === 1) {
+		drawSnake();
+		drawApples();
 		
-	    const currentTime = sketch.millis();
-	    if (currentTime - lastMoveTime < moveInterval) return;
-	    lastMoveTime = currentTime;
+		const currentTime = sketch.millis();
+		if (currentTime - lastMoveTime < moveInterval) return;
+		lastMoveTime = currentTime;
 
-	    if (gameState === 1) {
 		moveSnake();
-		if (appleCollision()) {
-		    growth += 3;
-		    questions[questionNo].song.stop();
-		    if (++questionNo === questions.length) {
-			gameState = 3;
-			return;
-		    }
-		    questions[questionNo].song.play();
-		}
-		if (poisonAppleCollision()) {
-		    gameState = 2;
-		}
-		if (gameState === 2) {
-		    questions[questionNo].song.stop();
-		}
 	    }
 	}
 
 	sketch.windowResized = () => {
 	    sketch.resizeCanvas(window.innerWidth, window.innerHeight);
 	    updateGridDimensions();
-	    sketch.setup();
 	}
 
 	sketch.keyPressed = () => {
@@ -153,26 +133,11 @@ function createGame(gameData) {
             }
 
 	    if (newDirection === direction) return;
+	    if (window.gameState !== 1) return;
 
 	    direction = newDirection;
-	    lastMoveTime -= 100000;
-	}
-
-	// sketch.rect(sketch.width/2, sketch.height*13/16, Math.max(sketch.width, sketch.height)/4, sketch.height*3/32);
-	sketch.mousePressed = () => {
-	    const boxWidth = Math.max(sketch.width, sketch.height)/4;
-	    const boxHeight = sketch.height*3/32;
-	    const leftEdge = sketch.width/2-boxWidth/2;
-	    const rightEdge = sketch.width/2+boxWidth/2;
-	    const topEdge = sketch.height*13/16-boxHeight/2;
-	    const bottomEdge = sketch.height*13/16+boxHeight/2;
-
-	    if (sketch.mouseX > leftEdge && sketch.mouseY < rightEdge
-		&& sketch.mouseY > topEdge && sketch.mouseY < bottomEdge) {
-		questions[0].song.play();
-		gameState = 1;
-		lastMoveTime = sketch.millis();
-	    }
+	    moveSnake();
+	    lastMoveTime = sketch.millis();
 	}
 	
 	let startX, startY;
@@ -183,29 +148,6 @@ function createGame(gameData) {
 	    } else if (event.pageX && event.pageY) {
 		startX = event.pageX;
 		startY = event.pageY;
-	    }
-
-	    if (gameState === 0) {
-		let mouseX, mouseY;
-		if (event.touches && event.touches[0].clientX && event.touches[0].clientY) {
-		    mouseX = event.touches[0].clientX;
-		    mouseY = event.touches[0].clientY;
-		}
-
-		const boxWidth = Math.max(sketch.width, sketch.height)/4;
-		const boxHeight = sketch.height*3/32;
-		const leftEdge = sketch.width/2-boxWidth/2;
-		const rightEdge = sketch.width/2+boxWidth/2;
-		const topEdge = sketch.height*13/16-boxHeight/2;
-		const bottomEdge = sketch.height*13/16+boxHeight/2;
-
-		if (mouseX > leftEdge && mouseX < rightEdge
-		    && mouseY > topEdge && mouseY < bottomEdge) {
-		    questions[0].song.play();
-		    gameState = 1;
-		    lastMoveTime = sketch.millis();
-		}
-
 	    }
 	}
 
@@ -246,59 +188,52 @@ function createGame(gameData) {
 
 	    if (newDirection === direction) return;
 	    direction = newDirection;
-	    lastMoveTime -= 100000;
+	    moveSnake();
+	    lastMoveTime = sketch.millis();
 
 	    return false;
 	}
 		
-	// function playCurrentSong() {
-	//     if (questionNo >= questions.length) return;
-	//
-	//     currentSong = questions[questionNo].song;
-	//     currentSong.play();
-	//     
-	//     currentSong.onended(() => console.log("HERE"));
-	//     console.log(currentSong);
-	// }
-	//
-	function drawOpeningMenu() {
-	    sketch.fill(255);
-	    sketch.stroke(0);
-	    sketch.strokeWeight(2);
-	    sketch.rectMode(sketch.CENTER);
-	    sketch.rect(sketch.width/2, sketch.height/2, sketch.width*3/4, sketch.height*3/4);
 
-	    sketch.fill(0);
-	    sketch.textAlign(sketch.CENTER);
-	    sketch.textFont('Fredoka');
-	    const dim = Math.min(sketch.width, sketch.height);
-	    const title = "Snake Wrapped";
-	    sketch.textSize(dim/12);
-	    sketch.text(title, sketch.width/2, sketch.height*1/4, sketch.width*5/8, sketch.height/4);
+	function playAudio(idx) {
+	    console.log(audioBuffers);
+	    if (questionNo > 0 && questionNo < questions.length) {
+		window.currentSource.stop();
+	    }
 
-	    const desc = "How well do you know your music? If the " +
-			    "snake eats the cover of the song playing, " +
-			    "you move on. The wrong one, and you lose. " +
-			    "Good Luck!"
-	    sketch.textSize(dim/20);
-	    sketch.textFont('Montserrat');
-	    sketch.rectMode(sketch.CORNER);
-	    sketch.text(desc, sketch.width*3/16, sketch.height*5/16, sketch.width*5/8, sketch.height*3/8);
-	    
-	    
-	    sketch.rectMode(sketch.CENTER);
-	    sketch.fill("white");
-	    sketch.rect(sketch.width/2, sketch.height*13/16, Math.max(sketch.width, sketch.height)/4, sketch.height*3/32);
+	    const buffer = audioBuffers[idx];
+	    if (!buffer) {
+		console.error('Audio buffer not found:', idx);
+		return;
+	    }
 
-	    sketch.fill("black");
-	    sketch.text("START?", sketch.width/2, sketch.height*13/16);
+	    source = window.audioContext.createBufferSource();
+	    source.buffer = buffer;
+	    source.connect(window.audioContext.destination);
+	    source.start(0);
+	    window.currentSource = source;
 	}
 
-	function drawLossMenu() {
 
-	}
-
-	function drawWinMenu() {
+	function checkCollisions(newPoint) {
+		if (appleCollision(newPoint)) {
+			growth += 3;
+			// win state
+			if (++questionNo === questions.length) {
+			    window.gameState = 3;
+			    activateWinMenu();
+			    return;
+			}
+			playAudio(questionNo);
+		} else if (
+		    poisonAppleCollision(newPoint) ||
+		    outOfBounds(newPoint) ||
+		    hitSelf(newPoint)
+		) {
+		    window.gameState = 2;
+		    activateLossMenu();
+		    audioBuffers[questionNo].stop();
+		}
 
 	}
 
@@ -312,8 +247,8 @@ function createGame(gameData) {
 	}
 
 	function drawGrid() {
-	    sketch.fill("#FFCBA4");
-	    sketch.stroke("#000");
+	    sketch.fill("#FCBE65");
+	    sketch.stroke("FFFFF0");
 	    sketch.strokeWeight(2);
 	    sketch.rectMode(sketch.CORNER);
 	    for (let col = 0; col < cols; col++) {
@@ -324,8 +259,8 @@ function createGame(gameData) {
 	}
 
 	function drawSnake() {
-	    sketch.fill("#F00");
-	    sketch.stroke("#000");
+	    sketch.fill("#FC659D");
+	    sketch.stroke("#FFFFF0");
 	    sketch.strokeWeight(2);
 	    for (let point of snake) {
 		sketch.square(point[0]*sqSize, point[1]*sqSize, sqSize);
@@ -334,13 +269,11 @@ function createGame(gameData) {
 
 	function moveSnake() {
 	    let newPoint = [...snake[0]];
-	    if (direction == 0) newPoint[0] -= 1;
-	    else if (direction == 1) newPoint[1] -= 1;
-	    else if (direction == 2) newPoint[0] += 1;
-	    else if (direction == 3) newPoint[1] += 1;
-	    if (outOfBounds(newPoint) || hitSelf(newPoint)) {
-		gameState = 2;
-	    }
+	    if (direction === 0) newPoint[0] -= 1;
+	    else if (direction === 1) newPoint[1] -= 1;
+	    else if (direction === 2) newPoint[0] += 1;
+	    else if (direction === 3) newPoint[1] += 1;
+	    checkCollisions(newPoint);
 
 	    snake.unshift(newPoint);
 	    // if the snake has to grow, don't pop off the tail
@@ -370,16 +303,79 @@ function createGame(gameData) {
 	    }
 	}
 
-	function appleCollision() {
-	    return questions[questionNo].locations[0][0] === snake[0][0]
-		&& questions[questionNo].locations[0][1] === snake[0][1];
+	function appleCollision(newPoint) {
+	    return questions[questionNo].locations[0][0] === newPoint[0]
+		&& questions[questionNo].locations[0][1] === newPoint[1];
 	}
-	function poisonAppleCollision() {
-	    return (questions[questionNo].locations[1][0] === snake[0][0]
-		    && questions[questionNo].locations[1][1] === snake[0][1]) ||
-		   (questions[questionNo].locations[2][0] === snake[0][0]
-		    && questions[questionNo].locations[2][1] === snake[0][1])
+	function poisonAppleCollision(newPoint) {
+	    return (questions[questionNo].locations[1][0] === newPoint[0]
+		    && questions[questionNo].locations[1][1] === newPoint[1]) ||
+		   (questions[questionNo].locations[2][0] === newPoint[0]
+		    && questions[questionNo].locations[2][1] === newPoint[1])
+	}
+
+
+	window.audioContextInit = () => {
+	    // initialize audio context
+	    audioBuffers = Array(questions.length);
+	    if (!window.audioContext) {
+		window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+	    }
+	    const loadAudio = (url, idx) => (
+		fetch(url)
+		.then(response => response.arrayBuffer())
+		.then(arrayBuffer => window.audioContext.decodeAudioData(arrayBuffer))
+		.then(audioBuffer => {
+		    audioBuffers[idx] = audioBuffer;
+		})
+		.catch(e => console.error('Error loading audio:', e))
+	    );
+	    Promise.all(questions.map((q, idx) => loadAudio(
+		window.albums[q.index].tracks[0].preview_url, idx
+	    )))
+		.then(() => playAudio(0));
 	}
     });
+}
 
+(() => {
+    const startMenu = document.getElementById("startGame");
+    startMenu.children.item(2)
+	.addEventListener("click", (e) => {
+	    startMenu.classList.add("hidden");
+	    window.gameState = 1;
+	    console.log("HERE");
+	    (window.audioContextInit || (() => console.warn("audio context not initialized")))();
+	});
+
+    const lossMenu = document.getElementById("lostGame");
+    lossMenu.children.item(2)
+	.addEventListener("click", (e) => {
+	    lossMenu.classList.add("hidden");
+	    window.gameState = 1;
+	});
+
+    const winMenu = document.getElementById("wonGame");
+    winMenu.children.item(2)
+	.addEventListener("click", (e) => {
+	    winMenu.classList.add("hidden");
+	    window.gameState = 1;
+	});
+})();
+
+function unhideMenu(menuId) {
+    document.getElementById(menuId)
+	.classList.remove("hidden");
+}
+
+function activateStartMenu() {
+    unhideMenu("startGame");
+}
+
+function activateLossMenu() {
+    unhideMenu("lostGame");
+}
+
+function activateWinMenu() {
+    unhideMenu("wonGame");
 }

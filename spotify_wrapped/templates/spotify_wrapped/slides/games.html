@@ -3,6 +3,37 @@
 {% block body %}
 
 {% load static %}
+<div class="menu-modal hidden" id="startGame">
+    <h1>Snake Wrapped</h1>
+    <p>
+	How well do you know your music? If the
+	snake eats the cover of the song playing, 
+	you move on. The wrong one, and you lose.
+	Good Luck!
+    </p>
+    <div class="menu_modal-button">Begin?</div>
+</div>
+
+<div class="menu-modal hidden" id="lostGame">
+    <h1>You fucking loser</h1>
+    <p>
+    Ha dumbass. You lost the game.
+    </p>
+    <div class="menu_modal-button">Try Again?</div>
+</div>
+
+<div class="menu-modal hidden" id="wonGame">
+    <h1>You Win!</h1>
+    <p>
+	You really know your music! Nice job winning the game.
+	You deserve a relaxing break. Consider yoga, tai chi, or 
+	<a href="https://www.youtube.com/watch?v=3ct68JZKsZ8" target="_blank">
+	    this.
+	</a>
+    </p>
+    <div class="menu_modal-button">Play Again?</div>
+</div>
+
 <script>
     function loadGameJs() {
 	const script = document.createElement('script');
@@ -17,7 +48,6 @@
 
     albums = "{{ user_info | escapejs }}"
     albums = JSON.parse(albums).arr;
-    console.log(albums);
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js" 

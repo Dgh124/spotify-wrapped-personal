@@ -2,3 +2,62 @@
     justify-items: center;
     align-items: center;
 }
+
+#games .hidden {
+    display: none !important;
+}
+
+#games .menu-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: fixed; /* Stay in place */
+  z-index: 2; /* Sit on top */
+
+  width: 75%;
+  height: min-content;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: #fffff0;
+  border: solid 2px black;
+  padding: 1rem 0;
+}
+
+#games .menu-modal > h1 {
+    font-family: "Fredoka", serif;
+    color: black;
+    text-align: center;
+    font-size: 3rem;
+    margin: 0;
+}
+
+#games .menu-modal > p {
+    font-family: "Montserrat", serif;
+    color: black;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#games div.menu_modal-buttons {
+    flex-direction: row;
+}
+
+#games div.menu_modal-button {
+    /* text formatting */
+    font-family: "Montserrat", serif;
+    color: black;
+    font-size: 1.5rem;
+
+    border: solid 2px black;
+    width: min-content;
+    padding: .5rem;
+}
+
+#games div.menu_modal-button:hover {
+    background-color: #FC659D;
+    color: #FFFFF0;
+}
