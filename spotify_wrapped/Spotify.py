@@ -46,6 +46,7 @@ class WrapObject:
     def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color):
         self.top_tracks = top_tracks
         self.top_artists = top_artists
+        self.top_albums = get_top_albums(top_tracks)
         self.user = user
         self.top_genres = get_top_genres(top_artists)
         self.audio_link = get_top_track_audio_link(top_tracks)
@@ -140,6 +141,7 @@ def get_requests(url, access_token):
     if response.status_code == 200:
         return response.json()
     else:
+        print(response.headers)
         print("request returned error")
         return None
 
@@ -200,7 +202,7 @@ def get_user(access_token, expires_at, refresh_token):
                                "", user_transform_fn)
 
 
-def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=10):
+def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=50):
     """
     Queries Spotify API for user's top tracks over a time range
     :param access_token: see get_user_attributes
@@ -252,7 +254,17 @@ def get_top_artists(access_token, expires_at, refresh_token, time_range="medium_
     )
 
 
-def get_top_genres(top_artists: list[Artist]) -> list[(str,int)]:
+def get_top_albums(top_tracks: list[Track]) -> list[tuple[str, list[Track]]]:
+    albums = {}
+    for track in top_tracks:
+        if track.album_name in albums:
+            albums[track.album_name].append(track)
+        else:
+            albums[track.album_name] = [track]
+    return sorted(albums.items(), key=lambda item: len(item[1]), reverse=True)
+
+
+def get_top_genres(top_artists: list[Artist]) -> list[tuple[str,int]]:
     """
     returns top genres given a list of artists
     :param top_artists: sorted list of user's top artists
@@ -327,12 +339,14 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
         return {"status": "error", "reason": "request returned error status code"}
 
-    suggested_tracks = get_suggested_tracks(
-        access_token=access_token,
-        top_artists=top_artists_result["value"],
-    )
-    if suggested_tracks["status"] == "error":
-        return suggested_tracks #includes error message and value
+    # commented because of rate limit. Uncomment before production
+    suggested_tracks = {"status": "success", "value": []}
+    # suggested_tracks = get_suggested_tracks(
+    #     access_token=access_token,
+    #     top_artists=top_artists_result["value"],
+    # )
+    # if suggested_tracks["status"] == "error":
+    #     return suggested_tracks #includes error message and value
 
     personality, color = get_personality_and_colors(top_artists_result['value'])
 
