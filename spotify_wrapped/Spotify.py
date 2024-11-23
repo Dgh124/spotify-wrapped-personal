@@ -28,14 +28,19 @@ class Track:
         :param artists: List of the names of artists on the track
         :param preview_url: Link to a 30s preview of the track
         """
+        self._id = _id
         self.album_name = album_name
         self.album_image = album_image
-        self.name = song_name
+        self.song_name = song_name
         self.artists = artists
         self.preview_url = preview_url
 
     def __str__(self):
-        return self.name
+        return self.song_name
+
+    @property
+    def id(self):
+        return self._id
 
 
 class User:
@@ -45,6 +50,10 @@ class User:
         self.pfp = pfp
         self.product = product
         self.uri = uri
+
+
+    def __str__(self):
+        return self.id
 
     def get_user_id(self):
         return self.id
@@ -394,5 +403,3 @@ def get_personality_and_colors(artists: list):
     personality_color = res_list[5:]
     return personality, personality_color
 
-#def create_duo_wrapped(wrap_id, ):
-    # getallinfo recipient_id =

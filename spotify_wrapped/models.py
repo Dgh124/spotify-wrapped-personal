@@ -2,10 +2,8 @@ import uuid
 
 from django.db import models
 
-#from spotify_wrapped.Spotify import Artist
 
-
-class User(models.Model):
+class UserModel(models.Model):
     id = models.TextField(default=0, primary_key=True)
     display_name = models.CharField(max_length=30, default="")
     pfp = models.TextField(default="", blank=True, null=True)
@@ -16,7 +14,7 @@ class User(models.Model):
         return self.display_name
 
 
-class Artist(models.Model):
+class ArtistModel(models.Model):
     name = models.CharField(max_length=200)
     id = models.CharField(max_length=200, primary_key=True)
     image = models.CharField(max_length=200)
@@ -27,11 +25,13 @@ class Artist(models.Model):
 
 
 
-class Track(models.Model):
+class TrackModel(models.Model):
+    track_id = models.TextField(blank=True)
     album_name = models.TextField(blank=True)
     album_image = models.TextField(blank=True)
     track_name = models.TextField(blank=True)
     artist_list = models.JSONField(default = list) #list of strings
+    preview_url = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
@@ -39,13 +39,13 @@ class Track(models.Model):
 
 
 
-class Wrap(models.Model):
+class WrapModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ManyToManyField(User, related_name="user")
-    top_tracks = models.ManyToManyField(Track, related_name='top_tracks')
-    top_artists = models.ManyToManyField(Artist)
+    user = models.ManyToManyField(UserModel, related_name="user")
+    top_tracks = models.ManyToManyField(TrackModel, related_name='top_tracks')
+    top_artists = models.ManyToManyField(ArtistModel)
     top_audio = models.TextField(blank=True)
-    suggested_tracks = models.ManyToManyField(Track, related_name='suggested_tracks')
+    suggested_tracks = models.ManyToManyField(TrackModel, related_name='suggested_tracks')
     personality = models.JSONField(default = list) #list of strings
     color = models.TextField(blank = True)
     #genres requires a dictionary as input. by default genres is a tuple. use

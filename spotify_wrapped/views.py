@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from spotify_wrapped.models import Track, Artist, Wrap
+from spotify_wrapped.models import TrackModel, ArtistModel, WrapModel
 
 from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, get_user
 
@@ -53,7 +53,10 @@ def wrap(request):
     #print(new_artist)
     converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
     converted_obj.save()
-    print(get_all_user_wraps(wrap_object['value'].user.id))
+    #print(get_all_user_wraps(wrap_object['value'].user.id))
+    #print((converted_obj.top_artists.get(name = "Pink Floyd")))
+    print(convert_wrap_model(converted_obj))
+
 
 
 def logout(request):
