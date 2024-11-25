@@ -2,7 +2,6 @@ body {
     margin: 0;
 }
 
-
 /* Status bar styling */
 #status-bar {
     position: fixed;
@@ -54,6 +53,28 @@ body {
     display: none;
 }
 #pause-button.paused .pause-icon {
+    display: block;
+}
+
+#x-button {
+    position: fixed;
+    right: 3vw;
+    top: 5vh;
+
+    height: 7vh;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+
+    background: rgba(69, 69, 69, 0.4);
+    cursor: pointer;
+    z-index: 100;
+}
+
+#x-button:hover {
+    background: rgba(150, 150, 150, .5);
+}
+
+.x-icon {
     display: block;
 }
 

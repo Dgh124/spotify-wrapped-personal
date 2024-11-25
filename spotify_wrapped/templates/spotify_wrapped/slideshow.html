@@ -33,6 +33,12 @@
 	</svg>
     </div>
 
+    <a id ="x-button" href="{% url 'spotify_wrapped:index' %}">
+    <svg class="icon x-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <text x=12 y=12 text-anchor="middle" dominant-baseline="middle">X</text>
+	</svg>
+    </a>
+
     <div class="slideshow-wrapper">
         <div id="slides" class="slides">
             {% for slide in slides %}

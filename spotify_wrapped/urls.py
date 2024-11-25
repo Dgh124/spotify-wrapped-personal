@@ -1,9 +1,11 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = "spotify_wrapped"
 urlpatterns = [
-    path("", views.logIn, name="login"),
+    path("", views.profile, name="index"),
+    path("login/", views.logIn, name="login"),
     path("auth/", views.auth, name="auth"),
     path("logout/", views.logout, name="logout"),
 
