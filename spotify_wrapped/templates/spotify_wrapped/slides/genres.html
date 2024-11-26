@@ -4,7 +4,7 @@
   <div class="container">
     <h1>Your Top Genres</h1>
     <div class="genres-list">
-      {% if user_info.top_genres|length == 5 %}
+      {% if user_info.top_genres|length >= 5 %}
           <div class="genre-row genre1">
             <span class="genre-number">1</span>
             <span class="genre-name">{{ user_info.top_genres.0.0 }}</span>
