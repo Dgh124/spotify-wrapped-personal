@@ -4,8 +4,11 @@ from django.urls import reverse
 from.models import Feedback
 import json
 
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
+from spotify_wrapped.models import TrackModel, ArtistModel, WrapModel
 
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, get_user
+
+from spotify_wrapped.helperFunc import *
 
 def index(request):
     access_token = request.session.get("access_token", None)
@@ -93,6 +96,26 @@ def auth(request):
     request.session['expire_time'] = expire_time
     request.session['refresh_token'] = refresh_token
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
+
+def wrap(request):
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    # If not logged in yet, show base home page
+    if access_token is None or expire_time is None or refresh_token is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:login"))
+
+    wrap_object = get_all_info(access_token, expire_time, refresh_token)
+    #new_artist = convert_artist_object_to_artist_model(wrap_object['value'].top_artists[0])
+    #print(wrap_object['value'].top_tracks[0])
+    #print(new_artist)
+    converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
+    converted_obj.save()
+    #print(get_all_user_wraps(wrap_object['value'].user.id))
+    #print((converted_obj.top_artists.get(name = "Pink Floyd")))
+    print(convert_wrap_model(converted_obj))
+
 
 
 def logout(request):

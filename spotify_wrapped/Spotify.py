@@ -28,11 +28,20 @@ class Track:
         :param artists: List of the names of artists on the track
         :param preview_url: Link to a 30s preview of the track
         """
+        self._id = _id
         self.album_name = album_name
         self.album_image = album_image
-        self.name = song_name
+        self.song_name = song_name
         self.artists = artists
         self.preview_url = preview_url
+
+    def __str__(self):
+        return self.song_name
+
+    @property
+    def id(self):
+        return self._id
+
 
 class User:
     def __init__(self, display_name:str, _id:str, pfp:str, product:str, uri:str):
@@ -41,6 +50,13 @@ class User:
         self.pfp = pfp
         self.product = product
         self.uri = uri
+
+
+    def __str__(self):
+        return self.id
+
+    def get_user_id(self):
+        return self.id
 
 class WrapObject:
     def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color):
@@ -53,6 +69,16 @@ class WrapObject:
         self.suggested_tracks = suggested_tracks
         self.personality = personality
         self.color = color
+
+    def __str__(self):
+        return (f"Top Tracks:{self.top_tracks}\n"
+                f"Top Artists:{self.top_artists}\n"
+                f"User: {self.user}\n"
+                f"Top Genres: {self.top_genres}\n"
+                f"Audio Link: {self.audio_link}\n"
+                f"Suggested Tracks: {self.suggested_tracks}\n"
+                f"Personality: {self.personality}\n"
+                f"Color: {self.color}\n")
 
 redirect_uri = "http://127.0.0.1:8000/auth"
 
@@ -141,7 +167,6 @@ def get_requests(url, access_token):
     if response.status_code == 200:
         return response.json()
     else:
-        print(response.headers)
         print("request returned error")
         return None
 
@@ -202,7 +227,7 @@ def get_user(access_token, expires_at, refresh_token):
                                "", user_transform_fn)
 
 
-def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=50):
+def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_term', limit=10):
     """
     Queries Spotify API for user's top tracks over a time range
     :param access_token: see get_user_attributes
@@ -339,14 +364,12 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
         return {"status": "error", "reason": "request returned error status code"}
 
-    # commented because of rate limit. Uncomment before production
-    suggested_tracks = {"status": "success", "value": []}
-    # suggested_tracks = get_suggested_tracks(
-    #     access_token=access_token,
-    #     top_artists=top_artists_result["value"],
-    # )
-    # if suggested_tracks["status"] == "error":
-    #     return suggested_tracks #includes error message and value
+    suggested_tracks = get_suggested_tracks(
+        access_token=access_token,
+        top_artists=top_artists_result["value"],
+    )
+    if suggested_tracks["status"] == "error":
+        return suggested_tracks #includes error message and value
 
     personality, color = get_personality_and_colors(top_artists_result['value'])
 
