@@ -10,37 +10,53 @@
 
       <div class="receipt-items">
         <!-- Example track items -->
-        <div class="receipt-item">
-          <span class="item-number">1.</span>
-          <span class="item-name">Track Title One</span>
-          <span class="item-artist">Artist One</span>
-        </div>
-        <div class="receipt-item">
-          <span class="item-number">2.</span>
-          <span class="item-name">Track Title Two</span>
-          <span class="item-artist">Artist Two</span>
-        </div>
-        <div class="receipt-item">
-          <span class="item-number">3.</span>
-          <span class="item-name">Track Title Three</span>
-          <span class="item-artist">Artist Three</span>
-        </div>
-        <div class="receipt-item">
-          <span class="item-number">4.</span>
-          <span class="item-name">Track Title Four</span>
-          <span class="item-artist">Artist Four</span>
-        </div>
-        <div class="receipt-item">
-          <span class="item-number">5.</span>
-          <span class="item-name">Track Title Five</span>
-          <span class="item-artist">Artist Five</span>
-        </div>
+        {% if user_info.top_tracks|length < 5 %}
+          {% for track in user_info.top_tracks %}
+            <div class="receipt-item">
+              <span class="item-number">{{ forloop.counter }}.</span>
+              <span class="item-name">{{track.name}}</span>
+              <span class="item-artist">{{track.artists}}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% if user_info.top_tracks|length >= 5 %}
+          <div class="receipt-item">
+            <span class="item-number">1.</span>
+            <span class="item-name">{{user_info.top_tracks.0.name}}</span>
+            <span class="item-artist">{{user_info.top_tracks.0.artists}}</span>
+          </div>
+          <div class="receipt-item">
+            <span class="item-number">2.</span>
+            <span class="item-name">{{user_info.top_tracks.1.name}}</span>
+            <span class="item-artist">{{user_info.top_tracks.1.artists}}</span>
+          </div>
+          <div class="receipt-item">
+            <span class="item-number">3.</span>
+            <span class="item-name">{{user_info.top_tracks.2.name}}</span>
+            <span class="item-artist">{{user_info.top_tracks.2.artists}}</span>
+          </div>
+          <div class="receipt-item">
+            <span class="item-number">4.</span>
+            <span class="item-name">{{user_info.top_tracks.3.name}}</span>
+            <span class="item-artist">{{user_info.top_tracks.3.artists}}</span>
+          </div>
+          <div class="receipt-item">
+            <span class="item-number">5.</span>
+            <span class="item-name">{{user_info.top_tracks.4.name}}</span>
+            <span class="item-artist">{{user_info.top_tracks.4.artists}}</span>
+          </div>
+        {% endif %}
       </div>
 
       <div class="receipt-line"></div>
       <div class="receipt-total">
         <span>Total Tracks:</span>
-        <span>5</span>
+        {% if user_info.top_tracks|length >= 5 %}
+          <span>5</span>
+        {% endif %}
+        {% if user_info.top_tracks|length < 5 %}
+          <span>{{user_info.top_tracks|length}}</span>
+        {% endif %}
       </div>
       <p class="receipt-thanks">Thank you for listening!</p>
     </div>

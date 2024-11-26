@@ -3,18 +3,34 @@
 {% block body %}
   <div class="container">
     <header>
-      <h1>Your Mood Colors</h1>
+      <h1>Your music taste in color</h1>
     </header>
 
     <section class="mood-colors">
-      <div class="mood-section color-one">
-        <h2 class="mood-title">Calm & Peaceful</h2>
-      </div>
-
-      <div class="mood-section color-two">
-        <h2 class="mood-title">Energetic & Bold</h2>
-      </div>
+      <div class="musicColors" style="height: 300px; width: 100%; "></div>
     </section>
   </div>
+<script>
+    // Pass the colors array to JavaScript safely
+    const colors = {{ user_info.color|safe }};
+
+    console.log("Colors received from Django context:", colors);
+
+    // Ensure colors is a valid array and has exactly 5 colors
+    if (Array.isArray(colors) && colors.length === 5) {
+        // Generate gradients for each color
+        const gradients = colors.map((color, index) => {
+            const angle = 217 + (index * 30); // Adjust angles dynamically
+            return `linear-gradient(${angle}deg, ${color}, ${color}00 70.71%)`;
+        });
+
+        // Combine all gradients and apply as background
+        document.querySelector('.musicColors').style.background = gradients.join(', ');
+    } else {
+        console.error("Unexpected colors format:", colors);
+    }
+</script>
+
+
 
 {% endblock %}

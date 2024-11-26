@@ -17,7 +17,7 @@ def index(request):
         return render(request, "spotify_wrapped/home.html", {})
 
     user_info = get_all_info(access_token, expire_time, refresh_token)
-    print(user_info)
+
     if user_info["status"] == "error":
         print("failed somewhere")
         return render(request, "spotify_wrapped/home.html", {})
@@ -26,8 +26,26 @@ def index(request):
                   {"user_info": user_info["value"]})
 
 def slideshow(request):
-    return render(request, "spotify_wrapped/slideshow.html",
-                  {"slides": ["cover", "AI_Query", "albums", "artists", "genres", "mood", "popularityScore", "recommendations", "tracks"]})
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    # If not logged in yet, show base home page
+    if access_token is None or expire_time is None or refresh_token is None:
+        return render(request, "spotify_wrapped/slideshow.html", {})
+
+    user_info = get_all_info(access_token, expire_time, refresh_token)
+
+    if user_info["status"] == "error":
+        print("failed somewhere")
+        return render(request, "spotify_wrapped/slideshow.html", {})
+
+    return render(request, "spotify_wrapped/slideshow.html",{
+        "user_info": user_info["value"],
+        "slides": ["cover", "AI_Query", "albums",
+                   "artists", "genres", "mood",
+                   "popularityScore", "recommendations", "tracks"]
+    })
 # start of all pages
 def cover(request):
     return render(request, "spotify_wrapped/slides/cover.html", {})
