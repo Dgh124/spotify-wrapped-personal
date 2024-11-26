@@ -8,13 +8,12 @@
         {% for artist in user_info.top_artists %}
           <div class="artist-card">
             <div class="artist-image">
-              <img src="{{ artist.image }}" alt="Artist 1">
+	      <img src="{{ artist.image }}" alt="{{ artist.name }} Picture">
               <span class="artist-number">1</span>
             </div>
             <div class="artist-name" id="artist">{{ artist.name }}</div>
           </div>
         {% endfor %}
-
     </div>
   </div>
 

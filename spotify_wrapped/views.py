@@ -101,8 +101,20 @@ def tracks(request):
     return render(request, "spotify_wrapped/slides/tracks.html", {})
 # end of all pages
 
-def login(request):
-    return HttpResponseRedirect(get_auth_url())
+def logIn(request):
+    context = {"url": get_auth_url()}
+    return render(request, "spotify_wrapped/logIn.html", context)
+
+def profile(request):
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    # If not logged in yet, show login page
+    if access_token is None or expire_time is None or refresh_token is None:
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
+
+    return render(request, "spotify_wrapped/profile.html", {})
 
 def auth(request):
     auth_code = request.GET.get('code')

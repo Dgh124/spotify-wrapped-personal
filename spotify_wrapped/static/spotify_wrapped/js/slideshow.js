@@ -29,16 +29,16 @@ const show_slide = (new_counter) => {
     counter = (new_counter + totalSlides) % totalSlides;
     for (let i = 0; i < totalSlides; i++) {
 	// hide all child slides not needed
-	const child = slides.children[i];
-	if (i != counter) child.style.display = "none";
-	else child.style.display = "";
+		const child = slides.children[i];
+		if (i != counter) child.style.display = "none";
+		else child.style.display = "";
 
-	const bar = status_bar.children[i];
-	if (i < counter) {
-	    bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
-	} else {
-	    bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
-	}
+		const bar = status_bar.children[i];
+		if (i < counter) {
+			bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
+		} else {
+			bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
+		}
 
     }
 
