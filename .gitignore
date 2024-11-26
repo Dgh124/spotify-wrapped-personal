@@ -1,8 +1,8 @@
-/.venv/
-/.venv2/
+/.*venv/
 /.idea/
 .env
 db.sqlite3
 AI_API.py
 /**/__pycache__/
 /staticfiles/
+.eslintrc.json

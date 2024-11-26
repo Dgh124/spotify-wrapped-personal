@@ -1,69 +1,106 @@
 {% extends "spotify_wrapped/slides/base.html" %}
 
 {% block body %}
-  <div class="container">
+<div class="container">
     <header>
-      <h1>Popularity Score</h1>
-      <p class="subheader">Analyzing the popularity of your top 100 songs</p>
+        <h1>Popularity Score</h1>
+        <p class="subheader">
+            Analyzing the popularity of your top 
+            {{ user_info.top_tracks|length }}
+            songs</p>
     </header>
 
     <section class="average-score">
-      <div class="score-circle">
-        <span class="score-number">84</span>
-      </div>
-      <p class="score-text">Average Popularity Score</p>
+        <div class="score-circle" id="score-circle">
+            <span class="score-number" id="score-number">84</span>
+        </div>
+        <p class="score-text">Average Popularity Score</p>
     </section>
 
     <section class="top-least-popular">
-      <div class="top-songs">
-        <h2>Top 3 Most Popular Songs</h2>
-        <div class="song-card">
-          <div class="song-info">
-            <h3>Song Title 1</h3>
-            <p>Artist Name 1</p>
-          </div>
-          <div class="popularity-circle" data-score="95"></div>
+        <div class="top-songs">
+            <h2>Top 3 Most Popular Songs</h2>
+            {% for track in user_info.top_tracks|slice:":3" %}
+            <div class="song-card">
+                <div class="song-info">
+                    <h3 id="top-song-title-{{forloop.counter}}">
+                        Song Title {{forloop.counter}}
+                    </h3>
+                    <p id="top-song-artist-{{forloop.counter}}">
+                        Artist Name {{forloop.counter}}
+                    </p>
+                </div>
+                <div class="popularity-circle" data-score="95" 
+                    id="top-song-circle-{{forloop.counter}}"></div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="song-card">
-          <div class="song-info">
-            <h3>Song Title 2</h3>
-            <p>Artist Name 2</p>
-          </div>
-          <div class="popularity-circle" data-score="92"></div>
-        </div>
-        <div class="song-card">
-          <div class="song-info">
-            <h3>Song Title 3</h3>
-            <p>Artist Name 3</p>
-          </div>
-          <div class="popularity-circle" data-score="89"></div>
-        </div>
-      </div>
 
-      <div class="least-popular-songs">
-        <h2>Top 3 Least Popular Songs</h2>
-        <div class="song-card">
-          <div class="song-info">
-            <h3>Song Title 98</h3>
-            <p>Artist Name 98</p>
-          </div>
-          <div class="popularity-circle" data-score="25"></div>
+        <div class="least-popular-songs">
+            <h2>Top 3 Least Popular Songs</h2>
+            {% for track in user_info.top_tracks|slice:":3" %}
+            <div class="song-card">
+                <div class="song-info">
+                    <h3 id="bottom-song-title-{{forloop.counter}}">
+                        Song Title {{forloop.counter}}
+                    </h3>
+                    <p id="bottom-song-artist-{{forloop.counter}}">
+                        Artist Name {{forloop.counter}}
+                    </p>
+                </div>
+                <div class="popularity-circle" data-score="95" 
+                    id="bottom-song-circle-{{forloop.counter}}"></div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="song-card">
-          <div class="song-info">
-            <h3>Song Title 99</h3>
-            <p>Artist Name 99</p>
-          </div>
-          <div class="popularity-circle" data-score="20"></div>
-        </div>
-        <div class="song-card">
-          <div class="song-info">
-            <h3>Song Title 100</h3>
-            <p>Artist Name 100</p>
-          </div>
-          <div class="popularity-circle" data-score="15"></div>
-        </div>
-      </div>
     </section>
-  </div>
+</div>
+
+<script>
+    // load the tracks into js
+    const tracks = [];
+    {% for track in user_info.top_tracks %}
+    tracks.push({
+        "song_name": "{{track.name|safe}}", 
+        "artists": {{track.artists|safe}},
+        "popularity_score": {{track.popularity_score|safe}},
+    });
+    {% endfor %}
+    // sort the tracks by popularity 
+    const popularTracks = tracks.sort((a, b) => a["popularity_score"] < b["popularity_score"]);
+    
+    // get the average popularity score of all songs
+    const totalScore = tracks.reduce((acc, curr) => acc + curr["popularity_score"], 0);
+    const averageScore = Math.floor(totalScore / tracks.length);
+    document.getElementById("score-number").innerText = averageScore;
+    document.getElementById("score-circle").
+        style.setProperty("--popularity-score", averageScore);
+
+    // set the top songs
+    for (let i = 1; i <= 3; i++) {
+        const index = i-1;
+        const titleElement = document.getElementById(`top-song-title-${i}`);
+        const artistElement = document.getElementById(`top-song-artist-${i}`);
+        const circleElement = document.getElementById(`top-song-circle-${i}`);
+        const track = popularTracks[index];
+        titleElement.innerText = track["song_name"];
+        artistElement.innerText = track["artists"].join(", ");
+        circleElement.innerText = track["popularity_score"];
+        circleElement.style.setProperty("--popularity-score", track["popularity_score"]);
+    }
+
+    // set the bottom songs
+    for (let i = 3; i >= 1; i--) {
+        const index = popularTracks.length-i;
+        const titleElement = document.getElementById(`bottom-song-title-${i}`);
+        const artistElement = document.getElementById(`bottom-song-artist-${i}`);
+        const circleElement = document.getElementById(`bottom-song-circle-${i}`);
+        const track = popularTracks[index];
+        titleElement.innerText = track["song_name"];
+        artistElement.innerText = track["artists"];
+        circleElement.innerText = track["popularity_score"];
+        circleElement.style.setProperty("--popularity-score", track["popularity_score"]);
+
+    }
+</script>
 {% endblock %}

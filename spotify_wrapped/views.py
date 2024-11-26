@@ -40,12 +40,15 @@ def slideshow(request):
         print("failed somewhere")
         return render(request, "spotify_wrapped/slideshow.html", {})
 
+    print(user_info["value"].top_artists);
     return render(request, "spotify_wrapped/slideshow.html",{
         "user_info": user_info["value"],
-        "slides": ["cover", "AI_Query", "albums",
-                   "artists", "genres", "mood",
-                   "popularityScore", "recommendations", "tracks"]
+        "slides": ["cover", "mood", "AI_Query", 
+                   "artists", "genres", "albums", 
+                   "genres", "popularityScore", "recommendations", 
+                   "tracks", ]
     })
+    # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
 # start of all pages
 def cover(request):
     return render(request, "spotify_wrapped/slides/cover.html", {})

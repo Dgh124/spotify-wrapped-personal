@@ -3,31 +3,71 @@
 {% block body %}
   <div class="container">
     <header>
-      <h1>Your music taste in color</h1>
+      <h1>Your Mood Colors</h1>
     </header>
 
     <section class="mood-colors">
-      <div class="musicColors" style="height: 300px; width: 100%; "></div>
+      <div class="mood-section color-one">
+	      <h2 class="mood-title"></h2>
+      </div>
+
+      <div class="mood-section color-two">
+        <h2 class="mood-title"></h2>
+      </div>
     </section>
   </div>
 <script>
-    // Pass the colors array to JavaScript safely
     const colors = {{ user_info.color|safe }};
-
-    console.log("Colors received from Django context:", colors);
+    const personality = {{ user_info.personality|safe }};
 
     // Ensure colors is a valid array and has exactly 5 colors
-    if (Array.isArray(colors) && colors.length === 5) {
-        // Generate gradients for each color
-        const gradients = colors.map((color, index) => {
-            const angle = 217 + (index * 30); // Adjust angles dynamically
-            return `linear-gradient(${angle}deg, ${color}, ${color}00 70.71%)`;
-        });
+    if (Array.isArray(colors) && colors.length >= 2) {
+	const slide_div = document.getElementById("mood");
+	const [i1, i2] = mostDifferentColors(colors);
 
-        // Combine all gradients and apply as background
-        document.querySelector('.musicColors').style.background = gradients.join(', ');
+        slide_div.style.setProperty("--mood-color-1", `${colors[i1]}`);
+        slide_div.style.setProperty("--mood-color-2", `${colors[i2]}`);
+
+	mood_titles = document.getElementsByClassName("mood-title");
+	mood_titles[0].innerText = personality[i1];
+	mood_titles[1].innerText = personality[i2];
     } else {
-        console.error("Unexpected colors format:", colors);
+	console.error("Unexpected colors format: ", colors);
+    }
+    
+    function mostDifferentColors(colors) {
+	const hexToRgb = (hex) => {
+	    hex = hex.replace("#", "");
+	    let bigint = parseInt(hex, 16);
+	    const r = (bigint >> 16) & 255;
+	    const g = (bigint >> 8) & 255;
+	    const b = bigint & 255;
+	    return {r, g, b};
+	}
+	
+	const colorDistance = (c1, c2) => {
+	    const dr = c2.r-c1.r;
+	    const dg = c2.g-c1.g;
+	    const db = c2.b-c1.b;
+	    return Math.sqrt(dr*dr + dg*dg + db*db);
+	}
+
+	const rgbColors = colors.map(hexToRgb);
+	let i1 = i2 = 0;
+	let max_dist = -1;
+	
+	for (let i = 0; i < rgbColors.length; i++) {
+	    for (let j = 0; j < rgbColors.length; j++) {
+		const cd = colorDistance(rgbColors[i], rgbColors[j]);
+		if (cd > max_dist) {
+		    i1 = i;
+		    i2 = j;
+		    max_dist = cd;
+		}
+	    }
+	}
+
+	return [i1, i2];
     }
 </script>
 

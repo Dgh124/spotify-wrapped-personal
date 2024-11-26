@@ -5,13 +5,13 @@
     <h1>Your Top Albums</h1>
     <div class="albums-grid">
       <!-- Album 1 -->
-     {% for track in user_info.top_tracks %}
+     {% for track in user_info.top_albums|slice:":5" %}
           <div class="album-card">
             <div class="album-image">
-              <img src="{{ track.album_image }}" alt="Album 1">
+              <!-- <img src="{{ track.album_image }}" alt="Album 1"> -->
 <!--              <span class="album-number">1</span>-->
             </div>
-            <div class="album-name">{{ track.album_name }}</div>
+            <div class="album-name">{{ track.0  }}</div>
           </div>
      {% endfor %}
     </div>

@@ -5,47 +5,17 @@
     <div class="receipt">
       <h1 class="receipt-header">Spotify Receipt</h1>
       <p class="receipt-subheader">Your Top 5 Tracks</p>
-      <p class="receipt-date">Date: {{ current_date }}</p>
+      <p class="receipt-date">Date: {% now "m-d-Y" %}</p>
       <div class="receipt-line"></div>
 
       <div class="receipt-items">
-        <!-- Example track items -->
-        {% if user_info.top_tracks|length < 5 %}
-          {% for track in user_info.top_tracks %}
-            <div class="receipt-item">
+          {% for track in user_info.top_tracks|slice:":5" %}
+          <div class="receipt-item">
               <span class="item-number">{{ forloop.counter }}.</span>
               <span class="item-name">{{track.name}}</span>
-              <span class="item-artist">{{track.artists}}</span>
-            </div>
+              <span class="item-artist">{{track.artists|join:", "}}</span>
+          </div>
           {% endfor %}
-        {% endif %}
-        {% if user_info.top_tracks|length >= 5 %}
-          <div class="receipt-item">
-            <span class="item-number">1.</span>
-            <span class="item-name">{{user_info.top_tracks.0.name}}</span>
-            <span class="item-artist">{{user_info.top_tracks.0.artists}}</span>
-          </div>
-          <div class="receipt-item">
-            <span class="item-number">2.</span>
-            <span class="item-name">{{user_info.top_tracks.1.name}}</span>
-            <span class="item-artist">{{user_info.top_tracks.1.artists}}</span>
-          </div>
-          <div class="receipt-item">
-            <span class="item-number">3.</span>
-            <span class="item-name">{{user_info.top_tracks.2.name}}</span>
-            <span class="item-artist">{{user_info.top_tracks.2.artists}}</span>
-          </div>
-          <div class="receipt-item">
-            <span class="item-number">4.</span>
-            <span class="item-name">{{user_info.top_tracks.3.name}}</span>
-            <span class="item-artist">{{user_info.top_tracks.3.artists}}</span>
-          </div>
-          <div class="receipt-item">
-            <span class="item-number">5.</span>
-            <span class="item-name">{{user_info.top_tracks.4.name}}</span>
-            <span class="item-artist">{{user_info.top_tracks.4.artists}}</span>
-          </div>
-        {% endif %}
       </div>
 
       <div class="receipt-line"></div>
