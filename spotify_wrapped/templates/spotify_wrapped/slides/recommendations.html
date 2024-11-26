@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Recommended Songs for You</h1>
         <div class="songs-grid">
-            <!-- Song 1 -->
+            {% for track in user_info.suggested_tracks|slice:":5" %}
             <div class="song-card">
                 <div class="song-image">
 		    {# <img src="{% static 'spotify_wrapped/images/song1.jpg' %}" alt="Song 1"> #}
@@ -13,62 +13,11 @@
                     </div>
                 </div>
                 <div class="song-info">
-                    <div class="song-title">{{ user_info.suggested_tracks.0.song_name }}</div>
-                    <div class="song-artist">{{ user_info.suggested_tracks.0.artists }}</div>
+                    <div class="song-title">{{ track.song_name }}</div>
+                    <div class="song-artist">{{ track.artists|join:", " }}</div>
                 </div>
             </div>
-            <!-- Song 2 -->
-            <div class="song-card">
-                <div class="song-image">
-		    {# <img src="{% static 'spotify_wrapped/images/song2.jpg' %}" alt="Song 2"> #}
-                    <div class="play-button">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-                <div class="song-info">
-                    <div class="song-title">{{ user_info.suggested_tracks.1.song_name }}</div>
-                    <div class="song-artist">{{ user_info.suggested_tracks.1.artists }}</div>
-                </div>
-            </div>
-            <!-- Song 3 -->
-            <div class="song-card">
-                <div class="song-image">
-		    {# <img src="{% static 'spotify_wrapped/images/song3.jpg' %}" alt="Song 3"> #}
-                    <div class="play-button">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-                <div class="song-info">
-                    <div class="song-title">{{ user_info.suggested_tracks.2.song_name }}</div>
-                    <div class="song-artist">{{ user_info.suggested_tracks.2.artists }}</div>
-                </div>
-            </div>
-            <!-- Add more song cards as needed -->
-            <div class="song-card">
-                <div class="song-image">
-		    {# <img src="{% static 'spotify_wrapped/images/song4.jpg' %}" alt="Song 4"> #}
-                    <div class="play-button">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-                <div class="song-info">
-                    <div class="song-title">{{ user_info.suggested_tracks.3.song_name }}</div>
-                    <div class="song-artist">{{ user_info.suggested_tracks.3.artists }}</div>
-                </div>
-            </div>
-
-            <div class="song-card">
-                <div class="song-image">
-		    {# <img src="{% static 'spotify_wrapped/images/song5.jpg' %}" alt="Song 5"> #}
-                    <div class="play-button">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-                <div class="song-info">
-                    <div class="song-title">{{ user_info.suggested_tracks.4.song_name }}</div>
-                    <div class="song-artist">{{ user_info.suggested_tracks.4.artists }}</div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 

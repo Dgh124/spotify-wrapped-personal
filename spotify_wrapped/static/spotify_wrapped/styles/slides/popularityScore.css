@@ -1,6 +1,8 @@
 /* Basic resets */
 #popularityScore.slide-container {
   background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  --main-theme-yellow: #ffdd57;
+  --secondary-theme-yellow: #ffd1a4;
 }
 
 /* Container */
@@ -14,14 +16,14 @@
 #popularityScore header h1 {
   font-size: 2.5em;
   margin-bottom: 10px;
-  color: #ffdd57;
+  color: var(--main-theme-yellow);
   animation: fadeIn 1.2s ease-in-out;
 }
 
 #popularityScore .subheader {
   font-size: 1.2em;
   margin-bottom: 30px;
-  color: #ffd1a4;
+  color: var(--secondary-theme-yellow);
 }
 
 /* Average Score */
@@ -36,7 +38,7 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: conic-gradient(#ffdd57 75%, #333 0);
+  background: conic-gradient(var(--main-theme-yellow) calc(var(--popularity-score) * 1%), #333 calc(var(--popularity-score) * 1%));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,12 +48,13 @@
 #popularityScore .score-number {
   font-size: 2.5em;
   font-weight: 600;
+  color: white;
 }
 
 #popularityScore .score-text {
   font-size: 1.2em;
   margin-top: 10px;
-  color: #ffdd57;
+  color: var(--main-theme-yellow);
 }
 
 /* Top & Least Popular Sections */
@@ -97,20 +100,21 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: conic-gradient(#ffdd57 calc(var(--popularity-score) * 1%), #333 calc(var(--popularity-score) * 1%));
+  background: conic-gradient(var(--main-theme-yellow) calc(var(--popularity-score) * 1%), #333 calc(var(--popularity-score) * 1%));
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1em;
-  color: #ffdd57;
+  color: var(--main-theme-yellow);
   position: absolute;
   right: 15px;
-}
-
-#popularityScore .popularity-circle::after {
-  content: attr(data-score);
   color: #ffffff;
 }
+
+/* #popularityScore .popularity-circle::after { */
+/*   content: attr(data-score); */
+/*   color: #ffffff; */
+/* } */
 
 /* Animations */
 @keyframes fadeIn {

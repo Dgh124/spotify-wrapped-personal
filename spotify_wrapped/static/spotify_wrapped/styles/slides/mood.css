@@ -1,10 +1,12 @@
 #mood.slide-container {
+  --mood-color-1: #5D8AA8;
+  --mood-color-2: #FF6F61;
   font-family: 'Poppins', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(90deg, #5D8AA8 0%, #FF6F61 100%);
+  background: linear-gradient(90deg, var(--mood-color-1) 0%, var(--mood-color-2) 100%);
   color: #ffffff;
   overflow-y: auto;
 }
@@ -34,7 +36,8 @@
 #mood .mood-colors {
   display: flex;
   width: 100%;
-  background: linear-gradient(90deg, rgba(93, 138, 168, 1) 0%, rgba(93, 138, 168, 0.8) 35%, rgba(255, 111, 97, 0.8) 66%, rgba(255, 111, 97, 1) 100%);
+  /* background: linear-gradient(90deg, rgba(93, 138, 168, 1) 0%, rgba(93, 138, 168, 0.8) 35%, rgba(255, 111, 97, 0.8) 66%, rgba(255, 111, 97, 1) 100%); */
+  background: linear-gradient(90deg, var(--mood-color-1) 0%, var(--mood-color-2) 100%);
   border-radius: 10px;
 }
 
@@ -47,16 +50,12 @@
   text-align: center;
 }
 
-#mood .color-one {
-  background: transparent; /* Part of the gradient background */
-}
-
-#mood .color-two {
+#mood .color-one, #mood .color-two {
   background: transparent; /* Part of the gradient background */
 }
 
 #mood .mood-title {
-  font-size: 1.8em;
+  font-size: 2.5em;
   margin-bottom: 15px;
 }
 

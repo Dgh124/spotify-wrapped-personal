@@ -19,14 +19,16 @@ class Artist:
         self.genres = genres
 
 class Track:
-    def __init__(self, _id:str, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None):
+    def __init__(self, _id:str, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None, popularity_score:int):
         """
         Initializes Track object
+        :param id: Unique spotify id of the track
         :param album_name: Name of the album the track was released in
         :param album_image: URL of the smallest image corresponding to the album
         :param song_name: Track name
         :param artists: List of the names of artists on the track
         :param preview_url: Link to a 30s preview of the track
+        :param popularity_score: 
         """
         self._id = _id
         self.album_name = album_name
@@ -34,6 +36,7 @@ class Track:
         self.song_name = song_name
         self.artists = artists
         self.preview_url = preview_url
+        self.popularity_score = popularity_score
 
     def __str__(self):
         return self.song_name
@@ -166,9 +169,11 @@ def get_requests(url, access_token):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
+    elif response.status_code == 401:
+        print(f"Client not authorized to make request at {url}")
     else:
-        print("request returned error")
-        return None
+        print(f"{url} request returned error code {response.status_code}")
+    return None
 
 
 def is_token_expired(expires_at:int) -> bool:
@@ -241,10 +246,11 @@ def get_top_tracks(access_token, expires_at, refresh_token, time_range='medium_t
         Track(
             _id=track["id"],
             album_name=track["album"]["name"],
-            album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
+            album_image=track["album"]["images"][0]["url"] if track["album"]["images"] else "",
             song_name=track["name"],
             artists=[artist["name"] for artist in track["artists"]],
-            preview_url=track.get("preview_url", "")
+            preview_url=track.get("preview_url", ""),
+            popularity_score=track["popularity"]
         )
         for track in response["items"]
     ]
@@ -268,7 +274,7 @@ def get_top_artists(access_token, expires_at, refresh_token, time_range="medium_
         Artist(
             name=artist["name"],
             _id=artist["id"],
-            image=artist["images"][-1]["url"] if artist["images"] else "",
+            image=artist["images"][0]["url"] if artist["images"] else "",
             genres=artist["genres"],
         ) for artist in response["items"]
     ]
@@ -277,16 +283,6 @@ def get_top_artists(access_token, expires_at, refresh_token, time_range="medium_
         access_token, expires_at, refresh_token,
         f"top/artists?time_range={time_range}&limit={limit}", top_artists_transform_fn
     )
-
-
-def get_top_albums(top_tracks: list[Track]) -> list[tuple[str, list[Track]]]:
-    albums = {}
-    for track in top_tracks:
-        if track.album_name in albums:
-            albums[track.album_name].append(track)
-        else:
-            albums[track.album_name] = [track]
-    return sorted(albums.items(), key=lambda item: len(item[1]), reverse=True)
 
 
 def get_top_genres(top_artists: list[Artist]) -> list[tuple[str,int]]:
@@ -320,6 +316,16 @@ def get_top_track_audio_link(track_list: list[Track]) -> str:
     return ""
 
 
+def get_top_albums(top_tracks: list[Track]) -> list[tuple[str, list[Track]]]:
+    albums = {}
+    for track in top_tracks:
+        if track.album_name in albums:
+            albums[track.album_name].append(track)
+        else:
+            albums[track.album_name] = [track]
+    return sorted(albums.items(), key=lambda item: len(item[1]), reverse=True)
+
+
 def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> dict[str,list[Track]|str]:
     """
     queries spotify API for suggested tracks based on list of artists
@@ -345,47 +351,14 @@ def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> dict[str
             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
             song_name=track["name"],
             artists=[artist["name"] for artist in track["artists"]],
-            preview_url=track["preview_url"]
+            preview_url=track.get("preview_url", ""),
+            popularity_score=track["popularity"],
         )
         for track in response["tracks"]
     ]}
 
 
-def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | WrapObject]:
-    top_tracks_result = get_top_tracks(
-        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
-    )
-    user_result = get_user(
-        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
-    )
-    top_artists_result = get_top_artists(
-        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
-    )
-    if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
-        return {"status": "error", "reason": "request returned error status code"}
-
-    suggested_tracks = get_suggested_tracks(
-        access_token=access_token,
-        top_artists=top_artists_result["value"],
-    )
-    if suggested_tracks["status"] == "error":
-        return suggested_tracks #includes error message and value
-
-    personality, color = get_personality_and_colors(top_artists_result['value'])
-
-    return {"status": "success", "value": WrapObject(
-        top_tracks=top_tracks_result["value"],
-        top_artists=top_artists_result["value"],
-        user=user_result["value"],
-        suggested_tracks=suggested_tracks["value"],
-        personality=personality,
-        color= json.dumps(color)
-    )}
-
-
-
 def get_personality_and_colors(artists: list):
-
     client = OpenAI(
         api_key=chatgpt,
     )
@@ -411,7 +384,42 @@ def get_personality_and_colors(artists: list):
         model="gpt-3.5-turbo",
     )
     response = chat_completion.choices[0].message.content
-    res_list = response.split()
-    personality = res_list[:5]
+    res_list = response.replace(',', ' ').split()
+    personality = [word.lower() for word in res_list[:5]]
     personality_color = res_list[5:]
     return personality, personality_color
+
+
+def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | WrapObject]:
+    top_tracks_result = get_top_tracks(
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token, limit=50
+    )
+    user_result = get_user(
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
+    )
+    top_artists_result = get_top_artists(
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
+    )
+    if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
+        return {"status": "error", "reason": "request returned error status code"}
+
+    suggested_tracks = get_suggested_tracks(
+        access_token=access_token,
+        top_artists=top_artists_result["value"],
+    )
+    if suggested_tracks["status"] == "error":
+        return suggested_tracks #includes error message and value
+
+    personality, color = get_personality_and_colors(top_artists_result['value'])
+
+    return {"status": "success", "value": WrapObject(
+        top_tracks=top_tracks_result["value"],
+        top_artists=top_artists_result["value"],
+        user=user_result["value"],
+        suggested_tracks=suggested_tracks["value"],
+        personality=personality,
+        color = json.dumps(color)
+    )}
+
+
+

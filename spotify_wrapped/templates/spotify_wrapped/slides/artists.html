@@ -4,14 +4,13 @@
   <div class="container">
     <h1>Your Top Artists</h1>
     <div class="artists-grid">
-      <!-- Artist 1 -->
-        {% for artist in user_info.top_artists %}
+        {% for artist in user_info.top_artists|slice:":5" %}
           <div class="artist-card">
             <div class="artist-image">
 	      <img src="{{ artist.image }}" alt="{{ artist.name }} Picture">
-              <span class="artist-number">1</span>
+	      <span class="artist-number">{{forloop.counter}}</span>
             </div>
-            <div class="artist-name" id="artist">{{ artist.name }}</div>
+            <div class="artist-name">{{ artist.name }}</div>
           </div>
         {% endfor %}
     </div>

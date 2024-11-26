@@ -78,6 +78,13 @@ body {
     display: block;
 }
 
+.x-icon text {
+    stroke: white;
+    fill: white;
+    font-family: "Poppins", serif;
+    font-weight: bold;
+}
+
 /* Slide styling */
 .slideshow-wrapper {
     position: relative;

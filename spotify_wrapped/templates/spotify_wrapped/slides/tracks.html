@@ -5,20 +5,17 @@
     <div class="receipt">
       <h1 class="receipt-header">Spotify Receipt</h1>
       <p class="receipt-subheader">Your Top 5 Tracks</p>
-      <p class="receipt-date">Date: {{ current_date }}</p>
+      <p class="receipt-date">Date: {% now "m-d-Y" %}</p>
       <div class="receipt-line"></div>
 
       <div class="receipt-items">
-        <!-- Example track items -->
-        {% if user_info.top_tracks|length > 0 %}
           {% for track in user_info.top_tracks|slice:":5" %}
-            <div class="receipt-item">
+          <div class="receipt-item">
               <span class="item-number">{{ forloop.counter }}.</span>
               <span class="item-name">{{track.song_name}}</span>
-              <span class="item-artist">{{track.artists}}</span>
-            </div>
+              <span class="item-artist">{{track.artists|join:", "}}</span>
+          </div>
           {% endfor %}
-        {% endif %}
       </div>
 
       <div class="receipt-line"></div>

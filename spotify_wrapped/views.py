@@ -5,27 +5,8 @@ from.models import Feedback
 import json
 
 from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
-from spotify_wrapped.models import TrackModel, ArtistModel, WrapModel
+from spotify_wrapped.modelControllers import *
 
-from spotify_wrapped.helperFunc import *
-
-def index(request):
-    access_token = request.session.get("access_token", None)
-    expire_time = request.session.get("expire_time", None)
-    refresh_token = request.session.get("refresh_token", None)
-
-    # If not logged in yet, show base home page
-    if access_token is None or expire_time is None or refresh_token is None:
-        return render(request, "spotify_wrapped/home.html", {})
-
-    user_info = get_all_info(access_token, expire_time, refresh_token)
-
-    if user_info["status"] == "error":
-        print("failed somewhere")
-        return render(request, "spotify_wrapped/home.html", {})
-
-    return render(request, "spotify_wrapped/home.html",
-                  {"user_info": user_info["value"]})
 
 def slideshow(request):
     access_token = request.session.get("access_token", None)
@@ -44,10 +25,11 @@ def slideshow(request):
 
     return render(request, "spotify_wrapped/slideshow.html",{
         "user_info": user_info["value"],
-        "slides": ["cover", "AI_Query", "albums",
-                   "artists", "genres", "mood",
-                   "popularityScore", "recommendations", "tracks"]
+        "slides": ["cover", "mood", "AI_Query", 
+                   "artists", "genres", "albums", 
+                   "popularityScore", "recommendations", "tracks", ]
     })
+    # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
 # start of all pages
 def cover(request):
     return render(request, "spotify_wrapped/slides/cover.html", {})
