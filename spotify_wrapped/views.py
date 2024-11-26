@@ -1,12 +1,11 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render 
+from django.shortcuts import render
 from django.urls import reverse
 from.models import Feedback
 import json
 
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
 from spotify_wrapped.models import TrackModel, ArtistModel, WrapModel
-
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, get_user
 
 from spotify_wrapped.helperFunc import *
 
@@ -20,7 +19,7 @@ def index(request):
         return render(request, "spotify_wrapped/home.html", {})
 
     user_info = get_all_info(access_token, expire_time, refresh_token)
-    print(user_info)
+
     if user_info["status"] == "error":
         print("failed somewhere")
         return render(request, "spotify_wrapped/home.html", {})
@@ -29,9 +28,26 @@ def index(request):
                   {"user_info": user_info["value"]})
 
 def slideshow(request):
-    return render(request, "spotify_wrapped/slideshow.html",
-                      {"slides": ["cover", "AI_Query", "albums", "artists", "genres", "mood", "popularityScore", "recommendations", "tracks"],
-                   })
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    # If not logged in yet, show base home page
+    if access_token is None or expire_time is None or refresh_token is None:
+        return render(request, "spotify_wrapped/slideshow.html", {})
+
+    user_info = get_all_info(access_token, expire_time, refresh_token)
+
+    if user_info["status"] == "error":
+        print("failed somewhere")
+        return render(request, "spotify_wrapped/slideshow.html", {})
+
+    return render(request, "spotify_wrapped/slideshow.html",{
+        "user_info": user_info["value"],
+        "slides": ["cover", "AI_Query", "albums",
+                   "artists", "genres", "mood",
+                   "popularityScore", "recommendations", "tracks"]
+    })
 # start of all pages
 def cover(request):
     return render(request, "spotify_wrapped/slides/cover.html", {})
@@ -149,5 +165,5 @@ def games(request):
     info_str = info_str[:-1] + "]}"
 
     # user_info_json = json.dumps(user_info["value"])
-    return render(request, "spotify_wrapped/slideshow.html", 
+    return render(request, "spotify_wrapped/slideshow.html",
                   {"slides": ["games"], "user_info": info_str});

@@ -405,7 +405,7 @@ def get_personality_and_colors(artists: list):
                                 Also generate 5 hex code based on the personalities.
                                 Return in the format 
                                 "personality1 personality2 personality3 personality4 personality5 Hex1 Hex2 Hex3 Hex4 Hex5" 
-                                Dont not include any heading!"""
+                                Dont not include any heading! NO COMMAS! """
             }
         ],
         model="gpt-3.5-turbo",
