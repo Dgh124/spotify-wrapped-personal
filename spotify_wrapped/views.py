@@ -116,15 +116,23 @@ def wrap(request):
     if access_token is None or expire_time is None or refresh_token is None:
         return HttpResponseRedirect(reverse("spotify_wrapped:login"))
 
+    #spotify.py wrap object
     wrap_object = get_all_info(access_token, expire_time, refresh_token)
+
+    #print(type(wrap_object))
     #new_artist = convert_artist_object_to_artist_model(wrap_object['value'].top_artists[0])
     #print(wrap_object['value'].top_tracks[0])
     #print(new_artist)
+
+    #models wrap model
     converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
     converted_obj.save()
     #print(get_all_user_wraps(wrap_object['value'].user.id))
     #print((converted_obj.top_artists.get(name = "Pink Floyd")))
+
+    #spotify.py wrap object
     print(convert_wrap_model(converted_obj))
+
 
 
 

@@ -1,4 +1,5 @@
 import uuid
+from operator import truediv
 
 from django.db import models
 
@@ -18,7 +19,7 @@ class ArtistModel(models.Model):
     name = models.CharField(max_length=200)
     id = models.CharField(max_length=200, primary_key=True)
     image = models.CharField(max_length=200)
-    genres = models.CharField(max_length=200)
+    genres = models.JSONField(default=list, null=True, blank=True) # list of strings
 
     def __str__(self):
         return f"{self.name}"
@@ -32,6 +33,7 @@ class TrackModel(models.Model):
     track_name = models.TextField(blank=True)
     artist_list = models.JSONField(default = list) #list of strings
     preview_url = models.TextField(blank=True, null=True)
+    popularity_score = models.IntegerField(default=0)
 
 
     def __str__(self):

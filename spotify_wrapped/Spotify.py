@@ -12,7 +12,7 @@ client_secret = os.getenv("CLIENT_SECRET")
 chatgpt = os.getenv("CHATGPT_KEY")
 
 class Artist:
-    def __init__(self, name:str, _id:str, image:str, genres:str):
+    def __init__(self, name:str, _id:str, image:str, genres:list[str]):
         self.name = name
         self.id = _id
         self.image = image
@@ -22,7 +22,7 @@ class Track:
     def __init__(self, _id:str, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None, popularity_score:int):
         """
         Initializes Track object
-        :param id: Unique spotify id of the track
+        :param _id: Unique spotify id of the track
         :param album_name: Name of the album the track was released in
         :param album_image: URL of the smallest image corresponding to the album
         :param song_name: Track name
@@ -293,6 +293,7 @@ def get_top_genres(top_artists: list[Artist]) -> list[tuple[str,int]]:
     """
     top_genres = {}
     for artist in top_artists:
+        print(type(artist.genres))
         for genre in artist.genres:
             if genre in top_genres:
                 top_genres[genre] += 1
