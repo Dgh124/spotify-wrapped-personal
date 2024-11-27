@@ -293,7 +293,6 @@ def get_top_genres(top_artists: list[Artist]) -> list[tuple[str,int]]:
     """
     top_genres = {}
     for artist in top_artists:
-        print(type(artist.genres))
         for genre in artist.genres:
             if genre in top_genres:
                 top_genres[genre] += 1

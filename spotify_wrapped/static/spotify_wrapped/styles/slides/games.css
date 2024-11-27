@@ -51,9 +51,11 @@
     font-family: "Montserrat", serif;
     color: black;
     font-size: 1.5rem;
+    text-align: center;
 
     border: solid 2px black;
-    width: min-content;
+    width: 7em;
+    /* width: min-content; */
     padding: .5rem;
 }
 

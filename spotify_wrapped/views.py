@@ -23,28 +23,15 @@ def slideshow(request):
         print("failed somewhere")
         return render(request, "spotify_wrapped/slideshow.html", {})
 
-    return render(request, "spotify_wrapped/slideshow.html",{
+    return render(request, "spotify_wrapped/slideshow.html", {
         "user_info": user_info["value"],
+        # "slides": ["games"],
         "slides": ["cover", "mood", "AI_Query", 
                    "artists", "genres", "albums", 
-                   "popularityScore", "recommendations", "tracks", ]
+                   "popularityScore", "recommendations", "tracks", "games",]
     })
     # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
-# start of all pages
-def cover(request):
-    return render(request, "spotify_wrapped/slides/cover.html", {})
 
-def AI_Query(request):
-    return render(request, "spotify_wrapped/slides/AI_Query.html", {})
-
-def albums(request):
-    return render(request, "spotify_wrapped/slides/albums.html", {})
-
-def artists(request):
-    return render(request, "spotify_wrapped/slides/artists.html", {})
-
-def genres(request):
-    return render(request, "spotify_wrapped/slides/genres.html", {})
 
 def meetDevs(request):
     """
@@ -70,18 +57,6 @@ def meetDevs(request):
         return render(request, "spotify_wrapped/meetDevs.html", context)
     return render(request, 'spotify_wrapped/meetDevs.html')
 
-def mood(request):
-    return render(request, "spotify_wrapped/slides/mood.html", {})
-
-def popularityScore(request):
-    return render(request, "spotify_wrapped/slides/popularityScore.html", {})
-
-def recommendations(request):
-    return render(request, "spotify_wrapped/slides/recommendations.html", {})
-
-def tracks(request):
-    return render(request, "spotify_wrapped/slides/tracks.html", {})
-# end of all pages
 
 def logIn(request):
     context = {"url": get_auth_url()}
@@ -119,21 +94,12 @@ def wrap(request):
     #spotify.py wrap object
     wrap_object = get_all_info(access_token, expire_time, refresh_token)
 
-    #print(type(wrap_object))
-    #new_artist = convert_artist_object_to_artist_model(wrap_object['value'].top_artists[0])
-    #print(wrap_object['value'].top_tracks[0])
-    #print(new_artist)
-
     #models wrap model
     converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
     converted_obj.save()
-    #print(get_all_user_wraps(wrap_object['value'].user.id))
-    #print((converted_obj.top_artists.get(name = "Pink Floyd")))
 
     #spotify.py wrap object
     print(convert_wrap_model(converted_obj))
-
-
 
 
 def logout(request):
@@ -142,30 +108,3 @@ def logout(request):
     request.session.pop('expire_time', None)
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
 
-def games(request):
-    access_token = request.session.get("access_token", None)
-    expire_time = request.session.get("expire_time", None)
-    refresh_token = request.session.get("refresh_token", None)
-
-    # If not logged in yet, show base home page
-    if access_token is None or expire_time is None or refresh_token is None:
-        return render(request, "spotify_wrapped/home.html", {})
-
-    user_info = get_all_info(access_token, expire_time, refresh_token)
-    print(user_info)
-    if user_info["status"] == "error":
-        print("failed somewhere")
-        return render(request, "spotify_wrapped/home.html", {})
-
-    info_str = '{"arr": ['
-    for album in user_info["value"].top_albums:
-        print(album)
-        info_str += '{"album": "' + album[0] + '","tracks": ['
-        for track in album[1]:
-            info_str += json.dumps(track.__dict__) + ","
-        info_str = info_str[:-1] + "]},"
-    info_str = info_str[:-1] + "]}"
-
-    # user_info_json = json.dumps(user_info["value"])
-    return render(request, "spotify_wrapped/slideshow.html",
-                  {"slides": ["games"], "user_info": info_str});

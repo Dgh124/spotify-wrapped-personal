@@ -15,13 +15,17 @@ let progress_interval = null;
 
 const makeProgressInterval = (counter) => {
     return () => {
-	slide_progress += 0.1;
-	if (slide_progress >= 100) {
-	    show_slide(counter + 1);
-	    return;
-	}
-	status_bar.children[counter].style.background = 
-	    `linear-gradient(to right, grey ${slide_progress}%, white ${slide_progress}%)`;
+        slide_progress += 0.1;
+        if (slide_progress >= 100) {
+            show_slide(counter + 1);
+            return;
+        }
+        if (status_bar.children.length === 0) {
+            console.error("no children in status bar");
+            return;
+        }
+        status_bar.children[counter].style.background = 
+            `linear-gradient(to right, grey ${slide_progress}%, white ${slide_progress}%)`;
     }
 };
 

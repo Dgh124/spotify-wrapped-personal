@@ -61,9 +61,9 @@
     const tracks = [];
     {% for track in user_info.top_tracks %}
     tracks.push({
-        "song_name": "{{track.song_name|safe}}", 
-        "artists": {{track.artists|safe}},
-        "popularity_score": {{track.popularity_score|safe}},
+        "song_name": "{{ track.song_name|safe }}", 
+        "artists": {{ track.artists|safe }},
+        "popularity_score": {{ track.popularity_score|safe }},
     });
     {% endfor %}
     // sort the tracks by popularity 

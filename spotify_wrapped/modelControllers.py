@@ -8,7 +8,6 @@ def convert_dict_to_tuple(dictionary):
     return list(tuple(dictionary.items()))
 
 def convert_track_object_to_track_model(track_obj):
-    #print(track_obj.__str__())
     track_id = track_obj.id
     album_name = track_obj.album_name
     album_image = track_obj.album_image
@@ -116,5 +115,4 @@ def convert_wrap_model(wrap_model):
     new_wrap = WrapObject(color = color, personality = personality,
                          user = wrap_user, top_tracks = top_tracks, top_artists = top_artists,
                          suggested_tracks= suggested_tracks)
-    #print(new_wrap.top_artists[0].genres)
     return new_wrap

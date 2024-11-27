@@ -15,9 +15,9 @@
 </div>
 
 <div class="menu-modal hidden" id="lostGame">
-    <h1>You fucking loser</h1>
+    <h1>You Lost</h1>
     <p>
-    Ha dumbass. You lost the game.
+        Looks like you weren't listening carefully enough. Better luck next time!
     </p>
     <div class="menu_modal-button">Try Again?</div>
 </div>
@@ -36,18 +36,33 @@
 
 <script>
     function loadGameJs() {
-	const script = document.createElement('script');
-	script.src = "{% static 'spotify_wrapped/js/game.js' %}";
-	script.defer = true;
-	script.onload = function() {
-	    console.log('game.js loaded successfully after p5.js');
-	    createGame();
-	};
-	document.body.appendChild(script);
+        const script = document.createElement('script');
+        script.src = "{% static 'spotify_wrapped/js/games.js' %}";
+        script.defer = true;
+        script.onload = function() {
+            console.log('game.js loaded successfully after p5.js');
+            createGame();
+        };
+        document.body.appendChild(script);
     }
 
-    albums = "{{ user_info | escapejs }}"
-    albums = JSON.parse(albums).arr;
+    window.albums = [];
+    {% for album in user_info.top_albums %}
+        window.albums.push({
+            "name": "{{ album.0 }}",
+            "tracks": [
+                {% for track in album.1 %}
+                    {
+                        "album_image": "{{track.album_image}}",
+                        "preview_url": "{{track.preview_url}}",
+                    },
+                {% endfor %}
+                ],
+        });
+    {% endfor %}
+
+    const winGameLink = "{% static 'spotify_wrapped/assets/game-win.mp3' %}"
+    const loseGameLink = "{% static 'spotify_wrapped/assets/game-loss.mp3' %}"
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js" 
