@@ -6,6 +6,7 @@ from openai import OpenAI
 import json
 
 from dotenv import load_dotenv
+
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
@@ -403,12 +404,12 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
         return {"status": "error", "reason": "request returned error status code"}
 
-    suggested_tracks = get_suggested_tracks(
-        access_token=access_token,
-        top_artists=top_artists_result["value"],
-    )
-    if suggested_tracks["status"] == "error":
-        return suggested_tracks #includes error message and value
+    # suggested_tracks = get_suggested_tracks(
+    #     access_token=access_token,
+    #     top_artists=top_artists_result["value"],
+    # )
+    # if suggested_tracks["status"] == "error":
+    #     return suggested_tracks #includes error message and value
 
     personality, color = get_personality_and_colors(top_artists_result['value'])
 
@@ -416,10 +417,63 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
         top_tracks=top_tracks_result["value"],
         top_artists=top_artists_result["value"],
         user=user_result["value"],
-        suggested_tracks=suggested_tracks["value"],
+        suggested_tracks=None,
         personality=personality,
         color = json.dumps(color)
     )}
 
+# 1. Get user1's (senders) wrap model -> wrap obj
+# 2. Create user2's wrap obj with get_all_info
+# 3. Merge artists, tracks, genres
+# 4. Make merged wrap obj -> convert to wrap model
+# 5. Make duoWrap model instance that holds both user wrap id's
 
+# Note: no need to merge top_genres, this will come from the merged
+# top artists.
+def create_duo_wrapped(access_token, expires_at, refresh_token, merge_wrap):
+
+    user2 = get_all_info(access_token, expires_at, refresh_token)
+    user2_wrap = user2["value"] # should be a wrap obj
+    user1_wrap = merge_wrap
+
+    # Get user ID's
+    user1_ID = user1_wrap.user.get_user_id()
+    user2_ID = user2["value"].user.get_user_id()
+
+    # Ensure we don't iterate out of bounds for anything
+    num_merge = 10
+    min_artists = min(num_merge, len(user1_wrap.top_artists), len(user2_wrap.top_artists))
+    min_tracks = min(num_merge, len(user1_wrap.top_tracks), len(user2_wrap.top_tracks))
+    min_genres = min(num_merge, len(user1_wrap.top_genres), len(user2_wrap.top_genres))
+
+    shared_artists = {}
+
+    # Merging top artists
+    for i in range(min_artists):
+        user1_artist = user1_wrap.top_artists[i]
+        user2_artist = user2_wrap.top_artists[i]
+        if (i%2) == 0:
+            shared_artists['user1_artist'] = user1_artist
+        else:
+            shared_artists['user2_artist'] = user2_artist
+
+    shared_artists = list(shared_artists.values())
+
+    shared_tracks = {}
+
+    # Merging top tracks
+    for i in range(min_tracks):
+        user1_artist = user1_wrap.top_tracks[i]
+        user2_artist = user2_wrap.top_tracks[i]
+        if (i % 2) == 0:
+            shared_tracks['user1_artist'] = user1_artist
+        else:
+            shared_tracks['user2_artist'] = user2_artist
+
+    shared_tracks = list(shared_tracks.values())
+
+    merged_wrap = WrapObject(top_tracks=shared_tracks, top_artists=shared_artists,
+                    user=[user1_ID, user2_ID])
+
+    return merged_wrap
 
