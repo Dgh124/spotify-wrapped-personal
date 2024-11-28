@@ -42,7 +42,7 @@
     <div class="slideshow-wrapper">
         <div id="slides" class="slides">
             {% for slide in slides %}
-                <div id="{{ slide }}" data-slideNum="{{ forloop.counter|add:-1 }}" class="slide-container">
+                <div id="{{ slide|safe }}" data-slideNum="{{ forloop.counter|add:-1 }}" class="slide-container">
                 {% with slide_name=slide|stringformat:"s"|add:".html" %}
                     {% include "spotify_wrapped/slides/"|add:slide_name with static_imports="" %}
                 {% endwith %}

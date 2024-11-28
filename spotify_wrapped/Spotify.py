@@ -170,6 +170,7 @@ def get_requests(url, access_token):
     if response.status_code == 200:
         return response.json()
     elif response.status_code == 401:
+        print(dir(response))
         print(f"Client not authorized to make request at {url}")
     else:
         print(f"{url} request returned error code {response.status_code}")
@@ -181,12 +182,11 @@ def is_token_expired(expires_at:int) -> bool:
     return current_time >= expires_at
 
 
-def has_access(access_token:str, expires_at:int, refresh_token:str):
-    if access_token is None and refresh_token is None:
+def has_access(access_token:str|None, expires_at:int|None, refresh_token:str|None):
+    if access_token is None or refresh_token is None or expires_at is None:
         return False
     if is_token_expired(expires_at):
         refresh_access_token(refresh_token)
-
     return True
 
 
@@ -403,12 +403,13 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
         return {"status": "error", "reason": "request returned error status code"}
 
-    suggested_tracks = get_suggested_tracks(
-        access_token=access_token,
-        top_artists=top_artists_result["value"],
-    )
-    if suggested_tracks["status"] == "error":
-        return suggested_tracks #includes error message and value
+    # suggested_tracks = get_suggested_tracks(
+    #     access_token=access_token,
+    #     top_artists=top_artists_result["value"],
+    # )
+    # if suggested_tracks["status"] == "error":
+    #     return suggested_tracks #includes error message and value
+    suggested_tracks = {"status": "success", "value": []}
 
     personality, color = get_personality_and_colors(top_artists_result['value'])
 

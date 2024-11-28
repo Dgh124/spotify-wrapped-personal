@@ -60,13 +60,15 @@ def convert_wrap_object_to_wrap_model(wrap_obj):
     return new_wrap
 
 def get_wrap(wrap_id):
-    return WrapModel.objects.get(id = wrap_id)
+    try:
+        return WrapModel.objects.get(id=wrap_id)
+    except Entry.DoesNotExist:
+        return None
 
 #user id is the id they have on spotify. saved on both
 def get_all_user_wraps(user_id):
     user = UserModel.objects.get(id = user_id)
     return user.user.all()
-
 
 
 def convert_track_model(track_model):

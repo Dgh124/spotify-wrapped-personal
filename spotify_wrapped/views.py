@@ -2,9 +2,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from.models import Feedback
-import json
 
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, has_access, get_all_info
 from spotify_wrapped.modelControllers import *
 
 
@@ -14,7 +13,7 @@ def slideshow(request):
     refresh_token = request.session.get("refresh_token", None)
 
     # If not logged in yet, show base home page
-    if access_token is None or expire_time is None or refresh_token is None:
+    if (not has_access(access_token, expire_time, refresh_token)):
         return render(request, "spotify_wrapped/slideshow.html", {})
 
     user_info = get_all_info(access_token, expire_time, refresh_token)
@@ -29,6 +28,26 @@ def slideshow(request):
         "slides": ["cover", "mood", "AI_Query", 
                    "artists", "genres", "albums", 
                    "popularityScore", "recommendations", "tracks", "games",]
+    })
+    # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
+
+
+def wrapped(request):
+    wrap_id = request.GET.get("uuid", None)
+    if wrap_id is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+
+    wrap_model = get_wrap(wrap_id)
+    if wrap_model is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+    wrap_object = convert_wrap_model(wrap_model)
+    print(wrap_object)
+
+    return render(request, "spotify_wrapped/slideshow.html", {
+        "user_info": wrap_object,
+        "slides": ["cover", "mood", "AI_Query", 
+                   "artists", "genres", "albums", 
+                   "popularityScore", "tracks", "games",]
     })
     # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
 
@@ -68,7 +87,7 @@ def profile(request):
     refresh_token = request.session.get("refresh_token", None)
 
     # If not logged in yet, show login page
-    if access_token is None or expire_time is None or refresh_token is None:
+    if not has_access(access_token, expire_time, refresh_token):
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
 
     return render(request, "spotify_wrapped/profile.html", {})
@@ -82,24 +101,28 @@ def auth(request):
     request.session['refresh_token'] = refresh_token
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
 
+
 def wrap(request):
     access_token = request.session.get("access_token", None)
     expire_time = request.session.get("expire_time", None)
     refresh_token = request.session.get("refresh_token", None)
 
     # If not logged in yet, show base home page
-    if access_token is None or expire_time is None or refresh_token is None:
+    if (not has_access(access_token, expire_time, refresh_token)):
         return HttpResponseRedirect(reverse("spotify_wrapped:login"))
 
     #spotify.py wrap object
     wrap_object = get_all_info(access_token, expire_time, refresh_token)
+    if wrap_object["status"] == "error":
+        print("wrap object failed to build:", wrap_object["reason"])
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
 
     #models wrap model
     converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
     converted_obj.save()
-
-    #spotify.py wrap object
-    print(convert_wrap_model(converted_obj))
+    wrap_id = converted_obj.id
+    wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
+    return HttpResponseRedirect(wrapped_url)
 
 
 def logout(request):
