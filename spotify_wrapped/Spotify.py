@@ -63,7 +63,7 @@ class User:
         return self.id
 
 class WrapObject:
-    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks:list[Track], personality:list[str], color):
+    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks: list[Track], personality:list[str], color):
         self.top_tracks = top_tracks
         self.top_artists = top_artists
         self.top_albums = get_top_albums(top_tracks)
@@ -326,37 +326,37 @@ def get_top_albums(top_tracks: list[Track]) -> list[tuple[str, list[Track]]]:
             albums[track.album_name] = [track]
     return sorted(albums.items(), key=lambda item: len(item[1]), reverse=True)
 
-
-def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> dict[str,list[Track]|str]:
-    """
-    queries spotify API for suggested tracks based on list of artists
-    :param access_token: see get_user_attributes
-    :param top_artists: sorted list of user's top artists'
-    :return: list of suggested tracks
-    """
-    # gets the top five artists for a user
-    count = 0
-    artist_seeds = ""
-    while count < len(top_artists) and count < 5:
-        artist_seeds += top_artists[count].id + ','
-        count += 1
-
-    url = f'https://api.spotify.com/v1/recommendations?seed_artists={artist_seeds}'
-    response = get_requests(url, access_token)
-    if response is None:
-        return {"status": "error", "reason": "suggested tracks returned error status code"}
-    return {"status": "success", "value": [
-        Track(
-            _id=track["id"],
-            album_name=track["album"]["name"],
-            album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
-            song_name=track["name"],
-            artists=[artist["name"] for artist in track["artists"]],
-            preview_url=track.get("preview_url", ""),
-            popularity_score=track["popularity"],
-        )
-        for track in response["tracks"]
-    ]}
+#
+# def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> dict[str,list[Track]|str]:
+#     """
+#     queries spotify API for suggested tracks based on list of artists
+#     :param access_token: see get_user_attributes
+#     :param top_artists: sorted list of user's top artists'
+#     :return: list of suggested tracks
+#     """
+#     # gets the top five artists for a user
+#     count = 0
+#     artist_seeds = ""
+#     while count < len(top_artists) and count < 5:
+#         artist_seeds += top_artists[count].id + ','
+#         count += 1
+#
+#     url = f'https://api.spotify.com/v1/recommendations?seed_artists={artist_seeds}'
+#     response = get_requests(url, access_token)
+#     if response is None:
+#         return {"status": "error", "reason": "suggested tracks returned error status code"}
+#     return {"status": "success", "value": [
+#         Track(
+#             _id=track["id"],
+#             album_name=track["album"]["name"],
+#             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
+#             song_name=track["name"],
+#             artists=[artist["name"] for artist in track["artists"]],
+#             preview_url=track.get("preview_url", ""),
+#             popularity_score=track["popularity"],
+#         )
+#         for track in response["tracks"]
+#     ]}
 
 
 def get_personality_and_colors(artists: list):
@@ -417,7 +417,7 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
         top_tracks=top_tracks_result["value"],
         top_artists=top_artists_result["value"],
         user=user_result["value"],
-        suggested_tracks=None,
+        suggested_tracks=[],
         personality=personality,
         color = json.dumps(color)
     )}

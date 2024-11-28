@@ -55,7 +55,8 @@ def convert_wrap_object_to_wrap_model(wrap_obj):
     new_wrap.save()
     new_wrap.top_tracks.add(*top_tracks)
     new_wrap.top_artists.add(*top_artists)
-    new_wrap.suggested_tracks.add(*suggested_tracks)
+    # new_wrap.suggested_tracks.add(*suggested_tracks)
+    new_wrap.suggested_tracks.add(0)
     new_wrap.user.add(user)
     return new_wrap
 
@@ -109,10 +110,10 @@ def convert_wrap_model(wrap_model):
 
     #top_genres = convert_dict_to_tuple(wrap_model.top_genres)
     #audio_link = wrap_model.top_audio
-    suggested_tracks = [convert_track_model(track) for track in wrap_model.suggested_tracks.all()]
+    # suggested_tracks = [convert_track_model(track) for track in wrap_model.suggested_tracks.all()]
+    suggested_tracks = []
     personality = wrap_model.personality
     color = wrap_model.color
     new_wrap = WrapObject(color = color, personality = personality,
-                         user = wrap_user, top_tracks = top_tracks, top_artists = top_artists,
-                         suggested_tracks= suggested_tracks)
+                         user = wrap_user, top_tracks = top_tracks, suggested_tracks = suggested_tracks, top_artists = top_artists)
     return new_wrap

@@ -4,7 +4,7 @@ from django.urls import reverse
 from.models import Feedback
 import json
 
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, create_duo_wrapped, has_access
 from spotify_wrapped.modelControllers import *
 
 
@@ -18,6 +18,7 @@ def slideshow(request):
         return render(request, "spotify_wrapped/slideshow.html", {})
 
     user_info = get_all_info(access_token, expire_time, refresh_token)
+    # user_info = duo_wrap(request)
 
     if user_info["status"] == "error":
         print("failed somewhere")
@@ -101,6 +102,40 @@ def wrap(request):
     #spotify.py wrap object
     print(convert_wrap_model(converted_obj))
 
+    return render(request, "spotify_wrapped/slideshow.html", {"wrap": converted_obj})
+
+def duo_wrap(request):
+    wrap_id = request.GET.get("uuid", None)
+    if wrap_id is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    # If not logged in yet, show base home page
+    if not has_access(access_token, expire_time, refresh_token):
+        return HttpResponseRedirect(reverse("spotify_wrapped:login"))
+
+    time_range = request.GET.get("wrapType", "")
+
+    original_wrap = get_wrap(wrap_id)
+    if original_wrap is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+    original_wrap_object = convert_wrap_model(original_wrap)
+
+    #spotify.py wrap object
+    duo_wrap = create_duo_wrapped(access_token, expire_time, original_wrap_object)
+    if duo_wrap["status"] == "error":
+        print("wrap object failed to build:", duo_wrap["reason"])
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+
+    #models wrap model
+    wrap_model = convert_wrap_object_to_wrap_model(duo_wrap["value"])
+    wrap_model.save()
+    wrap_id = wrap_model.id
+    wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
+    return HttpResponseRedirect(wrapped_url)
 
 def logout(request):
     request.session.pop('access_token', None)
