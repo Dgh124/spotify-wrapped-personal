@@ -10,8 +10,8 @@ let progress_interval = null;
 
 // sets placeholder for createGame function
 // window.createGame = window.createGame || function() {
-//     console.warn('createGame() is not available yet. It will be loaded later.');
-// };
+    //     console.warn('createGame() is not available yet. It will be loaded later.');
+    // };
 
 const makeProgressInterval = (counter) => {
     return () => {
@@ -30,19 +30,20 @@ const makeProgressInterval = (counter) => {
 };
 
 const show_slide = (new_counter) => {
+    if (totalSlides === 0) return;
     counter = (new_counter + totalSlides) % totalSlides;
     for (let i = 0; i < totalSlides; i++) {
-	// hide all child slides not needed
-		const child = slides.children[i];
-		if (i != counter) child.style.display = "none";
-		else child.style.display = "";
+        // hide all child slides not needed
+        const child = slides.children[i];
+        if (i != counter) child.style.display = "none";
+        else child.style.display = "";
 
-		const bar = status_bar.children[i];
-		if (i < counter) {
-			bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
-		} else {
-			bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
-		}
+        const bar = status_bar.children[i];
+        if (i < counter) {
+            bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
+        } else {
+            bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
+        }
 
     }
 
@@ -52,7 +53,7 @@ const show_slide = (new_counter) => {
     pauseButton.classList.remove("paused");
 
     if (slides.children[counter].id == "games") {
-	clearInterval(progress_interval);
+        clearInterval(progress_interval);
     }
 };
 
@@ -69,11 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 pauseButton.addEventListener("click", (e) => {
     if (pauseButton.classList.contains("paused")) {
-	pauseButton.classList.remove("paused");
-	clearInterval(progress_interval);
-	progress_interval = setInterval(makeProgressInterval(counter), slide_length);
+        pauseButton.classList.remove("paused");
+        clearInterval(progress_interval);
+        progress_interval = setInterval(makeProgressInterval(counter), slide_length);
     } else {
-	pauseButton.classList.add("paused");
-	clearInterval(progress_interval);
+        pauseButton.classList.add("paused");
+        clearInterval(progress_interval);
     }
 });

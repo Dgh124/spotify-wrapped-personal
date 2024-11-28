@@ -2,9 +2,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from.models import Feedback
-import json
 
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, has_access, get_all_info
 from spotify_wrapped.modelControllers import *
 
 
@@ -14,8 +13,8 @@ def slideshow(request):
     refresh_token = request.session.get("refresh_token", None)
 
     # If not logged in yet, show base home page
-    if access_token is None or expire_time is None or refresh_token is None:
-        return render(request, "spotify_wrapped/slideshow.html", {})
+    if (not has_access(access_token, expire_time, refresh_token)):
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
 
     user_info = get_all_info(access_token, expire_time, refresh_token)
 
@@ -28,7 +27,9 @@ def slideshow(request):
         # "slides": ["games"],
         "slides": ["cover", "mood", "AI_Query", 
                    "artists", "genres", "albums", 
-                   "popularityScore", "recommendations", "tracks", "games",]
+                   "popularityScore", 
+                   # "recommendations", 
+                   "tracks", "games",]
     })
     # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
 
