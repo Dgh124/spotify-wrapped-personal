@@ -67,8 +67,11 @@ def get_wrap(wrap_id):
 
 #user id is the id they have on spotify. saved on both
 def get_all_user_wraps(user_id):
-    user = UserModel.objects.get(id = user_id)
-    return user.user.all()
+    try:
+        user = UserModel.objects.get(id = user_id)
+        return user.user.all()
+    except:
+        return None
 
 
 def convert_track_model(track_model):

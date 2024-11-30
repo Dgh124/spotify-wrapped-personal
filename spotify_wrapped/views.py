@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from.models import Feedback
 
-from spotify_wrapped.Spotify import get_auth_url, get_access_token, has_access, get_all_info
+from spotify_wrapped.Spotify import get_auth_url, get_access_token, has_access, get_all_info, get_user
 from spotify_wrapped.modelControllers import *
 
 
@@ -41,7 +41,6 @@ def wrapped(request):
     if wrap_model is None:
         return HttpResponseRedirect(reverse("spotify_wrapped:index"))
     wrap_object = convert_wrap_model(wrap_model)
-    print(wrap_object)
 
     return render(request, "spotify_wrapped/slideshow.html", {
         "user_info": wrap_object,
@@ -90,7 +89,15 @@ def profile(request):
     if not has_access(access_token, expire_time, refresh_token):
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
 
-    return render(request, "spotify_wrapped/profile.html", {})
+    user_result = get_user(access_token, expire_time, refresh_token)
+    if user_result["status"] == "error":
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
+    user_id = user_result["value"].id
+    
+    wraps = get_all_user_wraps(user_id)
+    return render(request, "spotify_wrapped/profile.html", {
+        "wraps": wraps
+    })
 
 def auth(request):
     auth_code = request.GET.get('code')

@@ -26,9 +26,35 @@
             <div class="divider"></div>
             <div class="past-wrappeds">
                 <h2>Past Wrappeds</h2>
-                <p>No past wrappeds available.</p>
-            </div>
-        </div>
+		{% if wraps is None %}
+			<p>No past wrappeds available.</p>
+		{% else %}
+		<table>
+		    <tr>
+                        <th>Wrap Id</th>
+                        <th>View Wrap</th>
+                        <th>Share Wrap</th>
+                        <th>Make Duo</th>
+                    </tr>
+                    {% for wrap in wraps %}
+                    <tr>
+                        <td>{{ wrap.id }}</td>
+                        <td>
+                            <a href="{% url "spotify_wrapped:wrapped"%}?uuid={{wrap.id}}">
+                                Link
+                            </a>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="">Link</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+	    </div>
+	</div>
     </div>
 </body>
 </html>
