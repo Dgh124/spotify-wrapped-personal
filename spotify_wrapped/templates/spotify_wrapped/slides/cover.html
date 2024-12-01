@@ -3,7 +3,13 @@
 {% block body %}
     <div class="container">
         <div class="content">
-            <h1 class="line line-1">hello {{ user_info.user.display_name }} </h1>
+            <script>console.log("{{user_info.users|escapejs}}")</script>
+            <h1 class="line line-1">hello 
+                {% for user in user_info.users %}
+                {{user.display_name}}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </h1>
             <h2 class="line line-2">it's wrapped time.</h2>
             <h3 class="line line-3">are you ready?</h3>
         </div>

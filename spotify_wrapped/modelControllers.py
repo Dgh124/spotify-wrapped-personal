@@ -1,4 +1,5 @@
 from spotify_wrapped.Spotify import Track, WrapObject, Artist, User
+from spotify_wrapped.Spotify import Success, Error
 from spotify_wrapped.models import TrackModel, ArtistModel, WrapModel, UserModel
 
 def convert_tuple_to_dict(tuple_list):
@@ -40,10 +41,12 @@ def convert_user_object_to_user_model(user_obj):
     new_user.save()
     return new_user
 
-def convert_wrap_object_to_wrap_model(wrap_obj):
+def convert_wrap_object_to_wrap_model(wrap_obj:WrapObject):
     top_tracks = [convert_track_object_to_track_model(track) for track in wrap_obj.top_tracks]
     top_artists = [convert_artist_object_to_artist_model(artist) for artist in wrap_obj.top_artists]
-    user = convert_user_object_to_user_model(wrap_obj.user)
+    users = [convert_user_object_to_user_model(user) for user in wrap_obj.users]
+    print("User model users:")
+    print(users)
     suggested_tracks = [convert_track_object_to_track_model(track) for track in wrap_obj.suggested_tracks]
     personality = wrap_obj.personality
     top_audio = wrap_obj.audio_link
@@ -56,7 +59,7 @@ def convert_wrap_object_to_wrap_model(wrap_obj):
     new_wrap.top_tracks.add(*top_tracks)
     new_wrap.top_artists.add(*top_artists)
     new_wrap.suggested_tracks.add(*suggested_tracks)
-    new_wrap.user.add(user)
+    new_wrap.user.add(*users)
     return new_wrap
 
 
@@ -109,7 +112,7 @@ def convert_user_model(user_model):
 
 
 def convert_wrap_model(wrap_model):
-    wrap_user = convert_user_model(wrap_model.user.first())
+    wrap_users = [convert_user_model(user) for user in wrap_model.user.all()]
     top_tracks = [convert_track_model(track) for track in wrap_model.top_tracks.all()]
     top_artists = [convert_artist_model(artist) for artist in wrap_model.top_artists.all()]
 
@@ -119,6 +122,12 @@ def convert_wrap_model(wrap_model):
     suggested_tracks = []
     personality = wrap_model.personality
     color = wrap_model.color
-    new_wrap = WrapObject(color = color, personality = personality,
-                         user = wrap_user, top_tracks = top_tracks, suggested_tracks = suggested_tracks, top_artists = top_artists)
+    new_wrap = WrapObject(
+            users=wrap_users,
+            top_tracks=top_tracks,
+            top_artists=top_artists,
+            color=color,
+            personality=personality,
+            suggested_tracks=suggested_tracks
+            )
     return new_wrap

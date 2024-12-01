@@ -4,6 +4,7 @@ from django.urls import reverse
 from.models import Feedback
 
 from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, create_duo_wrapped, has_access, get_user
+from spotify_wrapped.Spotify import Success, Error
 from spotify_wrapped.modelControllers import *
 
 
@@ -19,12 +20,12 @@ def slideshow(request):
     user_info = get_all_info(access_token, expire_time, refresh_token)
 
 
-    if user_info["status"] == "error":
-        print("failed somewhere")
+    if isinstance(user_info, Error):
+        print("failed generating slideshow")
         return render(request, "spotify_wrapped/slideshow.html", {})
 
     return render(request, "spotify_wrapped/slideshow.html", {
-        "user_info": user_info["value"],
+        "user_info": user_info.value,
         # "slides": ["games"],
         "slides": ["cover", "mood", "AI_Query", 
                    "artists", "genres", "albums", 
@@ -94,9 +95,9 @@ def profile(request):
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
 
     user_result = get_user(access_token, expire_time, refresh_token)
-    if user_result["status"] == "error":
+    if isinstance(user_result, Error):
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
-    user_id = user_result["value"].id
+    user_id = user_result.value.id
     
     wraps = get_all_user_wraps(user_id)
     return render(request, "spotify_wrapped/profile.html", {
@@ -124,12 +125,12 @@ def wrap(request):
 
     #spotify.py wrap object
     wrap_object = get_all_info(access_token, expire_time, refresh_token)
-    if wrap_object["status"] == "error":
-        print("wrap object failed to build:", wrap_object["reason"])
+    if isinstance(wrap_object, Error):
+        print("wrap object failed to build:", wrap_object.reason)
         return HttpResponseRedirect(reverse("spotify_wrapped:index"))
 
     #models wrap model
-    converted_obj = convert_wrap_object_to_wrap_model(wrap_object["value"])
+    converted_obj = convert_wrap_object_to_wrap_model(wrap_object.value)
     converted_obj.save()
     wrap_id = converted_obj.id
     wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
@@ -155,19 +156,19 @@ def duo_wrap(request):
     wrap1 = convert_wrap_model(wrap1_model)
 
     wrap2 = get_all_info(access_token, expire_time, refresh_token)
-    if wrap2["status"] == "error":
+    if isinstance(wrap2, Error):
         return HttpResponseRedirect(reverse("spotify_wrapped:index"))
 
     #spotify.py wrap object
-    duo_wrap = create_duo_wrapped(wrap1, wrap2["value"])
+    duo_wrap = create_duo_wrapped(wrap1, wrap2.value)
 
     #models wrap model
-    wrap1_model = convert_wrap_object_to_wrap_model(duo_wrap[0])
-    wrap1_model.save()
-    wrap2_model = convert_wrap_object_to_wrap_model(duo_wrap[1])
-    wrap2_model.save()
+    duo_wrap_model = convert_wrap_object_to_wrap_model(duo_wrap)
+    duo_wrap_model.save()
+    print("Duo Wrap Model Users:")
+    print(duo_wrap_model.user.all())
 
-    wrap_id = wrap2_model.id
+    wrap_id = duo_wrap_model.id
     wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
     return HttpResponseRedirect(wrapped_url)
 

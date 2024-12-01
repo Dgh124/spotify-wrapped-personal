@@ -113,7 +113,7 @@ body {
     font-size: xx-large;
     color: grey;
     height: 100%;
-    z-index: 100;
+    z-index: 50;
     cursor: pointer;
     transition: all 1s;
 }
