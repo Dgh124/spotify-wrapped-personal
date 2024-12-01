@@ -57,9 +57,12 @@
                 <script>
                     const links = document.getElementsByClassName("duo-wrap-link")
                     for (const link of links) {
+                        const root = window.location.origin;
+                        const duo_wrap_link = "{% url "spotify_wrapped:duo_wrap" %}";
+                        const uuid = link.dataset.id;
                         link.addEventListener("click", () => {
                             navigator.clipboard.writeText(
-                                `{% url "spotify_wrapped:duo_wrap" %}?uuid=${link.dataset.id}`
+                                `${root}${duo_wrap_link}?uuid=${uuid}`
                             );
                             alert("Duo Wrapped Link copied to clipboard");
                         })

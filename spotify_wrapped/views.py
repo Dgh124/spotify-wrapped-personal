@@ -129,7 +129,7 @@ def wrap(request):
         return HttpResponseRedirect(reverse("spotify_wrapped:index"))
 
     #models wrap model
-    converted_obj = convert_wrap_object_to_wrap_model(wrap_object)
+    converted_obj = convert_wrap_object_to_wrap_model(wrap_object["value"])
     converted_obj.save()
     wrap_id = converted_obj.id
     wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
