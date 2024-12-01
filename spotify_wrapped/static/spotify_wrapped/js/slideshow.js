@@ -16,6 +16,10 @@ const makeProgressInterval = (counter) => {
             show_slide(counter + 1);
             return;
         }
+        if (status_bar.children.length === 0) {
+            console.error("no children in status bar");
+            return;
+        }
         status_bar.children[counter].style.background = 
             `linear-gradient(to right, grey ${slide_progress}%, white ${slide_progress}%)`;
     }
@@ -27,19 +31,24 @@ const show_slide = (new_counter) => {
         console.error("no slides loaded");
         return;
     }
+    const previousCounter = counter;
     counter = (new_counter + totalSlides) % totalSlides;
-    for (let i = 0; i < totalSlides; i++) {
-        // hide all child slides not needed
-        const child = slides.children[i];
-        if (i != counter) child.style.display = "none";
-        else child.style.display = "";
+    if (counter < 0) {
+        counter = totalSlides - 1;
+    }
 
-        const bar = status_bar.children[i];
-        if (i < counter) {
-            bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
-        } else {
-            bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
-        }
+    // Hide previous slide
+    if (slides.children[previousCounter]) {
+        slides.children[previousCounter].classList.remove('active');
+    }
+    slides.children[counter].classList.add('active');
+    for (let i = 0; i < totalSlides; i++) {
+		const bar = status_bar.children[i];
+		if (i < counter) {
+			bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
+		} else {
+			bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
+		}
 
     }
 
@@ -73,4 +82,11 @@ pauseButton.addEventListener("click", (e) => {
         pauseButton.classList.add("paused");
         clearInterval(progress_interval);
     }
+});
+
+// Initialize the slideshow when the document is ready
+document.addEventListener("DOMContentLoaded", () => {
+    // Show the first slide
+    slides.children[counter].classList.add('active');
+    showSlide(counter);
 });
