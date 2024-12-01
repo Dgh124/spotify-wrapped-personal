@@ -369,7 +369,7 @@ def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> Union[Su
     ])
 
 
-def get_personality_and_colors(artists: list):
+def get_personality_and_colors(artists: list[Artist]):
     client = OpenAI(
         api_key=chatgpt,
     )
@@ -393,6 +393,9 @@ def get_personality_and_colors(artists: list):
         model="gpt-3.5-turbo",
     )
     response = chat_completion.choices[0].message.content
+    if response is None:
+        return [""], ""
+    print(response)
     res_list = response.replace(',', ' ').split()
     personality = [word.lower() for word in res_list[:5]]
     personality_color = res_list[5:]

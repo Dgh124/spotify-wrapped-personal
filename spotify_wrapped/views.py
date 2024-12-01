@@ -4,7 +4,7 @@ from django.urls import reverse
 from.models import Feedback
 
 from spotify_wrapped.Spotify import get_auth_url, get_access_token, get_all_info, create_duo_wrapped, has_access, get_user
-from spotify_wrapped.Spotify import Success, Error
+from spotify_wrapped.Spotify import Error
 from spotify_wrapped.modelControllers import *
 
 
@@ -185,9 +185,9 @@ def delete_account(request):
     refresh_token = request.session.get("refresh_token", None)
 
     user = get_user(access_token=access_token, expires_at= expire_time, refresh_token= refresh_token)
-    if user["status"] == "error":
+    if isinstance(user, Error):
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
-    user_id = user["value"].id
+    user_id = user.value.id
 
     wraps = get_all_user_wraps(user_id)
 

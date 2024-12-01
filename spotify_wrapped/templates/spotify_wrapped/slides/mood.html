@@ -18,7 +18,9 @@
   </div>
 <script>
     const colors = {{ user_info.color|safe }}
-	    .map(color => "#" + color.replace("#", ""));
+	    .map(color => "#" + color.replace("#", ""))
+            .reduce((acc, curr) => 
+                curr.includes("Hex") ? acc : acc.concat(curr), []);
     const personality = {{ user_info.personality|safe }};
 
     // Ensure colors is a valid array and has exactly 5 colors
