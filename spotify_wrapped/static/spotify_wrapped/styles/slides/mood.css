@@ -1,14 +1,7 @@
 #mood.slide-container {
   --mood-color-1: #5D8AA8;
   --mood-color-2: #FF6F61;
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   background: linear-gradient(90deg, var(--mood-color-1) 0%, var(--mood-color-2) 100%);
-  color: #ffffff;
-  overflow-y: auto;
 }
 
 /* Container */

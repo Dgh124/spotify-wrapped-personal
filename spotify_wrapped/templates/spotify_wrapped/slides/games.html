@@ -69,8 +69,25 @@
         });
     {% endfor %}
 
-    const winGameLink = "{% static 'spotify_wrapped/assets/game-win.mp3' %}"
-    const loseGameLink = "{% static 'spotify_wrapped/assets/game-loss.mp3' %}"
+    window.audioLinks = [
+        "{% static 'spotify_wrapped/assets/audio/song0.mp3' %}",
+        "{% static 'spotify_wrapped/assets/audio/song1.mp3' %}",
+        "{% static 'spotify_wrapped/assets/audio/song2.mp3' %}",
+        "{% static 'spotify_wrapped/assets/audio/song3.mp3' %}",
+        "{% static 'spotify_wrapped/assets/audio/song4.mp3' %}",
+        "{% static 'spotify_wrapped/assets/audio/song5.mp3' %}",
+    ];
+    window.winGameLink = "{% static 'spotify_wrapped/assets/audio/game-win.mp3' %}"
+    window.loseGameLink = "{% static 'spotify_wrapped/assets/audio/game-loss.mp3' %}"
+
+    window.answerImages = [
+        "{% static 'spotify_wrapped/assets/images/song0.jpg' %}",
+        "{% static 'spotify_wrapped/assets/images/song1.jpg' %}",
+        "{% static 'spotify_wrapped/assets/images/song2.jpg' %}",
+        "{% static 'spotify_wrapped/assets/images/song3.jpg' %}",
+        "{% static 'spotify_wrapped/assets/images/song4.jpg' %}",
+        "{% static 'spotify_wrapped/assets/images/song5.jpg' %}",
+       ];
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js" 

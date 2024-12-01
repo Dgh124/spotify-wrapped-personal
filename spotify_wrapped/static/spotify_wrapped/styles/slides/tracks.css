@@ -1,10 +1,6 @@
 #tracks.slide-container {
   background: #e0f7fa; /* Changed background color to a light cyan */
   font-family: 'Courier Prime', monospace;
-  min-height: 100vh; /* Ensure body takes at least full viewport height */
-  display: flex; /* Enable flexbox on body */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
   color: black;
 }
 

@@ -1,9 +1,5 @@
 #genres.slide-container {
-  font-family: 'Poppins', sans-serif;
   background: #f5f5f5;
-  color: #fff; /* Set default font color to white */
-  display: flex;
-  flex-direction: column;
 }
 
 #genres .container {

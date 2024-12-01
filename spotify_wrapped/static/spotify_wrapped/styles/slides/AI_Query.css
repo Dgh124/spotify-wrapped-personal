@@ -2,8 +2,9 @@
     font-family: 'Montserrat', sans-serif;
     background: linear-gradient(to bottom, #f0f4f8, #8256a9); /* Gradient background */
     color: #333;
-
-    display: block;
+}
+#AI_Query.slide-container.active {
+    display: block
 }
 
 #AI_Query .container {
@@ -41,7 +42,6 @@
 }
 
 #AI_Query .timeline-item {
-    opacity: 0;
     transform: translateY(50px);
     transition: all 0.5s ease-in-out;
     padding: 20px 30px;
@@ -88,7 +88,6 @@
     background-color: #FF6F61;
     border: 4px solid #fff;
     border-radius: 50%;
-    z-index: 1;
 }
 
 #AI_Query .timeline-item.left::before {
@@ -105,8 +104,6 @@
     top: 22px;
     border-style: solid;
 }
-
-
 
 #AI_Query .timeline-item.left .content::after {
     right: -45px;

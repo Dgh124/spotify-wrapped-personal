@@ -20,8 +20,8 @@ const makeProgressInterval = (counter) => {
             console.error("no children in status bar");
             return;
         }
-        status_bar.children[counter].style.background = 
-            `linear-gradient(to right, grey ${slide_progress}%, white ${slide_progress}%)`;
+        status_bar.children[counter].style
+            .setProperty("--percent-seen", slide_progress);
     }
 };
 
@@ -31,25 +31,22 @@ const show_slide = (new_counter) => {
         console.error("no slides loaded");
         return;
     }
-    const previousCounter = counter;
     counter = (new_counter + totalSlides) % totalSlides;
-    if (counter < 0) {
-        counter = totalSlides - 1;
-    }
 
-    // Hide previous slide
-    if (slides.children[previousCounter]) {
-        slides.children[previousCounter].classList.remove('active');
-    }
-    slides.children[counter].classList.add('active');
     for (let i = 0; i < totalSlides; i++) {
-		const bar = status_bar.children[i];
-		if (i < counter) {
-			bar.style.background = "linear-gradient(to right, white 0%, grey 0%)";
-		} else {
-			bar.style.background = "linear-gradient(to right, white 100%, grey 100%)";
-		}
+        const slide = slides.children[i]
+        if (i === counter) slide.classList.add('active');
+        else slide.classList.remove('active');
 
+        const bar = status_bar.children[i];
+        if (i < counter) {
+            status_bar.children[i].style
+                .setProperty("--percent-seen", 100);
+        }
+        else if (i > counter) {
+            status_bar.children[i].style
+                .setProperty("--percent-seen", 0);
+        }
     }
 
     slide_progress = 0;
@@ -63,16 +60,16 @@ const show_slide = (new_counter) => {
 };
 
 document.querySelector(".left-arrow").addEventListener("click", () => {
-    show_slide(counter - 1);
+    show_slide(counter-1);
 });
 document.querySelector(".right-arrow").addEventListener("click", () => {
-    show_slide(counter + 1);
+    show_slide(counter+1);
 });
 document.querySelector(".left-arrow").addEventListener("touchstart", () => {
-    show_slide(counter - 1);
+    show_slide(counter-1);
 });
 document.querySelector(".right-arrow").addEventListener("touchstart", () => {
-    show_slide(counter + 1);
+    show_slide(counter+1);
 });
 
 document.addEventListener("DOMContentLoaded", () => {

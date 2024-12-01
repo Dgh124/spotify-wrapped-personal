@@ -55,8 +55,7 @@ def convert_wrap_object_to_wrap_model(wrap_obj):
     new_wrap.save()
     new_wrap.top_tracks.add(*top_tracks)
     new_wrap.top_artists.add(*top_artists)
-    # new_wrap.suggested_tracks.add(*suggested_tracks)
-    new_wrap.suggested_tracks.add(0)
+    new_wrap.suggested_tracks.add(*suggested_tracks)
     new_wrap.user.add(user)
     return new_wrap
 
@@ -69,7 +68,7 @@ def get_wrap(wrap_id):
 #user id is the id they have on spotify. saved on both
 def get_all_user_wraps(user_id):
     try:
-        user = UserModel.objects.get(id = user_id)
+        user = UserModel.objects.get(id=user_id)
         return user.user.all()
     except:
         return None

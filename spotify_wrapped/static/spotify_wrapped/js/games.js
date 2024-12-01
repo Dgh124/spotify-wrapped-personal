@@ -13,7 +13,8 @@ new p5((sketch) => {
 
 
     sketch.preload = () => {
-        // loads the question images into the object
+        // the following code was made obsolete by spotify not sending urls
+        /* // loads the question images into the object
         const albumHasPreviewUrl = (album) => {
             return album.tracks.filter(track => track.preview_url !== "None").length > 0
         };
@@ -51,10 +52,22 @@ new p5((sketch) => {
                 sketch.loadImage(window.albums[decoy2].tracks[0].album_image)
             )
         }
-        console.log("questions: ", questions);
-        if (questions.length === 0) {
-            window.remove_games_slide();
-        }
+        console.log(questions); */
+
+        const makeQuestion = (image) => {
+            let decoy1 = decoy2 = Math.floor(Math.random()*window.albums.length);
+            while (decoy2 === decoy1) {
+                decoy2 = Math.floor(Math.random()*window.albums.length);
+            }
+            return {
+                "images": [
+                    sketch.loadImage(image),
+                    sketch.loadImage(window.albums[decoy1].tracks[0].album_image),
+                    sketch.loadImage(window.albums[decoy2].tracks[0].album_image),
+                ]
+            };
+        };
+        questions = window.answerImages.map(makeQuestion);
     }
 
     sketch.setup = () => {
@@ -84,16 +97,15 @@ new p5((sketch) => {
         window.gameState = 0;
 
         const overlapping = (oldCords, newCord) => 
-            oldCords.filter(cord => cord[0] === newCord[0] && cord[1] === newCord[1])
-                .length > 0;
+            oldCords.some(cord => cord[0] === newCord[0] && cord[1] === newCord[1]);
 
-        for (let i = 0; i < maxAlbums; i++) {
-            const idx = questions[i].index;
+        for (let i = 0; i < window.audioLinks.length; i++) {
             questions[i].locations = [];
             for (let j = 0; j < 3; j++) {
                 let newCord = randomCoords();
-                while (overlapping(questions[i].locations, newCord))
+                while (overlapping(questions[i].locations, newCord)) {
                     newCord = randomCoords();
+                }
                 questions[i].locations.push(newCord);
             }
         }
@@ -344,13 +356,15 @@ new p5((sketch) => {
             })
             .catch(e => console.error('Error loading audio:', e))
         );
-        Promise.all([...questions.map((q, idx) => loadAudio(
-            window.albums[q.index].tracks[0].preview_url, idx
-        )),
+        Promise.all([...window.audioLinks
+            .map((audio, idx) => loadAudio(audio, idx)),
             loadAudio(winGameLink, audioBuffers.length-2),
             loadAudio(loseGameLink, audioBuffers.length-1),
         ])
-            .then(() => gameState === 1 && playAudio(0));
+            .then(() => {
+		    playAudio(0)
+		    gameState = 1;
+	    });
 
         
     }
@@ -362,7 +376,7 @@ new p5((sketch) => {
     startMenu.children.item(2)
         .addEventListener("click", (e) => {
             startMenu.classList.add("hidden");
-            window.gameState = 1;
+            // window.gameState = 1;
             // play the first song
             (window.audioContextInit || (() => console.warn("audio context not initialized")))();
         });
@@ -372,7 +386,7 @@ new p5((sketch) => {
         .addEventListener("click", (e) => {
             lossMenu.classList.add("hidden");
             window.gameSetup();
-            window.gameState = 1;
+            // window.gameState = 1;
             (window.audioContextInit || (() => console.warn("audio context not initialized")))();
         });
 
@@ -381,7 +395,7 @@ new p5((sketch) => {
         .addEventListener("click", (e) => {
             winMenu.classList.add("hidden");
             window.gameSetup();
-            window.gameState = 1;
+            // window.gameState = 1;
             (window.audioContextInit || (() => console.warn("audio context not initialized")))();
         });
 })();

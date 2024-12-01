@@ -13,11 +13,11 @@ def slideshow(request):
     refresh_token = request.session.get("refresh_token", None)
 
     # If not logged in yet, show base home page
-    if (not has_access(access_token, expire_time, refresh_token)):
-        return render(request, "spotify_wrapped/slideshow.html", {})
+    if not has_access(access_token, expire_time, refresh_token):
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
 
     user_info = get_all_info(access_token, expire_time, refresh_token)
-    # user_info = duo_wrap(request)
+
 
     if user_info["status"] == "error":
         print("failed somewhere")
@@ -28,7 +28,9 @@ def slideshow(request):
         # "slides": ["games"],
         "slides": ["cover", "mood", "AI_Query", 
                    "artists", "genres", "albums", 
-                   "popularityScore", "recommendations", "tracks", "games",]
+                   "popularityScore", 
+                   # "recommendations", 
+                   "tracks", "games",]
     })
     # Adolfo: artists, personality, albums, mood, genres, pop score, recommended, reciept
 
@@ -117,7 +119,7 @@ def wrap(request):
     refresh_token = request.session.get("refresh_token", None)
 
     # If not logged in yet, show base home page
-    if (not has_access(access_token, expire_time, refresh_token)):
+    if not has_access(access_token, expire_time, refresh_token):
         return HttpResponseRedirect(reverse("spotify_wrapped:login"))
 
     #spotify.py wrap object
