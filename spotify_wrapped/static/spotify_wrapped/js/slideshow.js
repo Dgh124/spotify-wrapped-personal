@@ -68,6 +68,12 @@ document.querySelector(".left-arrow").addEventListener("click", () => {
 document.querySelector(".right-arrow").addEventListener("click", () => {
     show_slide(counter + 1);
 });
+document.querySelector(".left-arrow").addEventListener("touchstart", () => {
+    show_slide(counter - 1);
+});
+document.querySelector(".right-arrow").addEventListener("touchstart", () => {
+    show_slide(counter + 1);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     show_slide(counter);
@@ -84,9 +90,13 @@ pauseButton.addEventListener("click", (e) => {
     }
 });
 
-// Initialize the slideshow when the document is ready
-document.addEventListener("DOMContentLoaded", () => {
-    // Show the first slide
-    slides.children[counter].classList.add('active');
-    showSlide(counter);
+pauseButton.addEventListener("touchstart", (e) => {
+    if (pauseButton.classList.contains("paused")) {
+        pauseButton.classList.remove("paused");
+        clearInterval(progress_interval);
+        progress_interval = setInterval(makeProgressInterval(counter), slide_length);
+    } else {
+        pauseButton.classList.add("paused");
+        clearInterval(progress_interval);
+    }
 });

@@ -5,6 +5,9 @@
 }
 
 #artists .container {
+  position: absolute;
+  top: 0;
+
   max-width: 800px;
   margin: 0 auto;
   padding: 50px 20px;

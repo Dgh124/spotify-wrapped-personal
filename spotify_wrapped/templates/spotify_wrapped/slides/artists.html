@@ -1,7 +1,7 @@
 {% extends "spotify_wrapped/slides/base.html" %}
 
 {% block body %}
-  <div class="container" style="position: absolute; top: 0;">
+  <div class="container">
     <h1>Your Top Artists</h1>
     <div class="artists-grid">
         {% for artist in user_info.top_artists|slice:":5" %}

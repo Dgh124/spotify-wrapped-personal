@@ -2,12 +2,6 @@ body {
     flex-direction: column;
 }
 
-/*.slide-container * {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*    box-sizing: border-box;*/
-/*}*/
-
 .slide-container {
     font-family: 'Poppins', sans-serif;
     display: flex;
@@ -18,4 +12,6 @@ body {
     flex-direction: column;
     overflow-y: auto;
     box-sizing: border-box;
+    
+    z-index: 1;
 }
