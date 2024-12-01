@@ -430,50 +430,49 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
 
 # Note: no need to merge top_genres, this will come from the merged
 # top artists.
-def create_duo_wrapped(access_token, expires_at, refresh_token, merge_wrap):
+def union[T](arr1:list[T], arr2:list[T])->list[T]:
+    outArr = []
+    arr2_str = [str(elem) for elem in arr2]
+    for elem in arr1:
+        if str(elem) in arr2_str:
+            outArr.append(elem)
+    return outArr
 
-    user2 = get_all_info(access_token, expires_at, refresh_token)
-    user2_wrap = user2["value"] # should be a wrap obj
-    user1_wrap = merge_wrap
+def merge[T](arr1:list[T], arr2:list[T], count:int)->list[T]:
+    shared = union(arr1, arr2)
+    str_shared = [str(elem) for elem in shared]
+    i = j = 0
+    while len(shared) < count:
+        if i < j and i < len(arr1):
+            if str(arr1[i]) not in str_shared:
+                shared.append(arr1[i])
+            i += 1
+        elif j <= i and j < len(arr2):
+            if str(arr2[j]) not in str_shared:
+                shared.append(arr2[j])
+            j += 1
+        else:
+            return shared
+    return shared
 
-    # Get user ID's
-    user1_ID = user1_wrap.user.get_user_id()
-    user2_ID = user2["value"].user.get_user_id()
 
+def create_duo_wrapped(wrap1:WrapObject, wrap2:WrapObject)->list[WrapObject]:
+    # if wrap1.user.id == wrap2.user.id:
+    #     return None
     # Ensure we don't iterate out of bounds for anything
     num_merge = 10
-    min_artists = min(num_merge, len(user1_wrap.top_artists), len(user2_wrap.top_artists))
-    min_tracks = min(num_merge, len(user1_wrap.top_tracks), len(user2_wrap.top_tracks))
-    min_genres = min(num_merge, len(user1_wrap.top_genres), len(user2_wrap.top_genres))
 
-    shared_artists = {}
+    merged_artists = merge(wrap1.top_artists, wrap2.top_artists, num_merge)
+    merged_tracks = merge(wrap1.top_tracks, wrap2.top_tracks, num_merge)
 
-    # Merging top artists
-    for i in range(min_artists):
-        user1_artist = user1_wrap.top_artists[i]
-        user2_artist = user2_wrap.top_artists[i]
-        if (i%2) == 0:
-            shared_artists['user1_artist'] = user1_artist
-        else:
-            shared_artists['user2_artist'] = user2_artist
+    personality, color = get_personality_and_colors(merged_artists)
 
-    shared_artists = list(shared_artists.values())
-
-    shared_tracks = {}
-
-    # Merging top tracks
-    for i in range(min_tracks):
-        user1_artist = user1_wrap.top_tracks[i]
-        user2_artist = user2_wrap.top_tracks[i]
-        if (i % 2) == 0:
-            shared_tracks['user1_artist'] = user1_artist
-        else:
-            shared_tracks['user2_artist'] = user2_artist
-
-    shared_tracks = list(shared_tracks.values())
-
-    merged_wrap = WrapObject(top_tracks=shared_tracks, top_artists=shared_artists,
-                    user=[user1_ID, user2_ID])
-
-    return merged_wrap
+    return [WrapObject(
+                top_tracks=merged_tracks,
+                top_artists=merged_artists,
+                user=user,
+                suggested_tracks=[],
+                personality=personality,
+                color=json.dumps(color)
+            ) for user in [wrap1.user, wrap2.user]]
 

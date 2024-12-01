@@ -149,23 +149,25 @@ def duo_wrap(request):
     if not has_access(access_token, expire_time, refresh_token):
         return HttpResponseRedirect(reverse("spotify_wrapped:login"))
 
-    time_range = request.GET.get("wrapType", "")
-
-    original_wrap = get_wrap(wrap_id)
-    if original_wrap is None:
+    wrap1_model = get_wrap(wrap_id)
+    if wrap1_model is None:
         return HttpResponseRedirect(reverse("spotify_wrapped:index"))
-    original_wrap_object = convert_wrap_model(original_wrap)
+    wrap1 = convert_wrap_model(wrap1_model)
+
+    wrap2 = get_all_info(access_token, expire_time, refresh_token)
+    if wrap2["status"] == "error":
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
 
     #spotify.py wrap object
-    duo_wrap = create_duo_wrapped(access_token, expire_time, original_wrap_object)
-    if duo_wrap["status"] == "error":
-        print("wrap object failed to build:", duo_wrap["reason"])
-        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+    duo_wrap = create_duo_wrapped(wrap1, wrap2["value"])
 
     #models wrap model
-    wrap_model = convert_wrap_object_to_wrap_model(duo_wrap["value"])
-    wrap_model.save()
-    wrap_id = wrap_model.id
+    wrap1_model = convert_wrap_object_to_wrap_model(duo_wrap[0])
+    wrap1_model.save()
+    wrap2_model = convert_wrap_object_to_wrap_model(duo_wrap[1])
+    wrap2_model.save()
+
+    wrap_id = wrap2_model.id
     wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
     return HttpResponseRedirect(wrapped_url)
 

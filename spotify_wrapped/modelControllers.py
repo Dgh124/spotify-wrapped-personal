@@ -41,14 +41,14 @@ def convert_user_object_to_user_model(user_obj):
     return new_user
 
 def convert_wrap_object_to_wrap_model(wrap_obj):
-    top_tracks = [convert_track_object_to_track_model(track) for track in wrap_obj['value'].top_tracks]
-    top_artists = [convert_artist_object_to_artist_model(artist) for artist in wrap_obj['value'].top_artists]
-    user = convert_user_object_to_user_model(wrap_obj['value'].user)
-    suggested_tracks = [convert_track_object_to_track_model(track) for track in wrap_obj['value'].suggested_tracks]
-    personality = wrap_obj['value'].personality
-    top_audio = wrap_obj['value'].audio_link
-    color = wrap_obj['value'].color
-    top_genres = convert_tuple_to_dict(wrap_obj['value'].top_genres)
+    top_tracks = [convert_track_object_to_track_model(track) for track in wrap_obj.top_tracks]
+    top_artists = [convert_artist_object_to_artist_model(artist) for artist in wrap_obj.top_artists]
+    user = convert_user_object_to_user_model(wrap_obj.user)
+    suggested_tracks = [convert_track_object_to_track_model(track) for track in wrap_obj.suggested_tracks]
+    personality = wrap_obj.personality
+    top_audio = wrap_obj.audio_link
+    color = wrap_obj.color
+    top_genres = convert_tuple_to_dict(wrap_obj.top_genres)
     #need to add them using manytomany .add()
     new_wrap = WrapModel(color = color, personality = personality,
                     top_audio = top_audio, top_genres=top_genres)
@@ -58,6 +58,7 @@ def convert_wrap_object_to_wrap_model(wrap_obj):
     new_wrap.suggested_tracks.add(*suggested_tracks)
     new_wrap.user.add(user)
     return new_wrap
+
 
 def get_wrap(wrap_id):
     try:
