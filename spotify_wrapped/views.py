@@ -178,3 +178,23 @@ def logout(request):
     request.session.pop('expire_time', None)
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
 
+def delete_account(request):
+    access_token = request.session.get("access_token", None)
+    expire_time = request.session.get("expire_time", None)
+    refresh_token = request.session.get("refresh_token", None)
+
+    user = get_user(access_token=access_token, expires_at= expire_time, refresh_token= refresh_token)
+    if user["status"] == "error":
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
+    user_id = user["value"].id
+
+    wraps = get_all_user_wraps(user_id)
+
+    if wraps is None:
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
+
+    wraps.delete()
+
+    UserModel.objects.get(id=user_id).delete()
+    return HttpResponseRedirect(reverse('spotify_wrapped:logout'))
+

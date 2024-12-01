@@ -10,6 +10,7 @@ urlpatterns = [
     path("duo_wrap", views.duo_wrap, name="duo_wrap"),
     path("auth/", views.auth, name="auth"),
     path("logout/", views.logout, name="logout"),
+    path("delete_account/", views.delete_account, name="delete_account"),
 
     path("profile/", views.profile, name="profile"),
 

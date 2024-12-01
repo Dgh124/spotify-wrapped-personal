@@ -55,7 +55,7 @@ class WrapModel(models.Model):
     top_genres = models.JSONField(blank = True, default=dict)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Feedback(models.Model):
