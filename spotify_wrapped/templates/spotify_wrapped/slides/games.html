@@ -46,6 +46,14 @@
         document.body.appendChild(script);
     }
 
+    function remove_games_slide() {
+        document.getElementById("games").remove();
+        const sb = document.getElementById("status-bar");
+        sb.children[sb.children.length-1].remove();
+        document.getElementById("p5_loading").remove();
+        document.querySelector("main").remove();
+    }
+
     window.albums = [];
     {% for album in user_info.top_albums %}
         window.albums.push({

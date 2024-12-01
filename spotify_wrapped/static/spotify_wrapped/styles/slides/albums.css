@@ -7,14 +7,15 @@
 #albums .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 50px 20px;
+  padding: 30px 20px;
   text-align: center;
 }
 
 #albums h1 {
   font-size: 4em; /* Made the header bigger */
-  margin-bottom: 60px;
   color: #4a3f35;
+  margin: 0;
+  margin-bottom: .5em;
 }
 
 #albums .albums-grid {

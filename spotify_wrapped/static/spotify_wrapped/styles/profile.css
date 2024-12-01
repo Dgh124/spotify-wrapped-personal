@@ -88,3 +88,7 @@ nav a:hover {
 .button:hover {
     background-color: #17a74b;
 }
+
+table {
+    width: 100%;
+}

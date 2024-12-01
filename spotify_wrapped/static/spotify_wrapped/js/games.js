@@ -51,7 +51,10 @@ new p5((sketch) => {
                 sketch.loadImage(window.albums[decoy2].tracks[0].album_image)
             )
         }
-        console.log(questions);
+        console.log("questions: ", questions);
+        if (questions.length === 0) {
+            window.remove_games_slide();
+        }
     }
 
     sketch.setup = () => {
