@@ -1,3 +1,4 @@
+<!-- slideshow.html -->
 {% extends "spotify_wrapped/base.html" %}
 
 {% block title %}Slideshow{% endblock %}
@@ -7,7 +8,7 @@
     <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slideshow.css" %}">
     <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slides/base.css" %}">
 
-    <!-- loads css for every slide     -->
+    <!-- Load CSS for every slide -->
     {% for slide in slides %}
         {% with slide_style=slide|stringformat:"s"|add:".css" %}
             <link rel="stylesheet" href="{% static "spotify_wrapped/styles/slides/"|add:slide_style %}">
@@ -16,44 +17,52 @@
 {% endblock %}
 
 {% block content %}
+    <!-- Status Bar -->
     <div id="status-bar">
-	{% for slide in slides %}
-	    <div id="status-{{ forloop.counter|add:-1 }}" class="slide-status">
-	    </div>
-	{% endfor %}
+        {% for slide in slides %}
+            <div id="status-{{ forloop.counter0 }}" class="slide-status"></div>
+        {% endfor %}
     </div>
 
+    <!-- Pause Button -->
     <div id="pause-button">
-	<svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-	    <polygon points="7,4 19,12 7,20" fill="#fff" />
-	</svg>
-	<svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-	    <rect x="5" y="4" width="5" height="16" fill="#fff" />
-	    <rect x="14" y="4" width="5" height="16" fill="#fff" />
-	</svg>
+        <svg class="icon pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <rect x="5" y="4" width="5" height="16" fill="#fff" />
+            <rect x="14" y="4" width="5" height="16" fill="#fff" />
+        </svg>
+        <svg class="icon play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <polygon points="7,4 19,12 7,20" fill="#fff" />
+        </svg>
     </div>
 
-    <a id ="x-button" href="{% url 'spotify_wrapped:index' %}">
-    <svg class="icon x-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <text x=12 y=12 text-anchor="middle" dominant-baseline="middle">X</text>
-	</svg>
+    <!-- Close (X) Button -->
+    <a id="x-button" href="{% url 'spotify_wrapped:index' %}">
+        <svg class="icon x-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <text x="12" y="16" text-anchor="middle" dominant-baseline="middle" font-size="16">X</text>
+        </svg>
     </a>
 
+    <!-- Slideshow Wrapper -->
     <div class="slideshow-wrapper">
         <div id="slides" class="slides">
             {% for slide in slides %}
-                <div id="{{ slide }}" data-slideNum="{{ forloop.counter|add:-1 }}" class="slide-container">
-                {% with slide_name=slide|stringformat:"s"|add:".html" %}
-                    {% include "spotify_wrapped/slides/"|add:slide_name with static_imports="" %}
-                {% endwith %}
+                <div id="{{ slide }}" data-slideNum="{{ forloop.counter0 }}" class="slide-container">
+                    {% with slide_name=slide|stringformat:"s"|add:".html" %}
+                        {% include "spotify_wrapped/slides/"|add:slide_name with static_imports="" %}
+                    {% endwith %}
                 </div>
             {% endfor %}
         </div>
     </div>
-    <!-- Left and Right Arrows -->
-    <div class="arrow left-arrow"><div class="left-arrow-symbol arrow-symbol"></div></div>
-    <div class="arrow right-arrow"><div class="right-arrow-symbol arrow-symbol"></div></div>
+
+    <!-- Navigation Arrows -->
+    <div class="arrow left-arrow">
+        <div class="left-arrow-symbol arrow-symbol"></div>
+    </div>
+    <div class="arrow right-arrow">
+        <div class="right-arrow-symbol arrow-symbol"></div>
+    </div>
 
     {% load static %}
-    <script src="{% static 'spotify_wrapped/js/slideshow.js' %}" ></script>
+    <script src="{% static 'spotify_wrapped/js/slideshow.js' %}"></script>
 {% endblock %}
