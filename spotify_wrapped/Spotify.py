@@ -1,7 +1,7 @@
 import base64
 import os, requests, time
 import urllib.parse
-from typing import Callable
+from typing import Callable, Literal, Union
 from openai import OpenAI
 import json
 from dotenv import load_dotenv
@@ -11,12 +11,23 @@ client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 chatgpt = os.getenv("CHATGPT_KEY")
 
+class Success[T]:
+    def __init__(self, value:T):
+        self.status = Literal["success"]
+        self.value = value
+class Error:
+    def __init__(self, reason:str):
+        self.status = Literal["error"]
+        self.reason = reason
+
 class Artist:
     def __init__(self, name:str, _id:str, image:str, genres:list[str]):
         self.name = name
         self.id = _id
         self.image = image
         self.genres = genres
+    def __str__(self):
+        return self.name
 
 class Track:
     def __init__(self, _id:str, album_name:str, album_image:str, song_name:str, artists:list[str], preview_url:str|None, popularity_score:int):
@@ -62,11 +73,11 @@ class User:
         return self.id
 
 class WrapObject:
-    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], user:User, suggested_tracks: list[Track], personality:list[str], color):
+    def __init__(self, top_tracks:list[Track], top_artists:list[Artist], users:list[User], suggested_tracks: list[Track], personality:list[str], color):
         self.top_tracks = top_tracks
         self.top_artists = top_artists
         self.top_albums = get_top_albums(top_tracks)
-        self.user = user
+        self.users = users
         self.top_genres = get_top_genres(top_artists)
         self.audio_link = get_top_track_audio_link(top_tracks)
         self.suggested_tracks = suggested_tracks
@@ -76,7 +87,7 @@ class WrapObject:
     def __str__(self):
         return (f"Top Tracks:{self.top_tracks}\n"
                 f"Top Artists:{self.top_artists}\n"
-                f"User: {self.user}\n"
+                f"User: {self.users}\n"
                 f"Top Genres: {self.top_genres}\n"
                 f"Audio Link: {self.audio_link}\n"
                 f"Suggested Tracks: {self.suggested_tracks}\n"
@@ -104,7 +115,7 @@ def get_auth_url():
     return full_auth_url
 
 
-def get_access_token(auth_code:str) -> (str, int, str):
+def get_access_token(auth_code:str) -> tuple[str, int, str]:
     """
     Takes auth_code and returns Spotify api access token
     :param auth_code: auth code returned by get_auth_url called at /login slug
@@ -153,9 +164,9 @@ def refresh_access_token(refresh_token:str):
     access_token:str = json.get('access_token')
     expires_in = json.get('expires_in', 3600)
     expires_at = int(time.time()) + expires_in
-    refresh_token:str = json.get('refresh_token')
+    new_refresh_token:str = json.get('refresh_token')
 
-    return access_token, expires_at, refresh_token
+    return access_token, expires_at, new_refresh_token
 
 
 def get_requests(url, access_token):
@@ -190,7 +201,7 @@ def has_access(access_token:str|None, expires_at:int|None, refresh_token:str|Non
     return True
 
 
-def get_user_attributes[T](access_token: str, expires_at: int, refresh_token: str, url_slug: str, output_transform: Callable[[dict], T]) -> dict[str, str|T]:
+def get_user_attributes[T](access_token: str, expires_at: int, refresh_token: str, url_slug: str, output_transform: Callable[[dict], T]) -> Union[Success[T], Error]:
     """
     Queries the Spotify api for a user's top artists
     :param access_token: access token returned by spotify API callback at /auth path
@@ -201,16 +212,16 @@ def get_user_attributes[T](access_token: str, expires_at: int, refresh_token: st
     :return: dict of form {status: success|error} and a value if success, reason if failure
     """
     if not has_access(access_token, expires_at, refresh_token):
-        return {"status":"error", "reason":"noToken"}
+        return Error("noToken")
 
     url = f"https://api.spotify.com/v1/me/{url_slug}"
     response = get_requests(url, access_token)
 
     if response is None:
-        return {"status":"error", "reason":"request failure"}
+        return Error("request failure")
 
     value = output_transform(response)
-    return {"status":"success", "value":value}
+    return Success(value)
 
 
 def get_user(access_token, expires_at, refresh_token):
@@ -224,7 +235,7 @@ def get_user(access_token, expires_at, refresh_token):
     user_transform_fn = lambda response : User(
         display_name = response.get("display_name", None),
         _id= response.get("id", None),
-        pfp = response.get('images') and response['images'][0].get('url') if response['images'] else None,
+        pfp = response.get('images') and response['images'][0].get('url') if response['images'] else "",
         product = response.get("product", None),
         uri = response.get("uri", None),
     )
@@ -325,37 +336,37 @@ def get_top_albums(top_tracks: list[Track]) -> list[tuple[str, list[Track]]]:
             albums[track.album_name] = [track]
     return sorted(albums.items(), key=lambda item: len(item[1]), reverse=True)
 
-#
-# def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> dict[str,list[Track]|str]:
-#     """
-#     queries spotify API for suggested tracks based on list of artists
-#     :param access_token: see get_user_attributes
-#     :param top_artists: sorted list of user's top artists'
-#     :return: list of suggested tracks
-#     """
-#     # gets the top five artists for a user
-#     count = 0
-#     artist_seeds = ""
-#     while count < len(top_artists) and count < 5:
-#         artist_seeds += top_artists[count].id + ','
-#         count += 1
-#
-#     url = f'https://api.spotify.com/v1/recommendations?seed_artists={artist_seeds}'
-#     response = get_requests(url, access_token)
-#     if response is None:
-#         return {"status": "error", "reason": "suggested tracks returned error status code"}
-#     return {"status": "success", "value": [
-#         Track(
-#             _id=track["id"],
-#             album_name=track["album"]["name"],
-#             album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
-#             song_name=track["name"],
-#             artists=[artist["name"] for artist in track["artists"]],
-#             preview_url=track.get("preview_url", ""),
-#             popularity_score=track["popularity"],
-#         )
-#         for track in response["tracks"]
-#     ]}
+
+def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> Union[Success[list[Track]], Error]:
+    """
+    queries spotify API for suggested tracks based on list of artists
+    :param access_token: see get_user_attributes
+    :param top_artists: sorted list of user's top artists'
+    :return: list of suggested tracks
+    """
+    # gets the top five artists for a user
+    count = 0
+    artist_seeds = ""
+    while count < len(top_artists) and count < 5:
+        artist_seeds += top_artists[count].id + ','
+        count += 1
+
+    url = f'https://api.spotify.com/v1/recommendations?seed_artists={artist_seeds}'
+    response = get_requests(url, access_token)
+    if response is None:
+        return Error("suggested tracks returned error status code")
+    return Success([
+        Track(
+            _id=track["id"],
+            album_name=track["album"]["name"],
+            album_image=track["album"]["images"][-1]["url"] if track["album"]["images"] else "",
+            song_name=track["name"],
+            artists=[artist["name"] for artist in track["artists"]],
+            preview_url=track.get("preview_url", ""),
+            popularity_score=track["popularity"],
+        )
+        for track in response["tracks"]
+    ])
 
 
 def get_personality_and_colors(artists: list):
@@ -363,9 +374,7 @@ def get_personality_and_colors(artists: list):
         api_key=chatgpt,
     )
 
-    artist_list = ""
-    for artist in artists:
-        artist_list += f"{artist}, "
+    artist_list = "".join(str(artist)+"," for artist in artists)
 
     chat_completion = client.chat.completions.create(
         messages=[
@@ -390,7 +399,7 @@ def get_personality_and_colors(artists: list):
     return personality, personality_color
 
 
-def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | WrapObject]:
+def get_all_info(access_token, expires_at, refresh_token) -> Union[Success[WrapObject], Error]:
     top_tracks_result = get_top_tracks(
         access_token=access_token, expires_at=expires_at, refresh_token=refresh_token, limit=50
     )
@@ -400,27 +409,27 @@ def get_all_info(access_token, expires_at, refresh_token) -> dict[str, str | Wra
     top_artists_result = get_top_artists(
         access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
     )
-    if top_tracks_result["status"] == "error" or top_artists_result["status"] == "error" or top_tracks_result["status"] == "error":
-        return {"status": "error", "reason": "request returned error status code"}
+    if isinstance(top_tracks_result, Error) or isinstance(user_result, Error) or isinstance(top_artists_result, Error):
+        return Error("request returned error status code")
 
     # suggested_tracks = get_suggested_tracks(
     #     access_token=access_token,
-    #     top_artists=top_artists_result["value"],
+    #     top_artists=top_artists_result.value,
     # )
-    # if suggested_tracks["status"] == "error":
+    # if isinstance(suggested_tracks, Error):
     #     return suggested_tracks #includes error message and value
-    suggested_tracks = {"status": "success", "value": []}
+    suggested_tracks = Success([])
 
-    personality, color = get_personality_and_colors(top_artists_result['value'])
+    personality, color = get_personality_and_colors(top_artists_result.value)
 
-    return {"status": "success", "value": WrapObject(
-        top_tracks=top_tracks_result["value"],
-        top_artists=top_artists_result["value"],
-        user=user_result["value"],
-        suggested_tracks=suggested_tracks["value"],
+    return Success(WrapObject(
+        top_tracks=top_tracks_result.value,
+        top_artists=top_artists_result.value,
+        users=[user_result.value],
+        suggested_tracks=suggested_tracks.value,
         personality=personality,
         color = json.dumps(color)
-    )}
+    ))
 
 # 1. Get user1's (senders) wrap model -> wrap obj
 # 2. Create user2's wrap obj with get_all_info
@@ -456,7 +465,7 @@ def merge[T](arr1:list[T], arr2:list[T], count:int)->list[T]:
     return shared
 
 
-def create_duo_wrapped(wrap1:WrapObject, wrap2:WrapObject)->list[WrapObject]:
+def create_duo_wrapped(wrap1:WrapObject, wrap2:WrapObject)->WrapObject:
     # if wrap1.user.id == wrap2.user.id:
     #     return None
     # Ensure we don't iterate out of bounds for anything
@@ -467,12 +476,14 @@ def create_duo_wrapped(wrap1:WrapObject, wrap2:WrapObject)->list[WrapObject]:
 
     personality, color = get_personality_and_colors(merged_artists)
 
-    return [WrapObject(
+    print("Duo Wrapped Users:")
+    print((wrap1.users + wrap2.users))
+    return WrapObject(
                 top_tracks=merged_tracks,
                 top_artists=merged_artists,
-                user=user,
+                users=(wrap1.users + wrap2.users),
                 suggested_tracks=[],
                 personality=personality,
                 color=json.dumps(color)
-            ) for user in [wrap1.user, wrap2.user]]
+            )
 
