@@ -402,15 +402,17 @@ def get_personality_and_colors(artists: list[Artist]):
     return personality, personality_color
 
 
-def get_all_info(access_token, expires_at, refresh_token) -> Union[Success[WrapObject], Error]:
+def get_all_info(access_token, expires_at, refresh_token, time_range="medium_term") -> Union[Success[WrapObject], Error]:
     top_tracks_result = get_top_tracks(
-        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token, limit=50
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token, 
+        time_range=time_range, limit=50
     )
     user_result = get_user(
         access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
     )
     top_artists_result = get_top_artists(
-        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token,
+        access_token=access_token, expires_at=expires_at, refresh_token=refresh_token, 
+        time_range=time_range,
     )
     if isinstance(top_tracks_result, Error) or isinstance(user_result, Error) or isinstance(top_artists_result, Error):
         return Error("request returned error status code")

@@ -63,6 +63,10 @@ nav a:hover {
     text-align: center;
 }
 
+h2 {
+    margin: 0;
+}
+
 .divider {
     margin-left: 5vi;
     margin-right: 5vi;
@@ -75,6 +79,8 @@ nav a:hover {
 .button {
     display: inline-block;
     background-color: #1db954;
+    width:fit-content;
+    align-self: center;
     color: white;
     padding: 15px 20px;
     text-align: center;
@@ -87,6 +93,20 @@ nav a:hover {
 
 .button:hover {
     background-color: #17a74b;
+}
+
+
+div.create-new {
+    display: flex;
+    flex-direction: column;
+    width: min-content;
+}
+form.create-button-form {
+    display: flex;
+    margin: 1em;
+    flex-direction: column;
+    width: min-content;
+    align-self: center;
 }
 
 

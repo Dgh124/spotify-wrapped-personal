@@ -28,9 +28,15 @@
                 <div class="divider"></div>
             <div class="create-new">
                 <h2>Create a New Wrapped</h2>
-                <a href="{% url "spotify_wrapped:wrap" %}" class="button">
-                    Create New Wrapped
-                </a>
+                <form action="{%url "spotify_wrapped:wrap" %}" class="create-button-form">
+                    <label for="time_range">Wrap Time Range</label>
+                    <select name="time_range">
+                        <option value="short_term">Short Term</option>
+                        <option value="medium_term" selected>Medium Term</option>
+                        <option value="long_term">Long Term</option>
+                    </select>
+                    <input type="submit" value="Create New Wrap" class="button">
+                </form>
             </div>
             <div class="divider"></div>
             <div class="past-wrappeds">
@@ -52,6 +58,7 @@
                             <a href="#" data-id="{{wrap.id}}" class="duo-wrap-link">Copy Link</a>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
                 <script>
                     const links = document.getElementsByClassName("duo-wrap-link")
