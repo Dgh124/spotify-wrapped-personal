@@ -210,4 +210,5 @@ def delete_wrap(request):
 
 
     wrap_model.delete()
+    print("got here")
     return HttpResponseRedirect(reverse("spotify_wrapped:index"))
