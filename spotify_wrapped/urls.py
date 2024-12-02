@@ -12,6 +12,7 @@ urlpatterns = [
     path("auth/", views.auth, name="auth"),
     path("logout/", views.logout, name="logout"),
     path("delete_account/", views.delete_account, name="delete_account"),
+    path("delete_wrap/", views.delete_wrap, name="delete_wrap"),
 
     path("profile/", views.profile, name="profile"),
 
