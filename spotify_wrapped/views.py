@@ -98,7 +98,7 @@ def profile(request):
     if isinstance(user_result, Error):
         return HttpResponseRedirect(reverse('spotify_wrapped:login'))
     user_id = user_result.value.id
-    
+
     wraps = get_all_user_wraps(user_id)
     return render(request, "spotify_wrapped/profile.html", {
         "wraps": wraps
@@ -124,8 +124,9 @@ def wrap(request):
     if not has_access(access_token, expire_time, refresh_token):
         return HttpResponseRedirect(reverse("spotify_wrapped:login"))
 
+    time_range = request.GET.get("time_range", None)
     #spotify.py wrap object
-    wrap_object = get_all_info(access_token, expire_time, refresh_token)
+    wrap_object = get_all_info(access_token, expire_time, refresh_token, time_range)
     if isinstance(wrap_object, Error):
         print("wrap object failed to build:", wrap_object.reason)
         return HttpResponseRedirect(reverse("spotify_wrapped:index"))
@@ -136,6 +137,7 @@ def wrap(request):
     wrap_id = converted_obj.id
     wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
     return HttpResponseRedirect(wrapped_url)
+
 
 def duo_wrap(request):
     wrap_id = request.GET.get("uuid", None)
@@ -179,6 +181,7 @@ def logout(request):
     request.session.pop('expire_time', None)
     return HttpResponseRedirect(reverse('spotify_wrapped:index'))
 
+
 def delete_account(request):
     access_token = request.session.get("access_token", None)
     expire_time = request.session.get("expire_time", None)
@@ -199,6 +202,7 @@ def delete_account(request):
     UserModel.objects.get(id=user_id).delete()
     return HttpResponseRedirect(reverse('spotify_wrapped:logout'))
 
+
 def delete_wrap(request):
     wrap_id = request.GET.get("uuid", None)
     if wrap_id is None:
@@ -210,5 +214,4 @@ def delete_wrap(request):
 
 
     wrap_model.delete()
-    print("got here")
     return HttpResponseRedirect(reverse("spotify_wrapped:index"))
