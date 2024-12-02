@@ -38,29 +38,21 @@
 		{% if wraps is None %}
 			<p>No past wrappeds available.</p>
 		{% else %}
-		<table>
-		    <tr>
-                        <th>Wrap Id</th>
-                        <th>View Wrap</th>
-                        <th>Share Wrap</th>
-                        <th>Make Duo</th>
-                    </tr>
+                <div class="wrap-table">
                     {% for wrap in wraps %}
-                    <tr>
-                        <td>{{ wrap.id }}</td>
-                        <td>
+                    <div class="wrap-table-wrap">
+                        <p>{{wrap.id}}</p>
+                        <div class="wrap-table-links">
                             <a href="{% url "spotify_wrapped:wrapped"%}?uuid={{wrap.id}}">
-                                Link
+                                View
                             </a>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
+                            <a href="{% url "spotify_wrapped:delete_wrap"%}?uuid{{wrap.id}}">
+                                Delete
+                            </a>
                             <a href="#" data-id="{{wrap.id}}" class="duo-wrap-link">Copy Link</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                        </div>
+                    </div>
+                </div>
                 <script>
                     const links = document.getElementsByClassName("duo-wrap-link")
                     for (const link of links) {

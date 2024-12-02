@@ -89,6 +89,34 @@ nav a:hover {
     background-color: #17a74b;
 }
 
-table {
+
+div.wrap-table {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
+div.wrap-table-wrap {
+    display: flex;
+    flex-direction: column;
+} 
+div.wrap-table-wrap > p {
+    color: white;
+    font-size: 1rem;
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
+}
+div.wrap-table-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: center;
+    gap: 1em;
+}
+div.wrap-table-links > a {
+    color: #1db954;
+}
+div.wrap-table-links > a:visited {
+    color: #1db954;
+}
+

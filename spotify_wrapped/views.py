@@ -104,6 +104,7 @@ def profile(request):
         "wraps": wraps
     })
 
+
 def auth(request):
     auth_code = request.GET.get('code')
     access_token, expire_time, refresh_token = get_access_token(auth_code)
@@ -136,6 +137,14 @@ def wrap(request):
     wrapped_url = f'{reverse("spotify_wrapped:wrapped")}?uuid={wrap_id}'
     return HttpResponseRedirect(wrapped_url)
 
+
+def delete_wrap(request):
+    uuid = request.GET.get("uuid", None)
+    if uuid is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+
+    # delete_wrap logic
+    return HttpResponseRedirect(reverse("spotify_wrapped:index"))
 
 def duo_wrap(request):
     wrap_id = request.GET.get("uuid", None)

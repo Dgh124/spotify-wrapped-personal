@@ -7,6 +7,7 @@ urlpatterns = [
     path("login/", views.logIn, name="login"),
     path("wrap/", views.wrap, name="wrap"),
     path("wrapped/", views.wrapped, name="wrapped"),
+    path("delete_wrap", views.delete_wrap, name="delete_wrap"),
     path("duo_wrap", views.duo_wrap, name="duo_wrap"),
     path("auth/", views.auth, name="auth"),
     path("logout/", views.logout, name="logout"),
