@@ -198,3 +198,15 @@ def delete_account(request):
     UserModel.objects.get(id=user_id).delete()
     return HttpResponseRedirect(reverse('spotify_wrapped:logout'))
 
+def delete_wrap(request):
+    wrap_id = request.GET.get("uuid", None)
+    if wrap_id is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+
+    wrap_model = get_wrap(wrap_id)
+    if wrap_model is None:
+        return HttpResponseRedirect(reverse("spotify_wrapped:index"))
+
+
+    wrap_model.delete()
+    return HttpResponseRedirect(reverse("spotify_wrapped:index"))

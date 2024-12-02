@@ -44,6 +44,7 @@
                         <th>View Wrap</th>
                         <th>Share Wrap</th>
                         <th>Make Duo</th>
+                        <th></th>
                     </tr>
                     {% for wrap in wraps %}
                     <tr>
@@ -57,6 +58,9 @@
                         </td>
                         <td>
                             <a href="#" data-id="{{wrap.id}}" class="duo-wrap-link">Copy Link</a>
+                        </td>
+                        <td>
+                            <a href="{% url "spotify_wrapped:delete_wrap"%}?uuid={{wrap.id}}" > Delete Wrap</a>
                         </td>
                     </tr>
                     {% endfor %}
