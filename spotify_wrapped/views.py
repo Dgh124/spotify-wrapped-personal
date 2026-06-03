@@ -107,7 +107,15 @@ def profile(request):
 
 def auth(request):
     auth_code = request.GET.get('code')
-    access_token, expire_time, refresh_token = get_access_token(auth_code)
+    if not auth_code:
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
+
+    token_result = get_access_token(auth_code)
+    if isinstance(token_result, Error):
+        print("Spotify token exchange failed:", token_result.reason)
+        return HttpResponseRedirect(reverse('spotify_wrapped:login'))
+
+    access_token, expire_time, refresh_token = token_result
 
     request.session['access_token'] = access_token
     request.session['expire_time'] = expire_time

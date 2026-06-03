@@ -2,14 +2,18 @@ import base64
 import os, requests, time
 import urllib.parse
 from typing import Callable, Literal, Union
-from openai import OpenAI
 import json
 from dotenv import load_dotenv
 
 load_dotenv()
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
-chatgpt = os.getenv("CHATGPT_KEY")
+client_id = os.getenv("CLIENT_ID") or os.getenv("SPOTIFY_CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET") or os.getenv("SPOTIFY_CLIENT_SECRET")
+github_models_token = os.getenv("GITHUB_MODELS_TOKEN") or os.getenv("GITHUB_TOKEN") or os.getenv("CHATGPT_KEY")
+github_models_model = os.getenv("GITHUB_MODELS_MODEL", "openai/gpt-5")
+github_models_endpoint = os.getenv(
+    "GITHUB_MODELS_ENDPOINT",
+    "https://models.github.ai/inference/chat/completions",
+)
 
 class Success[T]:
     def __init__(self, value:T):
@@ -94,7 +98,7 @@ class WrapObject:
                 f"Personality: {self.personality}\n"
                 f"Color: {self.color}\n")
 
-redirect_uri = "http://127.0.0.1:8000/auth"
+redirect_uri = os.getenv("SPOTIFY_REDIRECT_URI", "http://127.0.0.1:8000/auth/")
 
 
 def get_auth_url():
@@ -115,7 +119,7 @@ def get_auth_url():
     return full_auth_url
 
 
-def get_access_token(auth_code:str) -> tuple[str, int, str]:
+def get_access_token(auth_code:str) -> tuple[str, int, str] | Error:
     """
     Takes auth_code and returns Spotify api access token
     :param auth_code: auth code returned by get_auth_url called at /login slug
@@ -136,13 +140,16 @@ def get_access_token(auth_code:str) -> tuple[str, int, str]:
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(url, data=data, headers=headers)
-    json = res.json()
+    token_response = res.json()
 
-    access_token:str = json.get("access_token")
-    expires_in: int = json["expires_in"]
+    access_token:str = token_response.get("access_token")
+    expires_in: int = token_response.get("expires_in")
+    refresh_token:str = token_response.get("refresh_token")
+    if not access_token or not expires_in or not refresh_token:
+        reason = token_response.get("error_description") or token_response.get("error") or "token request failed"
+        return Error(reason)
+
     expire_time: int = int(time.time()) + expires_in
-    refresh_token:str = json.get("refresh_token")
-
     return access_token, expire_time, refresh_token
 
 
@@ -370,29 +377,52 @@ def get_suggested_tracks(access_token, top_artists: list[Artist]=[]) -> Union[Su
 
 
 def get_personality_and_colors(artists: list[Artist]):
-    client = OpenAI(
-        api_key=chatgpt,
-    )
-
     artist_list = "".join(str(artist)+"," for artist in artists)
 
-    chat_completion = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": f""" what insight can you give about my personality if i listen to 
-                                {artist_list}. 
-                                simplify the answer in bullet points with only the keyword. 
+    if not github_models_token:
+        print("GitHub Models token is not configured")
+        return [""], ""
+
+    prompt = f""" what insight can you give about my personality if i listen to
+                                {artist_list}.
+                                simplify the answer in bullet points with only the keyword.
                                 Make sure the keyword are tied to words that typically used to describe personality.
                                 Also generate 5 hex code based on the personalities.
-                                Return in the format 
-                                "personality1 personality2 personality3 personality4 personality5 Hex1 Hex2 Hex3 Hex4 Hex5" 
+                                Return in the format
+                                "personality1 personality2 personality3 personality4 personality5 Hex1 Hex2 Hex3 Hex4 Hex5"
                                 Dont not include any heading! NO COMMAS! """
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {github_models_token}",
+        "X-GitHub-Api-Version": "2026-03-10",
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "model": github_models_model,
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt
             }
         ],
-        model="gpt-3.5-turbo",
-    )
-    response = chat_completion.choices[0].message.content
+        "max_tokens": 100,
+    }
+
+    try:
+        model_response = requests.post(
+            github_models_endpoint,
+            headers=headers,
+            json=payload,
+            timeout=30,
+        )
+        if model_response.status_code != 200:
+            print("GitHub Models request failed:", model_response.status_code, model_response.text[:300])
+            return [""], ""
+        response = model_response.json()["choices"][0]["message"].get("content")
+    except (KeyError, IndexError, requests.RequestException, ValueError) as err:
+        print("GitHub Models request failed:", err)
+        return [""], ""
+
     if response is None:
         return [""], ""
     print(response)
@@ -491,4 +521,3 @@ def create_duo_wrapped(wrap1:WrapObject, wrap2:WrapObject)->WrapObject:
                 personality=personality,
                 color=json.dumps(color)
             )
-
