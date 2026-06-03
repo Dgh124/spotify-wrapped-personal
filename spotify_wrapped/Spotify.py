@@ -6,8 +6,8 @@ import json
 from dotenv import load_dotenv
 
 load_dotenv()
-client_id = os.getenv("CLIENT_ID") or os.getenv("SPOTIFY_CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET") or os.getenv("SPOTIFY_CLIENT_SECRET")
+client_id = os.getenv("CLIENT_ID") or os.getenv("SPOTIFY_CLIENT_ID") or os.getenv("client_id")
+client_secret = os.getenv("CLIENT_SECRET") or os.getenv("SPOTIFY_CLIENT_SECRET") or os.getenv("client_secret")
 github_models_token = os.getenv("GITHUB_MODELS_TOKEN") or os.getenv("GITHUB_TOKEN") or os.getenv("CHATGPT_KEY")
 github_models_model = os.getenv("GITHUB_MODELS_MODEL", "openai/gpt-5")
 github_models_endpoint = os.getenv(
